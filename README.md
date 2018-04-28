@@ -267,7 +267,7 @@ We'll use auto-deployment from TravisCI to GitHub Pages to host our content.
 
 As mentioned above, a major set of goals for the project is to blur the line
 between user and developer, client and server, as well as documentation and source code. To achieve this, a number of philosophies about how the project is
-run will be practiced
+run will be practiced.
 
 Where possible, we favour the contributor over the process.  As much as we can, we will seek to remove barriers to having people contribute, and try to get people involved vs. maintaining some aspirational but impractical level of quality.  If we break something, we'll fix it as we go.  Don't let that stop people from trying.
 
