@@ -156,6 +156,13 @@ The root of the project, which shows appropriate UI for discovering and using th
 
 Access to various images, scripts, stylesheets, etc. that are widely needed by our community and not hosted elsewhere.
 
+#### `/bin`
+
+Built-in commands (`cp`, `ls`, etc) are stored here.  When a command is run, in
+the terminal, the user's `/bin` directory is first used to resolve the command.
+If it is found, the local filesystem version is run; otherwise, the version
+available via the `/bin` route is used.
+
 #### `/blog`
 
 The project's blog, which is written by community members.  Exposing it as part of the system is important, as we aim to connect our users and developers in ways that most projects don't.
@@ -236,6 +243,12 @@ Creates a `.zip` archive of the file or folder specified, or the root
 
 Resets (i.e., wipes and reformats) the filesystem.  UI provides a safety
 mechanism that requires user initiated opt-in.
+
+#### `/lib`
+
+Various system libraries, for example, the filesystem.  These libraries are
+used by commands in `/bin`, and are exposed individually so users can
+override and create their own versions.
 
 #### `/terminal[/path/to/folder]`
 
