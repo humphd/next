@@ -1,23 +1,21 @@
 language: node_js
 node_js:
- - '10.1.0'
+ - 'node'
 sudo: disabled
 
 cache: 
   directories:
     - "node_modules"
 
-
-install:
-  - npm install
-
 before_script:
+# Check if the current build is done against a PR.
+# If yes, test whether all files(except json) conform with style guide defined by Prettier.
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./node_modules/.bin/precise-commits --whitelist="./**/!(*.json)" --check-only --head=$TRAVIS_PULL_REQUEST_SHA --base=$(git merge-base HEAD $TRAVIS_BRANCH); fi'
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
+  keep-history: false
   on:
     branch: master
