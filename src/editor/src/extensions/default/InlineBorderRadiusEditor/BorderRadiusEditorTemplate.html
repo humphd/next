@@ -1,0 +1,131 @@
+<div tabindex="-1" class="border-radius-editor">
+ {{#inlineEditorHeader}}
+    <header>
+        <ul class="button-bar">
+          <li id="allCorners" title="{{ALL_CORNERS}}">
+              <a href="#" tabindex="0">{{ALL_CORNERS}}</a>
+          </li>
+          <li title="{{INDIVIDUAL_CORNERS}}" id="individualCorners">
+              <a href="#" tabindex="0">{{INDIVIDUAL_CORNERS}}</a>
+          </li>
+        </ul>
+    </header>
+ {{/inlineEditorHeader}}
+
+ {{#individualCornerArea}}
+    <div id="individualCornerArea">
+
+        <table>
+            <tr class="border-radius-input">
+                <td class="label-container">
+                    <div class="top-left corner-icon"></div>
+                </td>
+                <td class="slider-container">
+                   <input id="top-left-slider" type="range" min="0" max="100" step="1">
+                </td>
+                <td class="slider-value">
+                   <span class="slider-indicator" id="top-left-text"></span>
+                </td>
+                <td class="units-container">
+                    <ul class="button-bar ul-padding-left" id="top-left-radio">
+                        <li id="top-left-radio-px" title="{{PIXEL_UNIT}}"><a href="#" tabindex="0">px</a></li>
+                        <li title="{{PERCENTAGE_UNIT}}" id="top-left-radio-percent"><a href="#" tabindex="0">%</a></li>
+                        <li title="{{EM_UNIT}}" id="top-left-radio-em"><a href="#" tabindex="0">em</a></li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr class="border-radius-input">
+                <td class="label-container">
+                    <div class="top-right corner-icon"></div>
+                </td>
+                <td class="slider-container">
+                    <input id="top-right-slider" type="range" min="0" max="100" step="1">
+                </td>
+                <td>
+                    <span class="slider-indicator" id="top-right-text"></span>
+                </td>
+                <td class="units-container">
+                    <ul class="button-bar ul-padding-left" id="top-right-radio">
+                        <li id="top-right-radio-px" title="{{PIXEL_UNIT}}"><a href="#" tabindex="0">px</a></li>
+                        <li title="{{PERCENTAGE_UNIT}}" id="top-right-radio-percent"><a href="#" tabindex="0">%</a></li>
+                        <li title="{{EM_UNIT}}" id="top-right-radio-em"><a href="#" tabindex="0">em</a></li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr class="border-radius-input">
+                <td class="label-container">
+                    <div class="bottom-right corner-icon"></div>
+                </td>
+                <td class="slider-container">
+                   <input id="bottom-right-slider" type="range" min="0" max="100" step="1">
+                </td>
+                <td>
+                   <span class="slider-indicator" id="bottom-right-text"></span>
+                </td>
+                <td class="units-container">
+                   <ul class="button-bar ul-padding-left" id="bottom-right-radio">
+                       <li id="bottom-right-radio-px" title="{{PIXEL_UNIT}}"><a href="#" tabindex="0">px</a></li>
+                       <li title="{{PERCENTAGE_UNIT}}" id="bottom-right-radio-percent"><a href="#" tabindex="0">%</a></li>
+                       <li title="{{EM_UNIT}}" id="bottom-right-radio-em"><a href="#" tabindex="0">em</a></li>
+                   </ul>
+                </td>
+            </tr>
+
+            <tr class="border-radius-input">
+                <td class="label-container">
+                    <div class="bottom-left corner-icon"></div>
+                </td>
+                <td class="slider-container">
+                    <input id="bottom-left-slider" type="range" min="0" max="100" step="1">
+                </td>
+                <td>
+                    <span class="slider-indicator" id="bottom-left-text"></span>
+                </td>
+                <td class="units-container">
+                    <ul class="button-bar ul-padding-left" id="bottom-left-radio">
+                        <li id="bottom-left-radio-px" title="{{PIXEL_UNIT}}"><a href="#" tabindex="0">px</a></li>
+                        <li title="{{PERCENTAGE_UNIT}}" id="bottom-left-radio-percent"><a href="#" tabindex="0">%</a></li>
+                        <li title="{{EM_UNIT}}" id="bottom-left-radio-em"><a href="#" tabindex="0">em</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+ {{/individualCornerArea}}
+    
+ 
+    <div id="allCornersArea">
+       <table>
+           <tr class="border-radius-input">
+               <td class="label-container">
+               {{#allCornerArea}}
+                   <div class="all corner-icon">
+                       <div class="dot"></div>
+                       <div class="dot"></div>
+                       <div class="dot"></div>
+                       <div class="dot"></div>
+                   </div>
+                {{/allCornerArea}} 
+                {{#singleCornerArea}}
+                    <div class="{{iconClassName}} corner-icon"></div>
+                 {{/singleCornerArea}} 
+               </td>
+               <td class="slider-container">
+                   <input id="all-corner-slider" type="range" min="0" max="100" step="1">
+               </td>
+               <td class="slider-value">
+                  <span class="slider-indicator" id="all-corner-text"></span>
+               </td>
+               <td class="units-container">
+                    <ul class="button-bar ul-padding-left" id="all-corner-radio">
+                        <li id="all-corner-radio-px" title="{{PIXEL_UNIT}}"><a href="#" tabindex="0">px</a></li>
+                        <li title="{{PERCENTAGE_UNIT}}" id="all-corner-radio-percent"><a href="#" tabindex="0">%</a></li>
+                        <li title="{{EM_UNIT}}" id="all-corner-radio-em"><a href="#" tabindex="0">em</a></li>
+                    </ul>
+               </td>
+           </tr>
+       </table>
+    </div> 
+</div>
