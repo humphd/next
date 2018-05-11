@@ -4,7 +4,7 @@
   "description": "This is an attempt at unbundling the web.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" ",
     "precommit": "precise-commits --whitelist=\"**/!(*.json)\""
   },
   "repository": {
