@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <h1>Temporary interface into to db.</h1>
+    <script src="./index.js" type="application/javascript"></script>
+</head>
+
+<body>
+    <textarea id="query"></textarea>
+    <select id="method">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+    </select>
+    <br>
+    <button onclick="submitForm()">Submit</button>
+    <hr>
+    <p id="result"></p>
+</body>
+
+</html>
