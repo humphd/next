@@ -4,10 +4,11 @@
     "description": "This is an attempt at unbundling the web.",
     "main": "index.js",
     "scripts": {
-        "start": "parcel ./src/index.html",
+        "start": "parcel --no-cache ./src/index.html",
         "test": "echo \"Error: no test specified\" ",
         "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
-        "docs:build": "cd website && npm run build"
+        "docs:build": "cd website && npm run build",
+        "build": "parcel build ./src/index.html"
     },
     "repository": {
         "type": "git",
@@ -28,16 +29,13 @@
     },
     "dependencies": {
         "dexie": "^2.0.3",
-        "parcel-plugin-sw-cache": "^0.2.3"
+        "parcel-plugin-sw-cache": "dsych/parcel-plugin-sw-cache#single-regex"
     },
     "cache": {
         "strategy": "inject",
-        "inDev": true,
         "globDirectory": "src/",
-        "globPatterns": [
-            "**/*.{js,html}"
-        ],
-        "swSrc": "src\\db-worker.js",
-        "swDest": "dist\\db-worker.js"
+        "globPatterns": ["**/*.{js,html}"],
+        "swSrc": "dist/db-worker.js",
+        "swDest": "dist/db-worker.js"
     }
 }
