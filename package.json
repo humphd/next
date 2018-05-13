@@ -4,7 +4,7 @@
     "description": "This is an attempt at unbundling the web.",
     "main": "index.js",
     "scripts": {
-        "start": "parcel index.html",
+        "start": "parcel ./src/index.html",
         "test": "echo \"Error: no test specified\" ",
         "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
         "docs:build": "cd website && npm run build"

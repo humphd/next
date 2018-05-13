@@ -4,11 +4,13 @@
 <head>
     <meta charset="utf-8">
     <h1>Temporary interface into to db.</h1>
-    <script src="./index.js" type="application/javascript"></script>
 </head>
 
 <body>
-    <textarea id="query"></textarea>
+    <script src="./process.js"></script>
+    <p>When entering your request params, you would need to encode them the way they are supposed to be transmitted. E.g. for
+        GET, you would write "test=1&hello=world" (without "?"). Other methods only accept json at the moment.</p>
+    <textarea id="query" rows="10" cols="50" placeholder="Enter your VALID request parameters."></textarea>
     <select id="method">
         <option value="GET">GET</option>
         <option value="POST">POST</option>
@@ -16,7 +18,7 @@
         <option value="DELETE">DELETE</option>
     </select>
     <br>
-    <button onclick="submitForm()">Submit</button>
+    <button id="submitButton">Submit</button>
     <hr>
     <p id="result"></p>
 </body>
