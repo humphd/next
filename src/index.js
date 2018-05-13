@@ -1,7 +1,5 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('db-worker.js', {
-            scope: '/',
-        });
+        navigator.serviceWorker.register('./db-worker.js');
     });
 }
