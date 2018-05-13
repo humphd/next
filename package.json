@@ -28,6 +28,16 @@
     },
     "dependencies": {
         "dexie": "^2.0.3",
-        "workbox-sw": "^3.2.0"
+        "parcel-plugin-sw-cache": "^0.2.3"
+    },
+    "cache": {
+        "strategy": "inject",
+        "inDev": true,
+        "globDirectory": "src/",
+        "globPatterns": [
+            "**/*.{js,html}"
+        ],
+        "swSrc": "src\\db-worker.js",
+        "swDest": "dist\\db-worker.js"
     }
 }

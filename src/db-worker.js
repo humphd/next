@@ -5,26 +5,8 @@ importScripts(
 workbox.setConfig({
     debug: true,
 });
-const revision = '1234';
 
-workbox.precaching.precacheAndRoute([
-    {
-        url: '/index.html',
-        revision: revision,
-    },
-    {
-        url: '/index.js',
-        revision: revision,
-    },
-    {
-        url: '/db/index.html',
-        revision: revision,
-    },
-    {
-        url: '/process.js',
-        revision: revision,
-    },
-]);
+workbox.precaching.precacheAndRoute([]);
 
 workbox.routing.registerRoute(
     ({ url, event }) => {
