@@ -2,7 +2,8 @@ const submitForm = () => {
     const queryElement = window.document.getElementById('query');
     const methodElement = document.getElementById('method');
 
-    let url = '/data/api';
+    let url = `${window.location.hostname}/data/api`;
+
     let body = null;
     switch (methodElement.value) {
         case 'GET':
