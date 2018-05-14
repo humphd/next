@@ -1,0 +1,7 @@
+{
+  "docs": {
+    "Getting Started": ["doc1"],
+    "Project": ["doc2", "doc3"],
+    "Other": ["doc4"]
+  }
+}
