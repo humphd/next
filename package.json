@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
-    "precommit": "precise-commits --whitelist=\"**/!(*.json)\""
+    "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
+    "docs": "cd website && npm start"
   },
   "repository": {
     "type": "git",
