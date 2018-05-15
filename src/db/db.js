@@ -1,10 +1,8 @@
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
-export default class IndexedDb {
-    'use strict';
-    db = null;
-    version = 0;
+export class IndexedDb {
     constructor(dbName = 'localDb') {
+        this.version = 1;
         this.db = new Dexie(dbName);
         this.db.version(this.version).stores({});
         this.db.open();
@@ -20,7 +18,7 @@ export default class IndexedDb {
         this.db.close();
         const sch = {};
         sch[tableName] = schema;
-        await this.db.version(this.version).store(sch);
+        await this.db.version(this.version).stores(sch);
         return await this.db.open();
     }
 

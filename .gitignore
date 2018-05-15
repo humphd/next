@@ -126,3 +126,5 @@ src/editor/_SpecRunner.html
 .cache
 dist
 
+# vscode
+.vscode

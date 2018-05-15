@@ -1,22 +1,24 @@
 const submitForm = () => {
-    const queryElement = window.document.getElementById('query');
+    const urlElement = window.document.getElementById('url');
+    const bodyElement = window.document.getElementById('body');
     const methodElement = document.getElementById('method');
 
     let url = `${window.location.hostname}/data/api`;
 
-    let body = null;
-    switch (methodElement.value) {
-        case 'GET':
-            url += `?${queryElement.value}`;
-            break;
-        case 'POST':
-        case 'PUT':
-            body = JSON.stringify(queryElement.value);
-    }
+    let body =
+        // @ts-ignore
+        methodElement.value === 'GET'
+            ? null
+            : // @ts-ignore
+              JSON.stringify(bodyElement.value);
+    // @ts-ignore
+    url += urlElement.value;
 
+    // @ts-ignore
     console.log(methodElement.value);
 
     const req = new Request(encodeURI(url), {
+        // @ts-ignore
         method: methodElement.value,
         body: body,
     });
@@ -28,11 +30,20 @@ const submitForm = () => {
         .then(data => {
             document.getElementById('result').innerText = JSON.stringify(data);
         });
-    console.log(queryElement.value);
+    // @ts-ignore
+    console.log(urlElement.value);
 };
 
 window.addEventListener('load', () => {
     document
         .getElementById('submitButton')
         .addEventListener('click', submitForm, false);
+    document.getElementById('method').addEventListener('change', event => {
+        // @ts-ignore
+        if (event.target.value != 'GET') {
+            document.getElementById('bodyWrapper').hidden = false;
+        } else {
+            document.getElementById('bodyWrapper').hidden = true;
+        }
+    });
 });

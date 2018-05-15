@@ -8,15 +8,28 @@
 
 <body>
     <script src="./process.js"></script>
-    <p>When entering your request params, you would need to encode them the way they are supposed to be transmitted. E.g. for
-        GET, you would write "test=1&hello=world" (without "?"). Other methods only accept json at the moment.</p>
-    <textarea id="query" rows="10" cols="50" placeholder="Enter your VALID request parameters."></textarea>
-    <select id="method">
-        <option value="GET">GET</option>
-        <option value="POST">POST</option>
-        <option value="PUT">PUT</option>
-        <option value="DELETE">DELETE</option>
-    </select>
+    <div>
+        <div>
+            <div>
+                <p>When entering your request params, you would need to encode them the way they are supposed to be transmitted.
+                    E.g. for GET, you would write "/test-url?test=1&hello=world".
+                    <textarea id="url" rows="2" cols="50" placeholder="Enter your VALID url."></textarea>
+                    <select id="method">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+            </div>
+            <br>
+            <div hidden id="bodyWrapper">
+                <p>Body for POST/PUT requests should be in json format e.g. {a: 1}</p>
+                <textarea id="body" rows="10" cols="50" placeholder="Enter your VALID body"></textarea>
+            </div>
+
+        </div>
+
+    </div>
     <br>
     <button id="submitButton">Submit</button>
     <hr>

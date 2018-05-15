@@ -21,6 +21,9 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "devDependencies": {
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-runtime": "^6.26.0",
         "husky": "^0.14.3",
         "parcel-bundler": "^1.8.1",
         "precise-commits": "^1.0.2",
@@ -34,7 +37,9 @@
     "cache": {
         "strategy": "inject",
         "globDirectory": "src/",
-        "globPatterns": ["**/*.{js,html}"],
+        "globPatterns": [
+            "**/*.{js,html}"
+        ],
         "swSrc": "dist/db-worker.js",
         "swDest": "dist/db-worker.js"
     }
