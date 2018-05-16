@@ -3,7 +3,7 @@ const submitForm = () => {
     const bodyElement = window.document.getElementById('body');
     const methodElement = document.getElementById('method');
 
-    let url = `${window.location.hostname}/data/api`;
+    let url = `${window.location.hostname}/data/api/`;
 
     let body =
         // @ts-ignore
@@ -29,6 +29,9 @@ const submitForm = () => {
         })
         .then(data => {
             document.getElementById('result').innerText = JSON.stringify(data);
+        })
+        .catch(err => {
+            console.error(err);
         });
     // @ts-ignore
     console.log(urlElement.value);

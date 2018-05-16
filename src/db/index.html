@@ -24,6 +24,12 @@
             <br>
             <div hidden id="bodyWrapper">
                 <p>Body for POST/PUT requests should be in json format e.g. {a: 1}</p>
+                <p>Only POST works at the moment. You have 2 options: 1. Supply the table schema. 2. Ommit the table schema
+                    and primary key will be generated for you with name "_id". Example of the request payload without schema
+                    {"data":{"_id": "1","my": "test"}}. And with schema {"data":{"_id": "1","my": "test"}, "schema": "++a"}.
+                </p>
+                <p>For detailt on the schema syntax
+                    <a href="http://dexie.org/docs/Version/Version.stores()#schema-syntax">see.</p>
                 <textarea id="body" rows="10" cols="50" placeholder="Enter your VALID body"></textarea>
             </div>
 
