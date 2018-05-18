@@ -1,0 +1,222 @@
+[
+    {
+        "path": "extensions/default/CSSCodeHints",
+        "less": {
+            "dist/extensions/default/CSSCodeHints/styles/brackets-css-hints.css": [
+                "src/extensions/default/CSSCodeHints/styles/brackets-css-hints.css"
+            ]
+        }
+    },
+    {
+        "path": "extensions/default/HTMLCodeHints"
+    },
+    {
+        "path": "extensions/default/CSSAtRuleCodeHints"
+    },
+    {
+        "path": "extensions/default/CSSPseudoSelectorHints"
+    },
+    {
+        "path": "extensions/default/HtmlEntityCodeHints",
+        "less": {
+            "dist/extensions/default/HTMLEntityCodeHints/styles.css": [
+                "src/extensions/default/HtmlEntityCodeHints/styles.css"
+            ]
+        }
+    },
+    {
+        "path": "extensions/extra/JavaScriptCodeHints-Browser",
+        "less": {
+            "dist/extensions/extra/JavaScriptCodeHints-Browser/styles/brackets-js-hints.css": [
+                "src/extensions/extra/JavaScriptCodeHints-Browser/styles/brackets-js-hints.css"
+            ]
+        },
+        "copy": [
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/lib/tern.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/lib/infer.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/lib/def.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/lib/signal.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/defs/ecmascript.json",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/tern/defs/browser.json",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/acorn/dist/acorn.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/acorn/dist/acorn_loose.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/node_modules/acorn/dist/walk.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/tern-worker.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/MessageIds.js",
+            "extensions/extra/JavaScriptCodeHints-Browser/HintUtils2.js"
+        ]
+    },
+    {
+        "path": "extensions/default/InlineColorEditor",
+        "less": {
+            "dist/extensions/default/InlineColorEditor/css/main.css": [
+                "src/extensions/default/InlineColorEditor/css/main.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/InlineColorEditor/img/*.png"
+        ]
+    },
+    {
+        "path": "extensions/default/InlineBorderRadiusEditor",
+        "less": {
+            "dist/extensions/default/InlineBorderRadiusEditor/css/main.css": [
+                "src/extensions/default/InlineBorderRadiusEditor/css/main.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/InlineBorderRadiusEditor/img/*.png",
+            "extensions/default/InlineBorderRadiusEditor/BorderRadiusEditorTemplate.html"
+        ]
+    },
+    {
+        "path": "extensions/default/InlineBoxModelEditor",
+        "less": {
+            "dist/extensions/default/InlineBoxModelEditor/css/main.css": [
+                "src/extensions/default/InlineBoxModelEditor/css/main.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/InlineBoxModelEditor/img/*.png",
+            "extensions/default/InlineBoxModelEditor/BoxModelEditorTemplate.html"
+        ]
+    },
+    {
+        "path": "extensions/default/Inline3DParametersEditor",
+        "less": {
+            "dist/extensions/default/Inline3DParametersEditor/css/main.css": [
+                "src/extensions/default/Inline3DParametersEditor/css/main.less"
+            ]
+        }
+    },
+    {
+        "path": "extensions/default/JavaScriptQuickEdit"
+    },
+    {
+        "path": "extensions/default/QuickView",
+        "less": {
+            "dist/extensions/default/QuickView/QuickView.css": [
+                "src/extensions/default/QuickView/QuickView.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/QuickView/*.svg"
+        ]
+    },
+    {
+        "path": "extensions/extra/WebPlatformDocs",
+        "less": {
+            "dist/extensions/extra/WebPlatformDocs/WebPlatformDocs.css": [
+                "src/extensions/extra/WebPlatformDocs/WebPlatformDocs.less"
+            ]
+        },
+        "copy": [
+            "extensions/extra/WebPlatformDocs/html.json",
+            "extensions/extra/WebPlatformDocs/css.json",
+            "extensions/extra/WebPlatformDocs/logo.svg"
+        ]
+    },
+    {
+        "path": "extensions/default/bramble",
+        "less": {
+            "dist/extensions/default/bramble/stylesheets/style.css": [
+                "src/extensions/default/bramble/stylesheets/style.less"
+            ],
+            "dist/extensions/default/bramble/stylesheets/consoleTheme.css": [
+                "src/extensions/default/bramble/stylesheets/consoleTheme.less"
+            ],
+            "dist/extensions/default/bramble/stylesheets/lightTheme.css": [
+                "src/extensions/default/bramble/stylesheets/lightTheme.less"
+            ],
+            "dist/extensions/default/bramble/stylesheets/darkTheme.css": [
+                "src/extensions/default/bramble/stylesheets/darkTheme.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/bramble/images/**/*"
+        ]
+    },
+    {
+        "path": "extensions/default/Autosave"
+    },
+    {
+        "path": "extensions/default/brackets-paste-and-indent"
+    },
+    {
+        "path": "extensions/default/BrambleUrlCodeHints",
+        "less": {
+            "dist/extensions/default/BrambleUrlCodeHints/style.css": [
+                "src/extensions/default/BrambleUrlCodeHints/style.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/BrambleUrlCodeHints/camera/camera-shutter-click-08.mp3",
+            "extensions/default/BrambleUrlCodeHints/glyphicons-12-camera.png",
+            "extensions/default/BrambleUrlCodeHints/selfiePreview.png"
+        ]
+    },
+    {
+        "path": "extensions/default/UploadFiles",
+        "less": {
+            "dist/extensions/default/UploadFiles/styles.css": [
+                "src/extensions/default/UploadFiles/styles.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/UploadFiles/images/*.svg"
+        ]
+    },
+    {
+        "path": "extensions/default/bramble-move-file",
+        "less": {
+            "dist/extensions/default/bramble-move-file/styles/style.css": [
+                "src/extensions/default/bramble-move-file/styles/style.less"
+            ]
+        },
+        "copy": [
+            "extensions/default/bramble-move-file/images/*.svg"
+        ]
+    },
+    {
+        "path": "extensions/default/brackets-show-whitespace",
+        "less": {
+            "dist/extensions/default/brackets-show-whitespace/styles/main.css": [
+                "src/extensions/default/brackets-show-whitespace/styles/main.css"
+            ]
+        }
+    },
+    {
+        "path": "extensions/extra/brackets-fonts-viewer",
+        "less":{
+            "dist/extensions/extra/brackets-fonts-viewer/styles/main.css": [
+                "src/extensions/extra/brackets-fonts-viewer/styles/main.less"
+            ]
+        }
+    },
+    {
+        "path": "extensions/extra/PDFView",
+        "less": {
+            "dist/extensions/extra/PDFView/styles/styles.css": [
+                "src/extensions/extra/PDFView/styles/styles.less"
+            ],
+            "dist/extensions/extra/PDFView/styles/viewer-overrides.css": [
+                "src/extensions/extra/PDFView/styles/viewer-overrides.css"
+            ]
+        },
+        "copy": [
+            "extensions/extra/PDFView/thirdparty/**/*",
+            "extensions/extra/PDFView/images/**/*",
+            "extensions/extra/PDFView/htmlContent/viewer.html",
+            "extensions/extra/PDFView/bramble-pdfjs.js"
+        ]
+    },
+    {
+        "path": "extensions/extra/brackets-fonts-viewer",
+        "less":{
+            "dist/extensions/extra/brackets-fonts-viewer/styles/main.css": [
+                "src/extensions/extra/brackets-fonts-viewer/styles/main.less"
+            ]
+        }
+    }
+]
+

@@ -1,0 +1,18 @@
+{
+    "name": "brackets-paste-and-indent",
+    "title": "Paste and Indent",
+    "description": "Automatically apply the correct indentation to pasted text",
+    "homepage": "https://github.com/ahuth/brackets-paste-and-indent",
+    "version": "0.2.0",
+    "author": "Andrew Huth (https://github.com/ahuth)",
+    "license": "Unlicense",
+    "categories": "formatting",
+    "keywords": [
+        "format",
+        "paste",
+        "indent"
+    ],
+    "engines": {
+        "brackets": ">=0.36.0"
+    }
+}
