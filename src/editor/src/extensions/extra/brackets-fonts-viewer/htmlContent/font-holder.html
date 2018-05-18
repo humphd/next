@@ -1,0 +1,77 @@
+<div class="font-viewer viewer-wrapper">
+
+    <style class="font-face" data-src="{{{url}}}?ver={{now}}">
+        @font-face {
+            font-family: {{ fontName }};
+            src: url("{{{url}}}?ver={{now}}");
+        }
+
+        .font-display-{{ fontName }} {
+            font-family: {{ fontName }};
+        }
+    </style>
+
+    <div class="viewer-header">
+        <span class="file-type">{{ Strings.FONT_FILE }}</span>
+        <span class="font-data file-details">&nbsp;</span>
+    </div>
+
+    <div class="font-display font-display-{{ fontName }} specimen-wrapper">
+        ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
+        abcdefghijklmnopqrstuvwxyz<br />
+        0123456789<br />
+        &amp;%$@#?+-*{}()[]&lt;&gt;
+    </div>
+
+    <div class="code-wrapper code-css">
+        <h2 class="code-title">CSS</h2>
+        <pre>
+@font-face {
+  font-family: "{{fontName}}";
+  src: url("{{{relPath}}}");
+}
+
+p {
+  font-family: "{{fontName}}";
+}
+</pre>
+    </div>
+
+    <div class="font-samples">
+        <div class="sample">
+            <h3>{{ Strings.FONT_TYPE_BOLD }}</h3>
+            <p class="bold specimen-wrapper font-display-{{ fontName }}">
+                The quick brown fox jumped over the lazy dog.
+            </p>
+            <div class="code-wrapper code-html">
+                <h2 class="code-title">HTML</h2>
+                <pre>&lt;strong&gt;&lt;/strong&gt;</pre>
+            </div>
+
+            <div class="code-wrapper code-css">
+                <h2 class="code-title">CSS</h2>
+                <pre>p {
+  font-weight: bold;
+}</pre>
+            </div>
+        </div>
+
+        <div class="sample">
+            <h3>{{ Strings.FONT_TYPE_ITALIC }}</h3>
+            <p class="italic font-display-{{ fontName }} specimen-wrapper">
+                The quick brown fox jumped over the lazy dog.
+            </p>
+            <div class="code-wrapper code-html">
+                <h2 class="code-title">HTML</h2>
+                <pre>&lt;em&gt;&lt;/em&gt;</pre>
+            </div>
+
+            <div class="code-wrapper code-css">
+                <h2 class="code-title">CSS</h2>
+                <pre>p {
+  font-style: italic;
+}</pre>
+            </div>
+        </div>
+    </div>
+</div>

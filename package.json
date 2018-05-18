@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
-    "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
     "build": "cd website && npm run build"
   },
   "repository": {

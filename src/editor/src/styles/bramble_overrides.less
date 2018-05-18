@@ -1,0 +1,260 @@
+/* Menu item goes to next line due to float:right issue on Firefox */
+@-moz-document url-prefix() {
+    .context-menu .menu-shortcut {
+        float: none;
+        margin-left: auto;
+    }
+    .dropdown-menu li a {
+        display: flex;
+        flex-flow: space-between;
+    }
+}
+
+#first-pane .pane-content {
+    position: relative;
+}
+
+.dark  #editor-holder .image-filters button:hover {
+    background: rgba(255,255,255,.12);
+}
+
+.dark #editor-holder .active-filter {
+    background: #036C9E;
+}
+
+.dark #editor-holder .pane-content .image-view h3 {
+    border-bottom: solid 1px rgba(255,255,255,.15);
+    color: rgba(255,255,255,.6)
+}
+
+.fullscreen-preview #first-pane {
+    width: 0 !important;
+}
+
+.fullscreen-preview .main-view .content {
+    left: 0 !important;
+}
+
+.fullscreen-preview .horz-resizer {
+    visibility: hidden;
+}
+
+.bramble-inspector-highlight {
+    background: rgba(0, 135, 207, .3) !important;
+}
+
+table.guide {
+    width: 100%;
+}
+
+table.guide td{
+    text-align: center;
+    padding-bottom:20px;
+}
+
+.model-header {
+    padding-left:20px;
+}
+
+.model-text {
+    padding-left:20px;
+}
+
+span.dialog-button {
+    float: right;
+    padding-right: 10px;
+}
+
+.CodeMirror-lines {
+    padding-left: 10px;
+}
+
+.CodeMirror .CodeMirror-gutters .CodeMirror-gutter:after {
+    display: none;
+}
+
+.CodeMirror-linenumber {
+    padding: 0 10px 0 0;
+}
+
+.inline-widget .CodeMirror-foldgutter,
+.inline-widget .CodeMirror-linenumbers,
+.inline-widget .CodeMirror-gutters {
+    background: transparent !important;
+}
+
+/* Makes the resize handles wider, and visile on hover & drag */
+
+#sidebar {
+    position: relative;
+}
+
+.CodeMirror-foldgutter:after {
+    display: none;
+}
+
+.horz-resizer {
+    transition: opacity .15s ease-out;
+    background: rgba(0,0,0,.08);
+    width: 12px;
+}
+
+#sidebar .horz-resizer {
+    right: -12px !important;
+    left: auto !important;
+}
+
+.dark .main-view > .horz-resizer,
+.dark #sidebar .horz-resizer {
+    background: rgba(255,255,255,.1);
+}
+
+.horz-resizer.active,
+.horz-resizer:hover {
+    opacity: 1;
+}
+
+.CodeMirror-linewidget {
+  transform: translateX(-10px);
+}
+
+.modal-backdrop {
+  opacity: .8;
+  animation: showModalBackdrop .1s ease-out;
+
+  @keyframes showModalBackdrop {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: .8;
+    }
+  }
+}
+
+
+// Modal overrides
+
+.modal-inner-wrapper {
+  vertical-align: top;
+}
+
+.dark .modal, .modal {
+  background: white;
+  border: none;
+  border-radius: 0;
+  animation: showModal .25s ease-out;
+  transform: translateY(70px);
+
+  @keyframes showModal {
+    0% {
+      transform: scale(.9) translateY(85px);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.03) translateY(65px);
+    }
+    100% {
+      transform: scale(1) translateY(70px);
+    }
+  }
+
+  .modal-body {
+    background: transparent;
+    color: black;
+    border: none;
+    padding: 20px;
+  }
+
+  .dialog-title {
+    color: black;
+    font-family: "Open Sans", sans-serif;
+    padding: 20px 20px 0 20px;
+    font-weight: 600;
+
+    &:empty {
+      padding: 0;
+    }
+  }
+
+  .modal-header {
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .dialog-message {
+    font-family: "Open Sans";
+    color: black;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  li {
+    color: black;
+  }
+
+  .modal-footer {
+    background: rgba(0,0,0,.1);
+    border-radius: 0;
+    border: none;
+    padding: 15px 20px;
+  }
+
+  button {
+    margin-left: 10px;
+    display: inline-block;
+    padding: 8px 15px;
+    cursor: pointer;
+    color: white;
+    margin: 0;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    border-radius: 2px;
+    background-color: #2A9961;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .btn.primary {
+    border: none;
+    background-color: #2A9961;
+    border-bottom: solid 2px rgba(0,0,0,0.3);
+
+    &:hover {
+      background: #39AA6D;
+    }
+
+    &:active {
+      background: #288952;
+    }
+  }
+
+  .btn {
+    border: none;
+    background: #B0B0B0;
+    border-bottom: solid 2px rgba(0,0,0,0.3);
+
+    &:focus {
+      color: white;
+    }
+
+    &:hover {
+      background-color: #BCBCBC;
+      color: white;
+    }
+
+    &:active {
+      background-color: #9B9B9B;
+      position: relative;
+      color: white;
+      border-bottom: solid 2px transparent;
+      margin-top: 2px;
+      padding: 8px 15px 6px 15px;
+    }
+  }
+}
+

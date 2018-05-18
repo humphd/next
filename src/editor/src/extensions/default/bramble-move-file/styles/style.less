@@ -1,0 +1,47 @@
+.modal-body {
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.move-to-dialog {
+    font-size: 16px;
+    font-family: "Open Sans", "Helvetica Neue", helvetica, sans-serif;
+    font-weight: 400;
+
+    strong {
+      color: #333;
+    }
+}
+
+.move-to-dialog .directory {
+    margin: 6px 0;
+    display: block;
+}
+
+.move-to-dialog .directory-name {
+    display: inline-block;
+    padding: 12px 15px;
+}
+
+.move-to-dialog .directory-name:hover {
+    background-color: rgba(0,0,0,.05);
+    cursor: pointer;
+}
+
+.move-to-dialog .active-directory, .move-to-dialog .active-directory:hover {
+    background-color: rgba(0,0,0,.1);
+}
+
+.move-to-dialog .active-directory strong {
+    font-weight: 600;
+}
+
+.move-to-dialog .folder-icon {
+    background: url("../images/folder-icon-black.svg") no-repeat left center;
+    opacity: 0.5;
+    padding-left: 25px;
+}
+
+.move-to-dialog .active-directory .folder-icon {
+    opacity: 0.8;
+}
