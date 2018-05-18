@@ -24,4 +24,4 @@ deploy:
   keep-history: false
   on:
     branch: master
-  local-dir: website/build
+  local-dir: website/build/Next
