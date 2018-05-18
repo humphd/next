@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
-    "precommit": "precise-commits --whitelist=\"**/!(*.json)\""
+    "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
+    "build": "cd website && npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/humphd/next#readme",
   "devDependencies": {
+    "docusaurus": "^1.0.15",
     "husky": "^0.14.3",
     "precise-commits": "^1.0.2",
     "prettier": "^1.12.1"

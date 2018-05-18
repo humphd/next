@@ -1,0 +1,7 @@
+{
+  "docs": {
+    "Getting Started": ["introduction"],
+    "Project": ["architecture", "technologies"],
+    "Other": ["community"]
+  }
+}

@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# Docusaurus build folder
+website/build/
