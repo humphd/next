@@ -76,13 +76,14 @@ class HomeSplash extends React.Component {
     let language = this.props.language || '';
     return (
       <SplashContainer>
-        <Logo img_src={imgUrl('docusaurus.svg')} />
+        <Logo img_src={imgUrl('database.svg')} />
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
             <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button>
+            <Button href={docUrl('introduction.html', language)}>Introduction</Button>
+            <Button href={docUrl('architecture.html', language)}>Architecture</Button>
+            <Button href={docUrl('technologies.html', language)}>Technologies</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -103,16 +104,16 @@ const Features = props => (
   <Block layout="fourColumn">
     {[
       {
-        content: 'This is the content of my feature',
-        image: imgUrl('docusaurus.svg'),
+        content: 'Search, edit, and run code in the same browser',
+        image: imgUrl('database.svg'),
         imageAlign: 'top',
-        title: 'Feature One',
+        title: 'All in one browser',
       },
       {
-        content: 'The content of my second feature',
-        image: imgUrl('docusaurus.svg'),
+        content: 'Share files with anyone else',
+        image: imgUrl('database.svg'),
         imageAlign: 'top',
-        title: 'Feature Two',
+        title: 'Share files',
       },
     ]}
   </Block>
@@ -123,7 +124,23 @@ const FeatureCallout = props => (
     className="productShowcaseSection paddingBottom"
     style={{textAlign: 'center'}}>
     <h2>Feature Callout</h2>
-    <MarkdownBlock>These are features of this project</MarkdownBlock>
+    <MarkdownBlock>
+      Directory of files
+
+      Code editor for these files    
+
+      
+      Command line terminal for running various commands    
+      
+
+      Browser for testing and debugging code    
+      
+
+      Web server for hosting our files in the browser      
+      
+
+      Database server for persisting our data    
+    </MarkdownBlock>
   </div>
 );
 
@@ -131,8 +148,8 @@ const LearnHow = props => (
   <Block background="light">
     {[
       {
-        content: 'Talk about learning how to use this',
-        image: imgUrl('docusaurus.svg'),
+        content: 'This will contain information on how to use our system once we have something',
+        image: imgUrl('database.svg'),
         imageAlign: 'right',
         title: 'Learn How',
       },
@@ -145,7 +162,7 @@ const TryOut = props => (
     {[
       {
         content: 'Talk about trying this out',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('database.svg'),
         imageAlign: 'left',
         title: 'Try it Out',
       },
@@ -157,8 +174,8 @@ const Description = props => (
   <Block background="dark">
     {[
       {
-        content: 'This is another description of how this project is useful',
-        image: imgUrl('docusaurus.svg'),
+        content: 'This is an attempt at unbundling the web. With this project, you will be able to browser files or directories on your machine, use a code editor to edit these files, test and debug the code in a browser environment, and more.',
+        image: imgUrl('database.svg'),
         imageAlign: 'right',
         title: 'Description',
       },
@@ -184,8 +201,8 @@ const Showcase = props => {
 
   return (
     <div className="productShowcaseSection paddingBottom">
-      <h2>{"Who's Using This?"}</h2>
-      <p>This project is used by all these people</p>
+      <h2>{"Want to contribute?"}</h2>
+      <p>To contribute to this project, head over to our Git <a href="https://github.com/humphd/next/issues">page</a> and find an issue to work on and get involved!</p>
       <div className="logos">{showcase}</div>
       <div className="more-users">
         <a className="button" href={pageUrl('users.html', props.language)}>

@@ -1,12 +1,9 @@
 ---
 id: introduction
 title: Introduction
-sidebar_label: Next introduction
+sidebar_label: Introduction
 ---
 
-Check the [documentation](https://docusaurus.io) for how to use Docusaurus.
-
-## Introduction
 
 Consider the typical way local web development is done:
 
@@ -38,13 +35,13 @@ The ideas being developed here are the enxt step in evolving series of experimen
 * [Thimble 1.0 (Press Coverage)](https://techcrunch.com/2012/06/18/mozilla-launches-thimble-a-web-based-code-editor-for-teaching-html-and-css/)
 * [Thimble 2.0](https://thimble.mozilla.org/)
 * [Technical Details of Thimble 2.0](https://blog.humphd.org/thimble-and-bramble/)
-* [Why I lvoe working on Mozilla Thimble](https://medium.com/read-write-participate/why-i-love-working-on-mozilla-thimble-8abbac7d1d9b)
+* [Why I love working on Mozilla Thimble](https://medium.com/read-write-participate/why-i-love-working-on-mozilla-thimble-8abbac7d1d9b)
 * [MakeDrive Browser File Syncing](https://blog.humphd.org/introducing-makedrive/)
 
 
 ## Next Step
 
-Where the previous work was focused on creating tools or products, the next iteration of the plan involves unbundling these technologies into a more flexible dvelopment environment. Rather than creating a single "app", the current project aims to create a connected, interoperable set of web tooling that leverages existing browser and dev tool features, augmenting and connecting them where there are gaps.
+Where the previous work was focused on creating tools or products, the next iteration of the plan involves __unbundling__ these technologies into a more flexible dvelopment environment. Rather than creating a single "app", the current project aims to create a connected, interoperable set of web tooling that leverages existing browser and dev tool features, augmenting and connecting them where there are gaps.
 
 
 ## Goals
