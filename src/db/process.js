@@ -41,12 +41,18 @@ window.addEventListener('load', () => {
     document
         .getElementById('submitButton')
         .addEventListener('click', submitForm, false);
-    document.getElementById('method').addEventListener('change', event => {
-        // @ts-ignore
-        if (event.target.value != 'GET') {
-            document.getElementById('bodyWrapper').hidden = false;
-        } else {
-            document.getElementById('bodyWrapper').hidden = true;
-        }
+    document.getElementById('method').addEventListener('change', revealMethod);
+
+    revealMethod({
+        target: { value: document.getElementById('method').value },
     });
 });
+
+function revealMethod(event) {
+    // @ts-ignore
+    if (event.target.value != 'GET') {
+        document.getElementById('bodyWrapper').hidden = false;
+    } else {
+        document.getElementById('bodyWrapper').hidden = true;
+    }
+}

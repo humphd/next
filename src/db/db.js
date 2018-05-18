@@ -4,11 +4,15 @@ export class IndexedDb {
     constructor(dbName = 'localDb') {
         this.version = 1;
         this.db = new Dexie(dbName);
-        // FOR DEV ONLY. delete previous versions of the db
-        this.db.delete();
 
         this.db.version(this.version).stores({});
-        this.db.open();
+    }
+
+    async init() {
+        // FOR DEV ONLY. delete previous versions of the db
+        await this.db.delete();
+
+        await this.db.open();
     }
 
     async _addData({ tableName = '', data = {} } = {}) {
@@ -24,7 +28,7 @@ export class IndexedDb {
         console.log(sch);
         await this.db.version(this.version).stores(sch);
 
-        this.db.open();
+        await this.db.open();
         return await this.db.table(tableName);
     }
 
@@ -38,26 +42,15 @@ export class IndexedDb {
         return table;
     }
 
-    async fetchData({
-        tableName = '',
-        propertyName = '',
-        value = '',
-        conditions = '',
-    } = {}) {
-        const query = {};
-        query[propertyName] = value;
-        return await this.db[tableName].where(query).first();
-    }
-
     // if tableName is an existant table, data is added/replaced based on the existance of the primary key.
     // if table with a given name does not exist, table is going to be created based on schema.
     // If no schema is provided, all of the subsequent operations on that table will not be indexed.
     // returns id of the newally created entry.
     // CAN THROW.
-    async populateData({ tableName, data, schema = '' }) {
+    async _populateData({ tableName, schema = '' }) {
         let table = this._getTableIfExists(tableName);
         // table not found, need to create it before proceeding
-        if (!table) {
+        if (!table || schema) {
             // since we need to create a new table, the schema has to be specified.
             // if not provided, your entry will not be indexed.
             if (!schema) {
@@ -71,10 +64,45 @@ export class IndexedDb {
                     schema: schema,
                 });
             } catch (err) {
+                console.error(err);
                 throw `Unable to create table ${tableName}`;
             }
         }
+        return table;
+    }
+
+    async putData({ tableName, data, schema = '', primaryKey = '' }) {
+        const t = await this._populateData({
+            tableName: tableName,
+            schema: schema,
+        });
         console.log('Data = ' + data);
-        return await table.put(data);
+        return await this.db.transaction('rw', t, async () => {
+            return primaryKey
+                ? await t.put(data, primaryKey)
+                : await t.put(data);
+        });
+    }
+
+    async addData({ tableName, data, schema = '' }) {
+        const t = await this._populateData({
+            tableName: tableName,
+            schema: schema,
+        });
+        console.log('Data = ' + data);
+        return await this.db.transaction('rw', t, async () => {
+            return await t.add(data);
+        });
+    }
+
+    async getData({
+        tableName = '',
+        propertyName = '',
+        value = '',
+        conditions = '',
+    } = {}) {
+        const query = {};
+        query[propertyName] = value;
+        return await this.db[tableName].where(query).first();
     }
 }
