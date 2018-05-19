@@ -27,3 +27,4 @@ deploy:
   local-dir: ./dist
   on:
     all_branches: true
+    node: 'lts/*'
