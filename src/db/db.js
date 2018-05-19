@@ -65,7 +65,7 @@ export class IndexedDb {
                 });
             } catch (err) {
                 console.error(err);
-                throw `Unable to create table ${tableName}`;
+                throw `Unable to create table ${tableName}. ${err.message}`;
             }
         }
         return table;
@@ -78,9 +78,7 @@ export class IndexedDb {
         });
         console.log('Data = ' + data);
         return await this.db.transaction('rw', t, async () => {
-            return primaryKey
-                ? await t.put(data, primaryKey)
-                : await t.put(data);
+            return await t.put(data);
         });
     }
 
@@ -106,12 +104,17 @@ export class IndexedDb {
         const num = parseFloat(value);
         query[propertyName] = isNaN(num) ? value : num;
         console.log(JSON.stringify(query) + ' ' + tableName);
-        await this.db.table(tableName).each(entry => {
-            console.log(JSON.stringify(entry));
-        });
-        return await this.db
-            .table(tableName)
-            .where(query)
-            .first();
+        // await this.db.table(tableName).each(entry => {
+        //     console.log(JSON.stringify(entry));
+        // });
+        if (!propertyName) {
+            return await this.db.table(tableName).toArray();
+        } else {
+            console.log('property');
+            return await this.db
+                .table(tableName)
+                .where(query)
+                .first();
+        }
     }
 }
