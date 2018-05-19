@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
-    "build": "cd website && npm run build"
+    "copy": "copyfiles -u 1 src/**/**/* src/**/* src/* website",
+    "build": "cd website&& npm run copy && workbox injectManifest workbox-config.js && npm run build",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,12 @@
     "docusaurus": "^1.0.15",
     "husky": "^0.14.3",
     "precise-commits": "^1.0.2",
-    "prettier": "^1.12.1"
+    "prettier": "^1.12.1",
+    "copyfiles": "1.2.0",
+    "workbox-cli": "^3.0.1"      
+  },
+  "dependencies": {
+    "express": "4.15.4",
+    "npm": "^6.0.1"
   }
 }
