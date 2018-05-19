@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
     "copy": "copyfiles -u 1 src/**/**/* src/**/* src/* website",
-    "build": "cd website && npm run copy && workbox injectManifest workbox-config.js",
-    "start": "node server.js"
+    "build": "cd website && npm run copy && workbox injectManifest workbox-config.js"
   },
   "repository": {
     "type": "git",
