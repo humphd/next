@@ -26,10 +26,10 @@ export class IndexedDb {
         const sch = {};
         sch[tableName] = schema ? schema : '_id++';
         console.log(sch);
-        await this.db.version(this.version).stores(sch);
+        this.db.version(this.version).stores(sch);
 
         await this.db.open();
-        return await this.db.table(tableName);
+        return this.db.table(tableName);
     }
 
     _getTableIfExists(tableName) {
@@ -102,7 +102,16 @@ export class IndexedDb {
         conditions = '',
     } = {}) {
         const query = {};
-        query[propertyName] = value;
-        return await this.db[tableName].where(query).first();
+        // check to see if it is a number, since dexie is doing a strict comparison.
+        const num = parseFloat(value);
+        query[propertyName] = isNaN(num) ? value : num;
+        console.log(JSON.stringify(query) + ' ' + tableName);
+        await this.db.table(tableName).each(entry => {
+            console.log(JSON.stringify(entry));
+        });
+        return await this.db
+            .table(tableName)
+            .where(query)
+            .first();
     }
 }
