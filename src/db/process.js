@@ -3,11 +3,11 @@ const submitForm = () => {
     const bodyElement = window.document.getElementById('body');
     const methodElement = document.getElementById('method');
 
-    let url = `${window.location.hostname}/data/api/`;
+    let url = `/data/api/`;
 
     let body =
         // @ts-ignore
-        methodElement.value === 'GET'
+        methodElement.value === 'GET' || methodElement.value === 'DELETE'
             ? null
             : // @ts-ignore
               JSON.stringify(bodyElement.value);
@@ -50,9 +50,9 @@ window.addEventListener('load', () => {
 
 function revealMethod(event) {
     // @ts-ignore
-    if (event.target.value != 'GET') {
-        document.getElementById('bodyWrapper').hidden = false;
-    } else {
+    if (event.target.value == 'GET' || event.target.value == 'DELETE') {
         document.getElementById('bodyWrapper').hidden = true;
+    } else {
+        document.getElementById('bodyWrapper').hidden = false;
     }
 }
