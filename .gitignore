@@ -59,3 +59,66 @@ typings/
 
 # Docusaurus build folder
 website/build/
+
+src/editor/Thumbs.db
+
+# ignore jenkins build info
+src/editor/build.prop
+
+# ignore node_modules created by grunt, but not more deeply-nested node_modules
+src/editor//npm-debug.log
+
+# ignore node_modules created by seldomly used documentation updating tool
+src/editor/src/extensions/extra/MDNDocs/tools/scrape-mdn/node_modules
+# ignore node_modules inside src
+src/editor/src/node_modules
+
+# ignore files copied from node_modules to src/thirdparty
+src/editor/src/thirdparty/CodeMirror
+src/editor/src/thirdparty/less.min.js
+
+# ignore compiled files
+src/editor/dist
+src/editor/src/.index.html
+src/editor/src/styles/brackets.min.css
+src/editor/src/styles/brackets.min.css.map
+
+# ignore everything in the dev extension directory EXCEPT the README
+# (so that the directory is non-empty and can be in git)
+src/editor/src/extensions/dev/*
+!src/editor/src/extensions/dev/README
+
+src/editor/src/extensions/disabled
+
+# ignore .disabled file for default extensions
+src/editor/src/extensions/default/*/.disabled
+
+#OSX .DS_Store files
+src/editor/.DS_Store
+
+# unit test working directory
+src/editor/test/results
+src/editor/test/temp
+
+# Netbeans
+src/editor/nbproject
+
+# PhpStorm
+src/editor/.idea
+
+# Files that can be automatically downloaded that we don't want to ship with our builds
+src/editor/src/extensibility/node/node_modules/request/tests/
+
+# Mozilla Bramble-specific files
+src/editor/.env
+
+# We use src/vfs and dist/vfs as a root for the live preview in service worker URLs
+# Don't put any files under this path!
+src/editor/src/vfs
+
+# ignore package-lock.json files
+src/editor/package-lock.json
+
+# ignore generated test files
+src/editor/.grunt/
+src/editor/_SpecRunner.html
