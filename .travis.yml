@@ -16,6 +16,8 @@ before_script:
 before_deploy:
 # Do the docusaurus build
   - npm run build
+# Do the editor build
+  - npm run build-editor
 
 deploy:
   provider: pages
@@ -24,4 +26,4 @@ deploy:
   keep-history: false
   on:
     branch: master
-  local-dir: website/build/Next
+  local-dir: src/editor/dist
