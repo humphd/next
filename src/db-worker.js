@@ -25,6 +25,30 @@ workbox.setConfig({
 // @ts-ignore
 workbox.precaching.precacheAndRoute([]);
 
+workbox.routing.registerRoute(/\b(io\/from\/dataurl|io\/in|io\/share|io\/archive|terminal|io\/reset).*/,
+      workbox.strategies.cacheFirst({
+        cacheName: 'io-cache',
+        plugins: [
+          new workbox.expiration.Plugin({
+            maxEntries: 50,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+          })
+        ]
+      })
+    );
+        
+workbox.routing.registerRoute(/\b(docs|assets|bin|blog|data\/(reset|download|upload)|lib|www).*.html/,
+      workbox.strategies.cacheFirst({
+        cacheName: 'htmls-cache',
+        plugins: [
+          new workbox.expiration.Plugin({
+            maxEntries: 50,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+          })
+        ]
+      })
+    );
+
 // @ts-ignore
 workbox.routing.registerRoute(
     ({ url, event }) => {
