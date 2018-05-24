@@ -24,7 +24,7 @@
         "babel-plugin-transform-runtime": "^6.23.0",
         "husky": "^0.14.3",
         "parcel-bundler": "^1.8.1",
-        "parcel-plugin-sw-cache": "^0.2.4",
+        "parcel-plugin-sw-cache": "dsych/parcel-plugin-sw-cache#relative-dest",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1",
         "docusaurus": "^1.0.15"
@@ -34,9 +34,13 @@
     },
     "cache": {
         "strategy": "inject",
-        "globDirectory": "src/",
-        "globPatterns": ["**/*.{js,html}"],
+        "globDirectory": "dist/",
+        "globPatterns": [
+            "**/*.{js,html}"
+        ],
         "swSrc": "dist/db-worker.js",
-        "swDest": "dist/db-worker.js"
+        "swDest": "dist/db-worker.js",
+        "useRelativeDest": true,
+        "inDev": true
     }
 }
