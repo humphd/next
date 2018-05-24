@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
     "build": "cd website && npm run build",
-    "build-editor": "cd src/editor && npm run preproduction"
+    "build-editor": "cd src/editor && npm run preproduction",
+    "postinstall": "cd src/editor/src/extensions/extra/JavaScriptCodeHints-Browser && npm install"
   },
   "repository": {
     "type": "git",
