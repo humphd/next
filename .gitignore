@@ -59,6 +59,7 @@ typings/
 
 # Docusaurus build folder
 website/build/
+website/i18n/
 
 src/editor/Thumbs.db
 
