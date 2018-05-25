@@ -24,7 +24,7 @@
 /*global require, define, HTMLElement, MessageChannel, addEventListener*/
 require.config({
     paths: {
-        "EventEmitter": "../node_modules/wolfy87-eventemitter/EventEmitter.min"
+        "EventEmitter": "../../../node_modules/wolfy87-eventemitter/EventEmitter.min"
     }
 });
 

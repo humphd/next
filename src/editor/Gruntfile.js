@@ -44,7 +44,8 @@ module.exports = function (grunt) {
             'grunt-cleanempty',
             'grunt-exec',
             'grunt-newer'
-        ]
+        ],
+        requireResolution: true
     });
 
     grunt.loadTasks('tasks');
@@ -205,7 +206,7 @@ module.exports = function (grunt) {
                         // In various places in the code, it's useful to know if this is a dev vs. prod env.
                         // See src/main.js default dev loading in src/ builds.
                         "envConfig": "bramble/config/config.prod",
-                        "Pica": "../node_modules/pica/dist/pica.min"
+                        "Pica": "../../../node_modules/pica/dist/pica.min"
                     },
                     // brackets.js should not be loaded until after polyfills defined in "utils/Compatibility"
                     // so explicitly include it in main.js
@@ -238,7 +239,7 @@ module.exports = function (grunt) {
                     name: 'thirdparty/almond',
                     baseUrl: 'src',
                     paths: {
-                        "EventEmitter": "../node_modules/wolfy87-eventemitter/EventEmitter.min"
+                        "EventEmitter": "../../../node_modules/wolfy87-eventemitter/EventEmitter.min"
                     },
                     optimize: 'uglify2',
                     preserveLicenseComments: false,

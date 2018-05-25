@@ -23,10 +23,18 @@
 
 /*jslint regexp: true */
 
-define(function (require, exports, module) {
+// require.config({
+//     packages: [
+//     { 
+//         name: 'acorn',
+//         location: '../../../../../../node_modules/acorn/dist/acorn',  // default 'packagename'
+//         main: 'acorn.js'                // default 'main' 
+//     }]
+// });
+define(['../../../../../../node_modules/acorn/dist/acorn'], function (acorn, require, exports, module) {
     "use strict";
 
-    var Acorn                       = require("node_modules/acorn/dist/acorn");
+    var Acorn                       = acorn;
 
     var LANGUAGE_ID                 = "javascript",
         HTML_LANGUAGE_ID            = "html",

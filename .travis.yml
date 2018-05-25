@@ -16,6 +16,8 @@ before_script:
 before_deploy:
 # Do the docusaurus build
   - npm run build
+# Do the editor build
+  - npm run build-editor
 
 deploy:
   provider: pages
@@ -23,5 +25,5 @@ deploy:
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
   on:
-    branch: master
-  local-dir: website/build/Next
+    all_branches: true
+  local-dir: src/editor/dist

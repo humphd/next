@@ -38,7 +38,7 @@ require.config({
         "fileSystemImpl": "filesystem/impls/filer/FilerFileSystem",
 
         // Image processing libraries
-        "Pica": "../node_modules/pica/dist/pica.min",
+        "Pica": "../../../node_modules/pica/dist/pica.min",
         "caman": "thirdparty/caman/caman.full.min",
         "isAnimated": "thirdparty/is-animated/lib/index",
 

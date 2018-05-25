@@ -23,7 +23,7 @@
 
 /*jslint regexp: true */
 
-define(function (require, exports, module) {
+define(['../../../../../../node_modules/acorn/dist/acorn', '../../../../../../node_modules/acorn/dist/acorn'],function (acorn, acorn_loose, require, exports, module) {
     "use strict";
 
     var StringMatch     = brackets.getModule("utils/StringMatch"),
@@ -32,8 +32,8 @@ define(function (require, exports, module) {
         HTMLUtils       = brackets.getModule("language/HTMLUtils"),
         HintUtils       = require("HintUtils"),
         ScopeManager    = require("ScopeManager"),
-        Acorn           = require("node_modules/acorn/dist/acorn"),
-        Acorn_Loose     = require("node_modules/acorn/dist/acorn_loose");
+        Acorn           = acorn,
+        Acorn_Loose     = acorn_loose;
 
     /**
      * Session objects encapsulate state associated with a hinting session
