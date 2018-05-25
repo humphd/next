@@ -19,10 +19,11 @@
 
     var index = "<html>\n"                                  +
                 "  <head>\n"                                +
-                "    <title>Bramble</title>\n"              +
+                "    <title>Unbundled</title>\n"              +
                 "  </head>\n"                               +
                 "  <body>\n"                                +
-                "    <p>This is the main page.</p>\n"       +
+                "    <p>Welcome to Unbundled..</p>\n"       +
+                "    <small>The World of Tomorrow!. </small>\n"       +
                 "  </body>\n"                               +
                 "</html>";
 
