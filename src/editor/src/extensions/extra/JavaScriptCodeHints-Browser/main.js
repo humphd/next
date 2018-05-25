@@ -21,7 +21,7 @@
  *
  */
 
-define(function (require, exports, module) {
+define(['../../../../../../node_modules/acorn/dist/acorn'], function (acorn, require, exports, module) {
     "use strict";
 
     var _ = brackets.getModule("thirdparty/lodash");
@@ -41,7 +41,7 @@ define(function (require, exports, module) {
         HintUtils            = require("HintUtils"),
         ScopeManager         = require("ScopeManager"),
         Session              = require("Session"),
-        Acorn                = require("node_modules/acorn/dist/acorn");
+        Acorn                = acorn;
 
     var session            = null,  // object that encapsulates the current session state
         cachedCursor       = null,  // last cursor of the current hinting session

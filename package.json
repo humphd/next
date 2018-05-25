@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" ",
     "build": "cd website && npm run build",
-    "build-editor": "cd src/editor && npm run preproduction",
-    "postinstall": "cd src/editor/src/extensions/extra/JavaScriptCodeHints-Browser && npm install"
+    "build-editor": "cd src/editor && npm run preproduction"
   },
   "repository": {
     "type": "git",
@@ -54,7 +53,9 @@
     "q": "1.4.1",
     "semver": "^4.1.0",
     "wolfy87-eventemitter": "^5.1.0",
-    "xmldoc": "^0.1.2"
+    "xmldoc": "^0.1.2",
+    "acorn": "3.3.0",
+    "tern": "0.20.0"
   },
   "devDependencies": {
     "docusaurus": "^1.0.15",
