@@ -1,4 +1,4 @@
-import { IndexedDb } from './db/db';
+import { IndexedDb } from './db';
 importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js'
 );
@@ -25,29 +25,31 @@ workbox.setConfig({
 // @ts-ignore
 workbox.precaching.precacheAndRoute([]);
 
-workbox.routing.registerRoute(/\b(io\/from\/dataurl|io\/in|io\/share|io\/archive|terminal|io\/reset).*/,
-      workbox.strategies.cacheFirst({
+workbox.routing.registerRoute(
+    /\b(io\/from\/dataurl|io\/in|io\/share|io\/archive|terminal|io\/reset).*/,
+    workbox.strategies.cacheFirst({
         cacheName: 'io-cache',
         plugins: [
-          new workbox.expiration.Plugin({
-            maxEntries: 50,
-            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-          })
-        ]
-      })
-    );
-        
-workbox.routing.registerRoute(/\b(docs|assets|bin|blog|data\/(reset|download|upload)|lib|www).*.html/,
-      workbox.strategies.cacheFirst({
+            new workbox.expiration.Plugin({
+                maxEntries: 50,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            }),
+        ],
+    })
+);
+
+workbox.routing.registerRoute(
+    /\b(docs|assets|bin|blog|data\/(reset|download|upload)|lib|www).*.html/,
+    workbox.strategies.cacheFirst({
         cacheName: 'htmls-cache',
         plugins: [
-          new workbox.expiration.Plugin({
-            maxEntries: 50,
-            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-          })
-        ]
-      })
-    );
+            new workbox.expiration.Plugin({
+                maxEntries: 50,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            }),
+        ],
+    })
+);
 
 // @ts-ignore
 workbox.routing.registerRoute(
@@ -81,9 +83,8 @@ workbox.routing.registerRoute(
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
-            console.log(payload);
-            payload = JSON.parse(payload);
             try {
+                payload = JSON.parse(payload);
                 message = await db.addData({
                     tableName: params[0],
                     data: payload.data,
@@ -110,9 +111,8 @@ workbox.routing.registerRoute(
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
-            console.log(payload);
-            payload = JSON.parse(payload);
             try {
+                payload = JSON.parse(payload);
                 message = await db.putData({
                     tableName: params[0],
                     primaryKey: params[1],

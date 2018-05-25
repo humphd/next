@@ -124,8 +124,8 @@ src/editor/package-lock.json
 src/editor/.grunt/
 src/editor/_SpecRunner.html
 # parcel generated folders
-.cache
-dist
+src/db/.cache
+src/db/dist
 
 # vscode
 .vscode

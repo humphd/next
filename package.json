@@ -4,11 +4,10 @@
     "description": "This is an attempt at unbundling the web.",
     "main": "index.js",
     "scripts": {
-        "start": "parcel --no-cache ./src/index.html",
+        "start:db": "cd src/db && npm start",
         "test": "echo \"Error: no test specified\" ",
         "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
-        "docs:build": "cd website && npm run build",
-        "build": "parcel build ./src/index.html"
+        "build": "cd website && npm run build"
     },
     "repository": {
         "type": "git",
@@ -21,26 +20,9 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "devDependencies": {
-        "babel-plugin-transform-runtime": "^6.23.0",
         "husky": "^0.14.3",
-        "parcel-bundler": "^1.8.1",
-        "parcel-plugin-sw-cache": "dsych/parcel-plugin-sw-cache#relative-dest",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1",
         "docusaurus": "^1.0.15"
-    },
-    "dependencies": {
-        "dexie": "^2.0.3"
-    },
-    "cache": {
-        "strategy": "inject",
-        "globDirectory": "dist/",
-        "globPatterns": [
-            "**/*.{js,html}"
-        ],
-        "swSrc": "dist/db-worker.js",
-        "swDest": "dist/db-worker.js",
-        "useRelativeDest": true,
-        "inDev": true
     }
 }

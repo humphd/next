@@ -15,16 +15,16 @@ before_script:
 
 before_deploy:
 # Do the docusaurus build
-  - npm run docs:build
+  - npm run build
 script:
-  - npm run build -- --public-url="https://dsych.github.io/next"
+  - cd src/db && npm run build -- --public-url="$GH-PAGES"
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
-  local-dir: ./dist
+  local-dir: src/db/dist
   on:
     all_branches: true
     node: 'lts/*'
