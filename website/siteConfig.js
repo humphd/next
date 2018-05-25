@@ -15,7 +15,7 @@ const users = [
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
     image: 'img/database.svg',
-    infoLink: 'https://localhost:8080/',
+    infoLink: 'https://humphd.github.io/next/',
     pinned: true,
   },
 ];
