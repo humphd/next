@@ -60,6 +60,20 @@ typings/
 # Docusaurus build folder
 website/build/
 
+.DS_Store
+
+lib/core/metadata.js
+lib/core/MetadataBlog.js
+
+# Docusaurus website directory contents
+
+website/translated_docs
+website/build/
+website/yarn.lock
+website/node_modules
+website/i18n/*
+!website/i18n/en.json
+
 src/editor/Thumbs.db
 
 # ignore jenkins build info
