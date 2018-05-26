@@ -60,6 +60,7 @@ typings/
 # Docusaurus build folder
 website/build/
 
+#All OSX .DS_Store files
 .DS_Store
 
 lib/core/metadata.js
@@ -106,9 +107,6 @@ src/editor/src/extensions/disabled
 
 # ignore .disabled file for default extensions
 src/editor/src/extensions/default/*/.disabled
-
-#OSX .DS_Store files
-src/editor/.DS_Store
 
 # unit test working directory
 src/editor/test/results

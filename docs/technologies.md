@@ -1,5 +1,5 @@
 ---
-id: technologies
+id: Technologies
 title: Technologies
 sidebar_label: Technologies
 ---

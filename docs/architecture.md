@@ -1,5 +1,5 @@
 ---
-id: architecture
+id: Architecture
 title: Architecture
 sidebar_label: Architecture
 ---
