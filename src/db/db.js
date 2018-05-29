@@ -10,10 +10,7 @@ export class IndexedDb {
      * @param {string} dbName database name to be created. Defaults to __'localDb'__.
      */
     constructor(dbName = 'localDb') {
-        this.version = 1;
         this.db = new Dexie(dbName);
-
-        this.db.version(this.version).stores({});
     }
 
     /**
@@ -33,7 +30,6 @@ export class IndexedDb {
         this.db.close();
         const sch = {};
         sch[tableName] = schema;
-        console.log(sch);
         this.db.version(this.version).stores(sch);
 
         await this.db.open();
@@ -92,16 +88,25 @@ export class IndexedDb {
                 });
             } catch (err) {
                 console.error(err);
-                throw `Unable to create table ${tableName}. ${err.message}`;
+                err.message = `Unable to create table ${tableName}. ${
+                    err.message
+                }`;
+                throw err;
             }
         }
         return table;
     }
 
     async openDB() {
-        if (!this.db.isOpen()) {
-            await this.db.open();
+        try {
+            if (!this.db.isOpen()) {
+                await this.db.open();
+            }
+        } catch (err) {
+            this.version = 1;
+            this.db.version(this.version).stores({});
         }
+        this.version = parseInt(this.db.verno);
     }
 
     /**
@@ -111,9 +116,6 @@ export class IndexedDb {
      * @returns promise that will resolve when database is open.
      */
     async init() {
-        // FOR DEV ONLY. delete previous versions of the db
-        await this.db.delete();
-
         await this.openDB();
     }
 

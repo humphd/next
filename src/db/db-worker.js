@@ -7,6 +7,8 @@ workbox.skipWaiting();
 workbox.clientsClaim();
 
 const apiUrl = 'data/api';
+const apiRegex = /\/data\/api.*/;
+
 const db = new IndexedDb();
 (async () => {
     await db.init();
@@ -42,9 +44,7 @@ workbox.routing.registerRoute(
 );
 // @ts-ignore
 workbox.routing.registerRoute(
-    ({ url, event }) => {
-        return /\/data\/api.*/.test(url.pathname);
-    },
+    apiRegex,
     async ({ url, event, param }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = null;
@@ -65,9 +65,7 @@ workbox.routing.registerRoute(
 
 // @ts-ignore
 workbox.routing.registerRoute(
-    ({ url, event }) => {
-        return /\/data\/api.*/.test(url.pathname);
-    },
+    apiRegex,
     ({ url, event, params }) => {
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
@@ -81,7 +79,7 @@ workbox.routing.registerRoute(
                 });
             } catch (err) {
                 console.error(err);
-                message = err;
+                message = err.message;
             }
             return new Response(
                 JSON.stringify({ query: message, method: 'POST' })
@@ -93,9 +91,7 @@ workbox.routing.registerRoute(
 
 // @ts-ignore
 workbox.routing.registerRoute(
-    ({ url, event }) => {
-        return /\/data\/api.*/.test(url.pathname);
-    },
+    apiRegex,
     ({ url, event, params }) => {
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
@@ -110,7 +106,7 @@ workbox.routing.registerRoute(
                 });
             } catch (err) {
                 console.error(err);
-                message = err;
+                message = err.message;
             }
             return new Response(
                 JSON.stringify({ query: message, method: 'PUT' })
@@ -122,9 +118,7 @@ workbox.routing.registerRoute(
 
 // @ts-ignore
 workbox.routing.registerRoute(
-    ({ url, event }) => {
-        return /\/data\/api.*/.test(url.pathname);
-    },
+    apiRegex,
     async ({ url, event, param }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = 0;
