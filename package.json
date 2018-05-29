@@ -7,7 +7,8 @@
         "start:db": "cd src/db && npm start",
         "test": "echo \"Error: no test specified\" ",
         "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
-        "build": "cd website && npm run build"
+        "build": "cd website && npm run build",
+        "postinstall": "cd src/db && npm install"
     },
     "repository": {
         "type": "git",

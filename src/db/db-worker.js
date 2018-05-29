@@ -2,15 +2,9 @@ import { IndexedDb } from './db';
 importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js'
 );
-self.addEventListener('install', function(event) {
-    // The promise that skipWaiting() returns can be safely ignored.
-    // @ts-ignore
-    self.skipWaiting();
 
-    // Perform any other actions required for your
-    // service worker to install, potentially insmessagee
-    // of event.waitUntil();
-});
+workbox.skipWaiting();
+workbox.clientsClaim();
 
 const apiUrl = 'data/api';
 const db = new IndexedDb();
@@ -19,11 +13,7 @@ const db = new IndexedDb();
 })();
 
 // @ts-ignore
-workbox.setConfig({
-    debug: true,
-});
-// @ts-ignore
-workbox.precaching.precacheAndRoute([]);
+workbox.setConfig();
 
 workbox.routing.registerRoute(
     /\b(io\/from\/dataurl|io\/in|io\/share|io\/archive|terminal|io\/reset).*/,
@@ -50,7 +40,6 @@ workbox.routing.registerRoute(
         ],
     })
 );
-
 // @ts-ignore
 workbox.routing.registerRoute(
     ({ url, event }) => {
