@@ -16,7 +16,6 @@ before_script:
 before_deploy:
 # Do the docusaurus build
   - npm run build
-script:
   - cd src/db && npm run build -- --public-url="$GH-PAGES"
 
 deploy:
@@ -24,7 +23,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
-  local-dir: src/db/dist
+  local-dir: website/build/Next
   on:
-    all_branches: true
+    branch: master
     node: 'lts/*'

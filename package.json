@@ -4,11 +4,9 @@
     "description": "This is an attempt at unbundling the web.",
     "main": "index.js",
     "scripts": {
-        "start:db": "cd src/db && npm start",
+        "postinstall": "node ./tools/install.js",
         "test": "echo \"Error: no test specified\" ",
-        "precommit": "precise-commits --whitelist=\"**/!(*.json)\"",
-        "build": "cd website && npm run build",
-        "postinstall": "cd src/db && npm install"
+        "build": "cd website && npm run build"
     },
     "repository": {
         "type": "git",
@@ -21,9 +19,9 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "devDependencies": {
+        "docusaurus": "^1.0.15",
         "husky": "^0.14.3",
         "precise-commits": "^1.0.2",
-        "prettier": "^1.12.1",
-        "docusaurus": "^1.0.15"
+        "prettier": "^1.12.1"
     }
 }
