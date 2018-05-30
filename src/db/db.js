@@ -127,7 +127,7 @@ export class IndexedDb {
      * @param {*} param config Object for data addition into a table
      * @returns promise that resolves to the id of the newly inserted/updated record.
      */
-    async putData({ tableName, data, schema = '', primaryKey = '' }) {
+    async putData({ tableName, data, schema = '' }) {
         await this.openDB();
         const t = await this._populateData({
             tableName: tableName,
@@ -165,8 +165,7 @@ export class IndexedDb {
     async getData({
         tableName = '',
         propertyName = '',
-        value = '',
-        conditions = '',
+        value = ''
     } = {}) {
         await this.openDB();
         const query = {};
@@ -195,8 +194,7 @@ export class IndexedDb {
     async deleteData({
         tableName,
         propertyName = '',
-        value = '',
-        conditions = '',
+        value = ''
     }) {
         await this.openDB();
         const query = {};

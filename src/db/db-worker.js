@@ -1,3 +1,4 @@
+/* global workbox */
 import { IndexedDb } from './db';
 importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js'
@@ -43,7 +44,7 @@ workbox.routing.registerRoute(
 // @ts-ignore
 workbox.routing.registerRoute(
     apiRegex,
-    async ({ url, event, param }) => {
+    async ({ url }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = null;
         try {
@@ -64,7 +65,7 @@ workbox.routing.registerRoute(
 // @ts-ignore
 workbox.routing.registerRoute(
     apiRegex,
-    ({ url, event, params }) => {
+    ({ url, event }) => {
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
@@ -90,7 +91,7 @@ workbox.routing.registerRoute(
 // @ts-ignore
 workbox.routing.registerRoute(
     apiRegex,
-    ({ url, event, params }) => {
+    ({ url, event }) => {
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
@@ -117,7 +118,7 @@ workbox.routing.registerRoute(
 // @ts-ignore
 workbox.routing.registerRoute(
     apiRegex,
-    async ({ url, event, param }) => {
+    async ({ url }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = 0;
         try {
