@@ -23,7 +23,6 @@ workbox.routing.registerRoute(
         cacheName: 'io-cache',
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 50,
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
             }),
         ],
@@ -31,12 +30,11 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    /\b(docs|assets|bin|blog|data\/(reset|download|upload)|lib|www).*.html/,
+    /\b(docs|assets|bin|blog|data\/(reset|download|upload)|lib|www).*/,
     workbox.strategies.cacheFirst({
-        cacheName: 'htmls-cache',
+        cacheName: 'content-cache',
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 50,
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
             }),
         ],

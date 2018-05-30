@@ -133,7 +133,6 @@ export class IndexedDb {
             tableName: tableName,
             schema: schema,
         });
-        console.log('Data = ' + data);
         return await t.put(data);
     }
 
@@ -151,7 +150,6 @@ export class IndexedDb {
             tableName: tableName,
             schema: schema,
         });
-        console.log('Data = ' + data);
         return await t.add(data);
     }
 
@@ -175,7 +173,6 @@ export class IndexedDb {
         // check to see if it is a number, since dexie is doing a strict comparison.
         const num = parseFloat(value);
         query[propertyName] = isNaN(num) ? value : num;
-        console.log(JSON.stringify(query) + ' ' + tableName);
         if (!propertyName) {
             return await this.db.table(tableName).toArray();
         } else {
