@@ -18,6 +18,9 @@
         "url": "https://github.com/humphd/next/issues"
     },
     "homepage": "https://github.com/humphd/next#readme",
+    "dependencies": {
+        "filer": "humphd/filer#9p-filer"
+    },
     "devDependencies": {
         "docusaurus": "^1.0.15",
         "husky": "^0.14.3",
