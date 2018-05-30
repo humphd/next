@@ -59,6 +59,7 @@ typings/
 
 # Docusaurus build folder
 website/build/
+website/i18n/
 
 src/editor/Thumbs.db
 
@@ -122,3 +123,9 @@ src/editor/package-lock.json
 # ignore generated test files
 src/editor/.grunt/
 src/editor/_SpecRunner.html
+# parcel generated folders
+src/db/.cache
+src/db/dist
+
+# vscode
+.vscode
