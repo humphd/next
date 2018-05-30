@@ -58,8 +58,8 @@ typings/
 .env
 
 # Docusaurus build folder
-website/build/
-website/i18n/
+src/docs/website/i18n/
+src/docs/website/build/
 
 src/editor/Thumbs.db
 

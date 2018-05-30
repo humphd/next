@@ -4,7 +4,6 @@ const { exec } = require('child_process');
 function runCommand(command, dir, callback) {
     // save current pwd
     const pwd = process.cwd();
-    console.log(pwd);
     process.chdir(dir);
     const p = exec(command).on('exit', function() {
         process.chdir(pwd);

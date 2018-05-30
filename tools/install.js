@@ -12,5 +12,10 @@ commandRunner(install, 'src/db', code => {
         if (!!code) {
             throw 'Unable to install editor dependencies.';
         }
+        commandRunner(install, 'src/docs/website', code => {
+            if (!!code) {
+                throw 'Unable to install docs dependencies.';
+            }
+        });
     });
 });
