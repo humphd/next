@@ -21,6 +21,7 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "dependencies": {
+        "filer": "humphd/filer#9p-filer",
         "npm": "^6.1.0"
     },
     "devDependencies": {
