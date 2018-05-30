@@ -5,35 +5,33 @@ WORKDIR /root
 # Buildroot version to use
 ARG RELEASE=2018.02
 
-RUN mkdir /var/run/sshd
-RUN echo 'root:unbundeled' | chpasswd
-
-# Install all Buildroot deps
-RUN sed -i 's|deb http://us.archive.ubuntu.com/ubuntu/|deb mirror://mirrors.ubuntu.com/mirrors.txt|g' /etc/apt/sources.list
-RUN apt-get update
-RUN dpkg --add-architecture i386
-RUN apt-get -q update
-RUN apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine
+# configure root password
+RUN mkdir /var/run/sshd; \
+    echo 'root:unbundeled' | chpasswd; \
+    # Install all Buildroot deps
+    sed -i 's|deb http://us.archive.ubuntu.com/ubuntu/|deb mirror://mirrors.ubuntu.com/mirrors.txt|g' /etc/apt/sources.list; \
+    dpkg --add-architecture i386; \
+    apt-get -q update; \
+    apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine;
+# install all deps.
 RUN apt-get -q -y install build-essential libncurses5-dev \
-    git bzr cvs libc6:i386 unzip bc wget openssh-server
-RUN apt-get -q -y autoremove
-RUN apt-get -q -y clean
-
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
+    git bzr cvs libc6:i386 unzip bc wget openssh-server; \ 
+    apt-get -q -y autoremove; \
+    apt-get -q -y clean; \
+    # Install Buildroot
+    wget -c http://buildroot.org/downloads/buildroot-${RELEASE}.tar.gz; \
+    tar axf buildroot-${RELEASE}.tar.gz;
 
 # configure the locales
 ENV LANG='C' LANGUAGE='en_US:en' LC_ALL='C'
 
-EXPOSE 22
+ENV NOTVISIBLE "in users profile"
 
-# Install Buildroot
-RUN wget -c http://buildroot.org/downloads/buildroot-${RELEASE}.tar.gz
-RUN tar axf buildroot-${RELEASE}.tar.gz
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; \
+    # SSH login fix. Otherwise user is kicked off after login
+    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd; \
+    echo "export VISIBLE=now" >> /etc/profile;
+
+EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
