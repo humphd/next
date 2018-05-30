@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Introduction · Next</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Introduction · Next"/><meta property="og:type" content="website"/><meta property="og:url" content="https://humphd.github.io/next//index.html"/><meta property="og:description" content="Consider the typical way local web development is done:"/><meta property="og:image" content="https://humphd.github.io/next//img/database.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://humphd.github.io/next//img/database.png"/><link rel="shortcut icon" href="/img/database.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://humphd.github.io/next//blog/atom.xml" title="Next Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://humphd.github.io/next//blog/feed.xml" title="Next Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/database.svg" alt="Next"/><h2 class="headerTitleWithLogo">Next</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive siteNavItemActive"><a href="/docs/introduction.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/community.html" target="_self">API</a></li><li class=""><a href="/en/help.html" target="_self">Help</a></li><li class=""><a href="/blog" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Getting Started</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting Started</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/introduction.html">Introduction</a></li></ul></div><div class="navGroup navGroupActive"><h3>Project</h3><ul><li class="navListItem"><a class="navItem" href="/docs/architecture.html">Architecture</a></li><li class="navListItem"><a class="navItem" href="/docs/technologies.html">Technologies</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/docs/community.html">Community</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Introduction</h1></header><article><div><span><p>Consider the typical way local web development is done:</p>
+<ul>
+<li>a directory or directories of files</li>
+<li>a code editor for editing these files</li>
+<li>a command line terminal for running various commands</li>
+<li>a browser or testing and debugging code</li>
+<li>a web server for hosting our files in the browser</li>
+<li>a database server for persisting our data</li>
+</ul>
+<p>In practical terms, this looks like a series of windows all operating on the same logical set of data, connected via the filesystem and network.</p>
+<p>In this project, we aim to recreate this environment in a browser. It will be possible to have multiple tabs/windows all running different aspects of the environment and sharing data. We'll do this by leveraging aspects of the modern web, specifically:</p>
+<ul>
+<li><code>IndexedDB</code></li>
+<li>Web Workers, including <code>SharedWorker</code>, <code>Worker</code>, and <code>ServiceWorker</code></li>
+<li><code>MessageChannel</code></li>
+<li><code>CacheStorage</code></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="history"></a><a href="#history" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>History</h2>
+<p>The ideas being developed here are the enxt step in evolving series of experiments, prototypes, products, and communities all aimed at making desktop-like web development possible in a browser:</p>
+<ul>
+<li><a href="https://wiki.mozilla.org/Webmaker/Concept-Nimble">Nimble</a></li>
+<li><a href="https://github.com/filerjs/filer">Filer Browser Filesystem</a></li>
+<li><a href="https://github.com/humphd/nohost">nohost Browser Web Server Prototype</a></li>
+<li><a href="https://learning.mozilla.org/blog/webmaker-experiments-with-brackets">Bramble Prototype</a></li>
+<li><a href="https://techcrunch.com/2012/06/18/mozilla-launches-thimble-a-web-based-code-editor-for-teaching-html-and-css/">Thimble 1.0 (Press Coverage)</a></li>
+<li><a href="https://thimble.mozilla.org/">Thimble 2.0</a></li>
+<li><a href="https://blog.humphd.org/thimble-and-bramble/">Technical Details of Thimble 2.0</a></li>
+<li><a href="https://medium.com/read-write-participate/why-i-love-working-on-mozilla-thimble-8abbac7d1d9b">Why I love working on Mozilla Thimble</a></li>
+<li><a href="https://blog.humphd.org/introducing-makedrive/">MakeDrive Browser File Syncing</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="next-step"></a><a href="#next-step" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Next Step</h2>
+<p>Where the previous work was focused on creating tools or products, the next iteration of the plan involves <strong>unbundling</strong> these technologies into a more flexible dvelopment environment. Rather than creating a single &quot;app&quot;, the current project aims to create a connected, interoperable set of web tooling that leverages existing browser and dev tool features, augmenting and connecting them where there are gaps.</p>
+<h2><a class="anchor" aria-hidden="true" id="goals"></a><a href="#goals" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Goals</h2>
+<p>We hope to build something useful together, and experiment both with web technology, but also web collaboration. Ideally, this would be a different sort of open source project.</p>
+<p>To this end, there are a number of initial goals:</p>
+<ul>
+<li>Create a new kind of development environment that runs in your browser, mixing a filesystem, command line shell, runtime, editor, web server, and database</li>
+<li>Do everything in the browser. Avoid or at least delay the use of any server other than for out static hosting</li>
+<li>Make it easy to move data in and out of the browser in various forms</li>
+<li>Create something new without directly competing with the myriad &quot;learning to code&quot; or &quot;online scratchpad&quot; style products, this will be none of those</li>
+<li>Avoid recreating what already exists: we aren't (re)making node.js, try to see how well we can unbundleand expose theweb platform for personal use and development</li>
+<li>Make it easier to work with the existing technologies in your browser</li>
+<li>Blur the line between user and developer</li>
+<li>Integrate documentation, communication, and project technologies</li>
+<li>Try to reach out to a different set of communities through active user support, localization, mentoring of projects, contribution, help students get involved, etc.</li>
+<li>Experiment with loose project boundaries: what we build and how we build it are closely connected</li>
+<li>Help people use, and learn to use, the modern web without becoming a learning platform as such</li>
+<li>Experiment with areas of development that are often neglected</li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-next button" href="architecture.html">Architecture →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#history">History</a></li><li><a href="#next-step">Next Step</a></li><li><a href="#goals">Goals</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/database.svg" alt="Next" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/introduction.html">Getting Started (or other categories)</a><a href="/docs/en/architecture.html">Guides (or other categories)</a><a href="/docs/en/technologies.html">API Reference (or other categories)</a></div><div><h5>Community</h5><a href="/en/users.html">User Showcase</a><a href="http://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Your Name or Your Company Name</section></footer></div></body></html>

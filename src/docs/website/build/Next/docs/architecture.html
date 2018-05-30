@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Architecture · Next</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Architecture · Next"/><meta property="og:type" content="website"/><meta property="og:url" content="https://humphd.github.io/next//index.html"/><meta property="og:description" content="An initial design architecture follows. Nothing here is final, and all of it can and will likely change. This is meant to get us started."/><meta property="og:image" content="https://humphd.github.io/next//img/database.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://humphd.github.io/next//img/database.png"/><link rel="shortcut icon" href="/img/database.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://humphd.github.io/next//blog/atom.xml" title="Next Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://humphd.github.io/next//blog/feed.xml" title="Next Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/database.svg" alt="Next"/><h2 class="headerTitleWithLogo">Next</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/community.html" target="_self">API</a></li><li class=""><a href="/en/help.html" target="_self">Help</a></li><li class=""><a href="/blog" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Project</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting Started</h3><ul><li class="navListItem"><a class="navItem" href="/docs/introduction.html">Introduction</a></li></ul></div><div class="navGroup navGroupActive"><h3>Project</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/architecture.html">Architecture</a></li><li class="navListItem"><a class="navItem" href="/docs/technologies.html">Technologies</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/docs/community.html">Community</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Architecture</h1></header><article><div><span><p>An initial design architecture follows. Nothing here is final, and all of it can and will likely change. This is meant to get us started.</p>
+<h2><a class="anchor" aria-hidden="true" id="filesystem"></a><a href="#filesystem" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Filesystem</h2>
+<p>A POSIX-like, node.js inspired filesystem is available. The filesystem is case sensitive, and supports binary and text files, symlinks, etc. in the style of a single-user filesystem (e.g., no permissions or extra security).</p>
+<p>Initially we provide the following filesystem layout upon creation</p>
+<ul>
+<li><code>/</code> - the root of the filesystem</li>
+<li><code>/bin</code> - user defined commands that extend or override the shell built-ins</li>
+<li><code>/temp</code> - temporary files, which are automatically cleaned-up at regular intervals</li>
+<li><code>/log</code> - error and other info logs from commands and tools</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="editor"></a><a href="#editor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Editor</h2>
+<p>We provide a full visual code editor environment. Initially this uses Brackets, but at some point we might alter this and use something newer. The editor has access to everything in the filesystem.</p>
+<h2><a class="anchor" aria-hidden="true" id="command-line-shell"></a><a href="#command-line-shell" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Command Line Shell</h2>
+<p>A command line shell is available via <code>/terminal</code> route (seee below). It allows various built-in, and user-defined commands to be run.</p>
+<h3><a class="anchor" aria-hidden="true" id="built-in-commands"></a><a href="#built-in-commands" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Built-In Commands</h3>
+<p>An initial set of built-in commands is available, including:</p>
+<ul>
+<li><code>cd</code> - change directory</li>
+<li><code>ls</code> - list directory/file info</li>
+<li><code>cp</code> - copy a file or folder</li>
+<li><code>mv</code> - move a file or folder</li>
+<li><code>mkdir</code> - make a directory</li>
+<li><code>rm</code> - remove a file or folder</li>
+<li><code>find</code> - find files or folders using name pattern matching</li>
+<li><code>grep</code> - search for matches within files</li>
+<li><code>cat</code> - concatenate a file (or files)</li>
+<li><code>zip</code> - zip a file</li>
+<li><code>unzip</code> - unzip a file</li>
+<li><code>tar</code> - tar or untar a file</li>
+<li><code>du</code> - get disk usage info for a folder</li>
+<li><code>data</code> - interact with the database (e.g., data get <key> or data del <key>)</li>
+<li><code>encode</code> - encode a file as a base64 string</li>
+<li><code>decode</code> - decode a file from base64 string</li>
+<li><code>cache</code> - cache a file in the browser's Cache Storage</li>
+<li><code>edit</code> - open the editor to the given filepath (or root of filesystem)</li>
+<li><code>ln</code> - create a symbolic link</li>
+<li><code>touch</code> - create an empty file</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="custom-commands"></a><a href="#custom-commands" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom Commands</h3>
+<p>All commands are run in a <code>Web Worker</code>. A &quot;process&quot; like API will be developed to allow new commands to be written, which gives each script access to a set of globals like the filesystem, process info, etc. Input is passed to the worker, and output is returned via <code>MessageChannel</code> or the like.</p>
+<p>User defined commands should be stored in <code>/bin</code>. When a command <code>xyz</code> is run in the terminal, an associated <code>/bin/xyz.js</code> will be run first if present before looking for a built-in <code>xyz</code> command. This enables overriding built-ins.</p>
+<h2><a class="anchor" aria-hidden="true" id="urls"></a><a href="#urls" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>URLs</h2>
+<p>Because everything is unbunbled, URLs play an important role in how we use the various tools and access our data. As a general design guideline, we favour exposing things via URLs, and letting the browser and/or dev tools operate normally on the contents. A typical user will have many tabs or windows open to different parts of the system at one time. Some URLs provide access to raw data, others provide UI to tooling.</p>
+<h2><a class="anchor" aria-hidden="true" id="routes"></a><a href="#routes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Routes</h2>
+<p>What follows is an initial layout for what we're building, and is subject to change. Each URL documented below describes a route path, and possibly optional components or arguments that a user can provide.</p>
+<p><code>/</code></p>
+<p>The root of the project, which shows appropriate UI for discovering and using the other routes described below. This is the main landing page, but also the control centre for the entire system. It is a Progressive Web App (PWA) which works both online and offline.
+/assets</p>
+<p>Access to various images, scripts, stylesheets, etc. that are widely needed by our community and not hosted elsewhere.</p>
+<p><code>/bin</code></p>
+<p>Built-in commands (<code>cp</code>, <code>ls</code>, etc) are stored here. When a command is run, in the terminal, the user's <code>/bin</code> directory is first used to resolve the command. If it is found, the local filesystem version is run; otherwise, the version available via the <code>/bin</code> route is used.</p>
+<p><code>/blog</code></p>
+<p>The project's blog, which is written by community members. Exposing it as part of the system is important, as we aim to connect our users and developers in ways that most projects don't.</p>
+<p><code>/data</code></p>
+<p>The built-in RESTful database API, which provides a key/value store that can be accessed via various HTTP requests:</p>
+<p><code>/data/reset</code></p>
+<p>Resets (i.e., destroys) the database. UI provides a safety mechanism that requires user initiated opt-in.
+/data/download</p>
+<p>Allows downloading a dump of all data in a given database.</p>
+<p><code>/data/upload</code></p>
+<p>Allows restoring the database from a given database dump file (i.e., one acquired via <code>/data/download</code>).
+<code>GET /data/api/{key}</code></p>
+<p><code>PUT /data/api/{key}</code></p>
+<p><code>POST /data/api/{key}</code></p>
+<p><code>DELETE /data/api/{key}</code></p>
+<p><code>/docs</code></p>
+<p>The project's documentation.
+<code>/edit[/path/to/file/or/folder]</code></p>
+<p>Open the editor to a given file, folder, or if neither is supplied, the entire filesystem.</p>
+<p><code>/io</code></p>
+<p>HTTP access to the underlying filesystem, allowing users to move data in and out in various formats:</p>
+<p><code>/io/in[/path/to/folder]</code></p>
+<p>Provides UI to allow the user to drag-and-drop or select file(s) on the local computer to be imported into the filesystem. If a path is given, this is used (and created if missing) as the root for this import.</p>
+<p><code>/io/from/dataurl/{filepath}/{encoded dataurl}</code></p>
+<p>Creates a file at <code>filepath</code> with the contents from the given Data URL.</p>
+<p><code>/io/from/text/{filepath}/{encoded text}</code></p>
+<p>Creates a file at <code>filepath</code> with the given encoded text, which is first decoded.</p>
+<p><code>/io/out/path/to/file</code></p>
+<p>Downloads the file at the given path.</p>
+<p><code>/io/to/dataurl/path/to/file</code></p>
+<p>Redirects to a Data URL that contains the file at <code>filepath</code></p>
+<p><code>/io/share[/path/to/file/or/folder]</code></p>
+<p>Creates a Web Torrent Magnet URL for the portion of the file system specified, or the root (i.e., entire filesystem). This URL can be used to import the files in another browser.</p>
+<p><code>/io/archive[/path/to/file/or/folder]</code></p>
+<p>Creates a <code>.zip</code> archive of the file or folder specified, or the root (i.e., entire filesystem) and downloads it.</p>
+<p><code>/io/reset</code></p>
+<p>Resets (i.e., wipes and reformats) the filesystem. UI provides a safety mechanism that requires user initiated opt-in.</p>
+<p><code>/lib</code></p>
+<p>Various system libraries, for example, the filesystem. These libraries are used by commands in <code>/bin</code>, and are exposed individually so users can override and create their own versions.</p>
+<p><code>/terminal[/path/to/folder]</code></p>
+<p>Open a terminal to the given folder (created if it doesn't exist) if provided, or the root of the filesystem if none given.</p>
+<p><code>/www[/path/to/file/or/folder]</code></p>
+<p>Browse to a given file, folder, or if neither is supplied, the entire filesystem.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="introduction.html">← Introduction</a><a class="docs-next button" href="technologies.html">Technologies →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#filesystem">Filesystem</a></li><li><a href="#editor">Editor</a></li><li><a href="#command-line-shell">Command Line Shell</a><ul class="toc-headings"><li><a href="#built-in-commands">Built-In Commands</a></li><li><a href="#custom-commands">Custom Commands</a></li></ul></li><li><a href="#urls">URLs</a></li><li><a href="#routes">Routes</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/database.svg" alt="Next" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/introduction.html">Getting Started (or other categories)</a><a href="/docs/en/architecture.html">Guides (or other categories)</a><a href="/docs/en/technologies.html">API Reference (or other categories)</a></div><div><h5>Community</h5><a href="/en/users.html">User Showcase</a><a href="http://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Your Name or Your Company Name</section></footer></div></body></html>
