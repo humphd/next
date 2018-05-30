@@ -7,7 +7,9 @@
         "postinstall": "node ./tools/install.js",
         "test": "echo \"Error: no test specified\" ",
         "build-docs": "cd src/docs/website && npm run build",
-        "build-editor": "cd src/editor && npm run build"
+        "build-editor": "cd src/editor && npm run build",
+	"lint": "eslint",
+	"eslint": "eslint --fix tools src test"
     },
     "repository": {
         "type": "git",
@@ -23,6 +25,12 @@
         "filer": "humphd/filer#9p-filer"
     },
     "devDependencies": {
+        "eslint": "^4.19.1",
+        "eslint-config-standard": "^11.0.0",
+        "eslint-plugin-import": "^2.12.0",
+        "eslint-plugin-node": "^6.0.1",
+        "eslint-plugin-promise": "^3.8.0",
+        "eslint-plugin-standard": "^3.1.0",
         "husky": "^0.14.3",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1"
