@@ -6,7 +6,9 @@
     "scripts": {
         "postinstall": "node ./tools/install.js",
         "test": "echo \"Error: no test specified\" ",
-        "build": "cd website && npm run build"
+        "build": "cd website && npm run build",
+        "lint": "eslint",
+        "eslint": "eslint --fix tools src test"
     },
     "repository": {
         "type": "git",
@@ -19,10 +21,17 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "dependencies": {
-        "filer": "humphd/filer#9p-filer"
+        "filer": "humphd/filer#9p-filer",
+        "npm": "^6.1.0"
     },
     "devDependencies": {
         "docusaurus": "^1.0.15",
+        "eslint": "^4.19.1",
+        "eslint-config-standard": "^11.0.0",
+        "eslint-plugin-import": "^2.12.0",
+        "eslint-plugin-node": "^6.0.1",
+        "eslint-plugin-promise": "^3.8.0",
+        "eslint-plugin-standard": "^3.1.0",
         "husky": "^0.14.3",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1"
