@@ -9,6 +9,7 @@
 // site configuration options.
 
 /* List of projects/orgs using your project for the users page */
+/*
 const users = [
   {
     caption: 'User1',
@@ -19,6 +20,7 @@ const users = [
     pinned: true,
   },
 ];
+*/
 
 const siteConfig = {
   title: 'Next' /* title for your website */,
@@ -38,14 +40,14 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'introduction', label: 'Docs'},
-    {doc: 'community', label: 'API'},
+    {doc: 'Introduction', label: 'Docs'},
+    {doc: 'Community', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
 
   // If you have users set above, you add it here:
-  users,
+  //users,
 
   /* path to images for header/footer */
   headerIcon: 'img/database.svg',
