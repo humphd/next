@@ -26,7 +26,8 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
-  local-dir: website/build/Next
+  local-dir: src/docs/website/build/next
   on:
     branch: master
     node: 'lts/*'
+
