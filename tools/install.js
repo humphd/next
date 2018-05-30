@@ -3,8 +3,14 @@
 const commandRunner = require('./run-command');
 
 const install = 'npm install';
-commandRunner(install, 'src/editor', code => {
+
+commandRunner(install, 'src/db', code => {
     if (!!code) {
-        throw 'Unable to install editor dependencies.';
+        throw 'Unable to install db dependencies.';
     }
+    commandRunner(install, 'src/editor', code => {
+        if (!!code) {
+            throw 'Unable to install editor dependencies.';
+        }
+    });
 });
