@@ -1,5 +1,5 @@
 ---
-id: community
+id: Community
 title: Community
 sidebar_label: Community
 ---

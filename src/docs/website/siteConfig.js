@@ -8,23 +8,11 @@
 // See https://docusaurus.io/docs/site-config.html for all the possible
 // site configuration options.
 
-/* List of projects/orgs using your project for the users page */
-const users = [
-  {
-    caption: 'User1',
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: '/img/database.svg',
-    infoLink: 'https://humphd.github.io/next/',
-    pinned: true,
-  },
-];
-
 const siteConfig = {
   title: 'Next' /* title for your website */,
   tagline: 'A website for testing',
   url: 'https://humphd.github.io/next/' /* your website url */,
-  baseUrl: '/' /* base url for your project */,
+  baseUrl: 'https://humphd.github.io/next/' /* base url for your project */,
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
@@ -38,19 +26,16 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'introduction', label: 'Docs'},
-    {doc: 'community', label: 'API'},
+    {doc: 'Introduction', label: 'Docs'},
+    {doc: 'Community', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
 
-  // If you have users set above, you add it here:
-  users,
-
   /* path to images for header/footer */
   headerIcon: 'img/database.svg',
   footerIcon: 'img/database.svg',
-  favicon: 'img/database.ico',
+  favicon: 'img/favicon/database.ico',
 
   /* colors for website */
   colors: {
