@@ -14,14 +14,20 @@ before_script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./node_modules/.bin/precise-commits --whitelist="./**/!(*.json)" --check-only --head=$TRAVIS_PULL_REQUEST_SHA --base=$(git merge-base HEAD $TRAVIS_BRANCH); fi'
 
 before_deploy:
+# Do the database build
+  - cd src/db && npm run build -- --public-url="$GH-PAGES"
 # Do the docusaurus build
-  - npm run build
+  - npm run build-docs
+# Do the editor build
+  - npm run build-editor
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
+  local-dir: src/docs/website/build/next
   on:
     branch: master
-  local-dir: website/build/Next
+    node: 'lts/*'
+

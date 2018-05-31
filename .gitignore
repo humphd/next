@@ -58,21 +58,18 @@ typings/
 .env
 
 # Docusaurus build folder
-website/build/
+src/docs/website/i18n/
+src/docs/website/build/
+src/docs/website/translated_docs
+src/docs/website/build/*
+src/docs/website/yarn.lock
+src/docs/website/node_modules
+src/docs/website/i18n/*
 
 #All OSX .DS_Store files
 .DS_Store
 
-lib/core/metadata.js
-lib/core/MetadataBlog.js
-
 # Docusaurus website directory contents
-
-website/translated_docs
-website/build/
-website/yarn.lock
-website/node_modules
-website/i18n/*
 
 src/editor/Thumbs.db
 
@@ -133,3 +130,9 @@ src/editor/package-lock.json
 # ignore generated test files
 src/editor/.grunt/
 src/editor/_SpecRunner.html
+# parcel generated folders
+src/db/.cache
+src/db/dist
+
+# vscode
+.vscode

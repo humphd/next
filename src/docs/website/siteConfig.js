@@ -8,20 +8,6 @@
 // See https://docusaurus.io/docs/site-config.html for all the possible
 // site configuration options.
 
-/* List of projects/orgs using your project for the users page */
-/*
-const users = [
-  {
-    caption: 'User1',
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'img/database.svg',
-    infoLink: 'https://humphd.github.io/next/',
-    pinned: true,
-  },
-];
-*/
-
 const siteConfig = {
   title: 'Next' /* title for your website */,
   tagline: 'A website for testing',
@@ -45,9 +31,6 @@ const siteConfig = {
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
-
-  // If you have users set above, you add it here:
-  //users,
 
   /* path to images for header/footer */
   headerIcon: 'img/database.svg',
