@@ -69,8 +69,6 @@ src/docs/website/i18n/*
 #All OSX .DS_Store files
 .DS_Store
 
-# Docusaurus website directory contents
-
 src/editor/Thumbs.db
 
 # ignore jenkins build info
