@@ -1,0 +1,12 @@
+node_modules/*
+src/*
+tools/*
+
+.eslintignore
+.eslintrc.yml
+.gitignore
+.prettierrc.json
+.travis.yml
+LICENSE
+package*
+README.md
