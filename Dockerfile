@@ -15,7 +15,7 @@ RUN mkdir /var/run/sshd; \
     apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine;
 # install all deps.
 RUN apt-get -q -y install build-essential libncurses5-dev \
-    git bzr cvs libc6:i386 unzip bc wget openssh-server; \ 
+    git bzr cvs libc6:i386 unzip bc wget openssh-server cpio; \ 
     apt-get -q -y autoremove; \
     apt-get -q -y clean; \
     # Install Buildroot
