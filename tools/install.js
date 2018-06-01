@@ -4,18 +4,9 @@ const commandRunner = require('./run-command');
 
 const install = 'npm install';
 
-commandRunner(install, 'src/db', code => {
-    if (code) {
-        throw 'Unable to install db dependencies.';
-    }
-    commandRunner(install, 'src/editor', code => {
-        if (code) {
-            throw 'Unable to install editor dependencies.';
-        }
-        commandRunner(install, 'src/docs/website', code => {
-            if (code) {
-                throw 'Unable to install docs dependencies.';
-            }
-        });
+commandRunner(install, 'src/db')
+    .then(() => commandRunner(install, 'src/editor'))
+    .then(() => commandRunner(install, 'src/docs/website'))
+    .catch(err => {
+        throw `Unable to install dependencies ${err.message}`;
     });
-});
