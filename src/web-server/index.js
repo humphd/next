@@ -1,6 +1,6 @@
 import Filer from 'filer';
-import { formatDir, formatFile } from 'html-formatters';
-import registerRoute from 'routes';
+import { formatDir, formatFile } from './html-formatter';
+import registerRoute from './routes';
 
 export default class {
     constructor() {
@@ -19,27 +19,27 @@ export default class {
         // TODO: need to add promises to Filer
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
-                if(err) {
+                if (err) {
                     return reject(err);
                 }
 
                 // If this is a dir, show a dir listing
-                if(stats.isDirectory()) {
+                if (stats.isDirectory()) {
                     sh.ls(path, (err, entries) => {
-                        if(err) {
+                        if (err) {
                             return reject(err);
                         }
                         resolve(formatDir(path, entries));
                     });
                 } else {
                     fs.readFile(path, 'utf8', (err, contents) => {
-                        if(err) {
+                        if (err) {
                             return reject(err);
                         }
                         resolve(formatFile(path, contents));
                     });
                 }
-            });    
+            });
         });
     }
 }

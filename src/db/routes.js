@@ -6,7 +6,7 @@ const pathFromUrl = (url, match = '') => {
 const apiUrl = 'data/api';
 const apiRegex = /\/data\/api.*/;
 
-export default(workbox, db) => {
+export default (workbox, db) => {
     // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
@@ -23,7 +23,9 @@ export default(workbox, db) => {
                 console.error(err);
                 message = err.message;
             }
-            return new Response(JSON.stringify({ query: message, method: 'GET' }));
+            return new Response(
+                JSON.stringify({ query: message, method: 'GET' })
+            );
         },
         'GET'
     );

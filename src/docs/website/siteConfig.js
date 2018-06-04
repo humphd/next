@@ -9,76 +9,46 @@
 // site configuration options.
 
 const siteConfig = {
-  title: 'Next' /* title for your website */,
-  tagline: 'A website for testing',
-  url: 'https://humphd.github.io/next/' /* your website url */,
-  baseUrl: 'https://humphd.github.io/next/' /* base url for your project */,
-  // For github.io type URLs, you would set the url and baseUrl like:
-  //   url: 'https://facebook.github.io',
-  //   baseUrl: '/test-site/',
+    title: 'Next',
+    tagline: 'An experiment to unbunble the web',
+    url: 'https://humphd.github.io',
+    baseUrl: '/next/',
+    projectName: 'Next',
+    organizationName: 'humphd',
 
-  // Used for publishing and more
-  projectName: 'Next',
-  organizationName: 'Seneca',
-  // For top-level user or org sites, the organization is still the same.
-  // e.g., for the https://JoelMarcey.github.io site, it would be set like...
-  //   organizationName: 'JoelMarcey'
-
-  // For no header links in the top nav bar -> headerLinks: [],
-  headerLinks: [
-    {doc: 'Introduction', label: 'Docs'},
-    {doc: 'Community', label: 'API'},
-    {page: 'help', label: 'Help'},
-    {blog: true, label: 'Blog'},
-  ],
-
-  /* path to images for header/footer */
-  headerIcon: 'img/database.svg',
-  footerIcon: 'img/database.svg',
-  favicon: 'img/favicon/database.ico',
-
-  /* colors for website */
-  colors: {
-    primaryColor: '#E97E61',
-    secondaryColor: '#873734',
-  },
-
-  /* custom fonts for website */
-  /*fonts: {
-    myFont: [
-      "Times New Roman",
-      "Serif"
+    headerLinks: [
+        { doc: 'Introduction', label: 'Docs' },
+        { doc: 'Community', label: 'API' },
+        { page: 'help', label: 'Help' },
+        { blog: true, label: 'Blog' },
     ],
-    myOtherFont: [
-      "-apple-system",
-      "system-ui"
-    ]
-  },*/
 
-  // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
-  copyright:
-    'Copyright © ' +
-    new Date().getFullYear() +
-    ' Your Name or Your Company Name',
+    headerIcon: 'img/database.svg',
+    footerIcon: 'img/database.svg',
+    favicon: 'img/favicon/database.ico',
 
-  highlight: {
-    // Highlight.js theme to use for syntax highlighting in code blocks
-    theme: 'default',
-  },
+    colors: {
+        primaryColor: '#E97E61',
+        secondaryColor: '#873734',
+    },
 
-  // Add custom scripts here that would be placed in <script> tags
-  scripts: ['https://buttons.github.io/buttons.js'],
+    copyright:
+        'Copyright © ' +
+        new Date().getFullYear() +
+        ' David Humphrey <david.humphrey@senecacollege.ca>',
 
-  /* On page navigation for the current documentation page */
-  onPageNav: 'separate',
+    highlight: {
+        theme: 'default',
+    },
 
-  /* Open Graph and Twitter card images */
-  ogImage: 'img/database.png',
-  twitterImage: 'img/database.png',
+    scripts: ['https://buttons.github.io/buttons.js', '/sw.js'],
 
-  // You may provide arbitrary config keys to be used as needed by your
-  // template. For example, if you need your repo's URL...
-  //   repoUrl: 'https://github.com/facebook/test-site',
+    /* On page navigation for the current documentation page */
+    onPageNav: 'separate',
+
+    /* Open Graph and Twitter card images */
+    ogImage: 'img/database.png',
+    twitterImage: 'img/database.png',
 };
 
 module.exports = siteConfig;

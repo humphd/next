@@ -1,4 +1,11 @@
-import {isMedia, isImage} from 'content-type';
+import { isMedia, isImage } from './content-type';
+import iconImage from './icons/image2.png';
+import iconFolder from './icons/folder.png';
+import iconMovie from './icons/movie.png';
+import iconText from './icons/text.png';
+import iconUnknown from './icons/unknown.png';
+import iconBack from './icons/back.png';
+import iconBlank from './icons/blank.png';
 import Filer from 'filer';
 const Path = Filer.Path;
 
@@ -9,14 +16,21 @@ const formatDate = d => {
 
 const formatSize = s => {
     const units = ['', 'K', 'M'];
-    if(!s) {
+    if (!s) {
         return '-';
     }
-    const i = (Math.floor(Math.log(s) / Math.log(1024)))|0;
-    return Math.round(s/Math.pow(1024, i), 2) + units[i];
+    const i = Math.floor(Math.log(s) / Math.log(1024)) | 0;
+    return Math.round(s / Math.pow(1024, i), 2) + units[i];
 };
 
-const formatRow = (icon='icons/unknown.png', alt='[   ]', href, name, modified, size) => {
+const formatRow = (
+    icon = iconUnknown,
+    alt = '[   ]',
+    href,
+    name,
+    modified,
+    size
+) => {
     modified = formatDate(new Date(modified));
     size = formatSize(size);
 
@@ -25,7 +39,6 @@ const formatRow = (icon='icons/unknown.png', alt='[   ]', href, name, modified, 
             <td align="right">${modified}</td>
             <td align="right">${size}</td><td>&nbsp;</td></tr>`;
 };
-
 
 /**
  * Send an Apache-style 404
@@ -51,11 +64,11 @@ export const formatDir = (path, entries) => {
     const header = `<!DOCTYPE html>
                     <html><head><title>Index of ${path}</title></head>
                     <body><h1>Index of ${path}</h1>
-                    <table><tr><th><img src="icons/blank.png" alt="[ICO]"></th>
+                    <table><tr><th><img src="${iconBlank}" alt="[ICO]"></th>
                     <th><a href="#">Name</a></th><th><a href="#">Last modified</a></th>
                     <th><a href="#">Size</a></th><th><a href="#">Description</a></th></tr>
                     <tr><th colspan="5"><hr></th></tr>
-                    <tr><td valign="top"><img src="icons/back.png" alt="[DIR]"></td>
+                    <tr><td valign="top"><img src=${iconBack}" alt="[DIR]"></td>
                     <td><a href="/www/${parent}">Parent Directory</a></td><td>&nbsp;</td>
                     <td align="right">  - </td><td>&nbsp;</td></tr>`;
 
@@ -70,22 +83,23 @@ export const formatDir = (path, entries) => {
         let icon;
         let alt;
 
-        if(entry.type === 'DIRECTORY') {
-            icon = 'icons/folder.png';
+        if (entry.type === 'DIRECTORY') {
+            icon = iconFolder;
             alt = '[DIR]';
-        } else { // file
-            if(isImage(ext)) {
-                icon = 'icons/image2.png';
+        } else {
+            // file
+            if (isImage(ext)) {
+                icon = iconImage;
                 alt = '[IMG]';
-            } else if(isMedia(ext)) {
-                icon = 'icons/movie.png';
+            } else if (isMedia(ext)) {
+                icon = iconMovie;
                 alt = '[MOV]';
             } else {
-                icon = 'icons/text.png';
+                icon = iconText;
                 alt = '[TXT]';
             }
         }
-        
+
         return formatRow(icon, alt, href, name, entry.modified, entry.size);
     });
 

@@ -1,9 +1,15 @@
-import { format404 } from './web-server/html-formatter';
-import { getMimeType } from './web-server/content-type';
+import { format404 } from './html-formatter';
+import { getMimeType } from './content-type';
 
-const wwwRegex = /\www(\/.*)/;
+const wwwRegex = /\/www(\/.*)/;
 
-export default(workbox, webServer) => {
+export default (workbox, webServer) => {
+    // Cache service-worker icon files (PNG) in the root
+    workbox.routing.registerRoute(
+        /[^/]+\.png/,
+        workbox.strategies.cacheFirst()
+    );
+
     // @ts-ignore
     workbox.routing.registerRoute(
         wwwRegex,
@@ -11,18 +17,22 @@ export default(workbox, webServer) => {
             const path = url.match(wwwRegex)[1];
             let body;
             let type;
+            let status;
             try {
                 body = await webServer.serve(path);
-                type = getMimeType(path); 
+                type = getMimeType(path);
+                status = 200;
             } catch (err) {
                 body = format404(path);
                 type = 'text/html';
+                // TODO: should probably do a better job here on mapping to err
+                status = 404;
             }
 
             const init = {
-                status: 200,
+                status,
                 statusText: 'OK',
-                headers: {'Content-Type': type}
+                headers: { 'Content-Type': type },
             };
 
             return new Response(body, init);

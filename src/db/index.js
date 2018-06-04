@@ -1,5 +1,5 @@
 import Dexie from 'dexie';
-import registerRoutes from 'routes';
+import registerRoutes from './routes';
 
 /**
  * Database class that represents a single instance of IndexedDB database.
@@ -12,6 +12,10 @@ export default class {
      */
     constructor(dbName = 'localDb') {
         this.db = new Dexie(dbName);
+    }
+
+    init(workbox) {
+        registerRoutes(workbox, this);
     }
 
     /**
@@ -111,17 +115,6 @@ export default class {
     }
 
     /**
-     * Opens database.
-     *
-     * **NOTE** for dev purposes it will also clear the database before opening.
-     * @returns promise that will resolve when database is open.
-     */
-    async init(workbox) {
-        await this.openDB();
-        registerRoutes(workbox, this);
-    }
-
-    /**
      * Adds or updates __data__ into a table specified by __tableName__.
      * If __schema__ is present, current table schema is attempted to be updated according to __schema__.
      *
@@ -164,11 +157,7 @@ export default class {
      * @param {*} param config Object with parameters to modify info retrieval.
      * @returns either an array of objects represinting the entire table, or a single object representing a specific row.
      */
-    async getData({
-        tableName = '',
-        propertyName = '',
-        value = ''
-    } = {}) {
+    async getData({ tableName = '', propertyName = '', value = '' } = {}) {
         await this.openDB();
         const query = {};
         // check to see if it is a number, since dexie is doing a strict comparison.
@@ -193,11 +182,7 @@ export default class {
      * @param {*} param config Object that contains parameters for deletion
      * @returns promise that resolves with number of entries deleted if operation is successful.
      */
-    async deleteData({
-        tableName,
-        propertyName = '',
-        value = ''
-    }) {
+    async deleteData({ tableName, propertyName = '', value = '' }) {
         await this.openDB();
         const query = {};
         // check to see if it is a number, since dexie is doing a strict comparison.

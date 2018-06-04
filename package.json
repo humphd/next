@@ -6,8 +6,9 @@
     "scripts": {
         "postinstall": "node ./tools/install.js",
         "test": "jest tests",
-        "build-docs": "cd src/docs/website && npm run build",
+        "build-docs": "npm run build-server && cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
+        "build-server": "parcel build src/sw.js",
         "eslint": "eslint --fix tools src/db"
     },
     "repository": {
@@ -21,14 +22,18 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "dependencies": {
-        "filer": "humphd/filer#9p-filer"
+        "filer": "humphd/filer#9p-filer",
+        "workbox-sw": "^3.2.0"
     },
     "devDependencies": {
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "dexie": "^2.0.4",
         "eslint": "^4.19.1",
         "expect-puppeteer": "^3.0.1",
         "husky": "^0.14.3",
         "jest": "^23.1.0",
         "jest-puppeteer": "^3.0.1",
+        "parcel-bundler": "^1.8.1",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1",
         "puppeteer": "^1.4.0",
