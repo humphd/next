@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <title>WebTorrent video player</title>
+  <style>
+    #output video {
+      width: 100%;
+    }
+
+    #progressBar {
+      height: 5px;
+      width: 0%;
+      background-color: #35b44f;
+      transition: width .4s ease-in-out;
+    }
+
+    body.is-seed .show-seed {
+      display: inline;
+    }
+
+    body.is-seed .show-leech {
+      display: none;
+    }
+
+    .show-seed {
+      display: none;
+    }
+
+    #status code {
+      font-size: 90%;
+      font-weight: 700;
+      margin-left: 3px;
+      margin-right: 3px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+    }
+
+    .is-seed #hero {
+      background-color: #154820;
+      transition: .5s .5s background-color ease-in-out;
+    }
+
+    #hero {
+      background-color: #2a3749;
+    }
+
+    #status {
+      color: #fff;
+      font-size: 17px;
+      padding: 5px;
+    }
+
+    a:link,
+    a:visited {
+      color: #30a247;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <label>Download from a magnet link or info hash</label>
+  <input id="torrentId" placeholder="magnet:" required="">
+  <button id="btnDownload">Download</button>
+
+  <div id="hero">
+    <div id="output">
+      <div id="progressBar"></div>
+      <!-- The video player will be added here -->
+    </div>
+    <!-- Statistics -->
+    <div id="status">
+      <div>
+        <span class="show-leech">Downloading </span>
+        <span class="show-seed">Seeding </span>
+        <code>
+            <!-- Informative link to the torrent file -->
+            <a id="torrentLink" href="https://webtorrent.io/torrents/sintel.torrent">sintel.torrent</a>
+          </code>
+        <span class="show-leech"> from </span>
+        <span class="show-seed"> to </span>
+        <code id="numPeers">0 peers</code>.
+      </div>
+      <div>
+        <code id="downloaded"></code> of
+        <code id="total"></code> —
+        <span id="remaining"></span>
+        <br/> &#x2198;
+        <code id="downloadSpeed">0 b/s</code> / &#x2197;
+        <code id="uploadSpeed">0 b/s</code>
+      </div>
+    </div>
+  </div>
+
+  <p>magnet:?xt=urn:btih:158f9f68f721f86105348d1825e9865576b0fc94&dn=file.txt&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com</p>
+
+  <!-- Include the latest version of WebTorrent -->
+  <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+
+  <!-- Moment is used to show a human-readable remaining time -->
+  <script src="http://momentjs.com/downloads/moment.min.js"></script>
+
+  <script src="bundle.js"></script>
+
+</body>
+
+</html>
