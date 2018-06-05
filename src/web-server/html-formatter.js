@@ -41,6 +41,8 @@ const formatRow = (
             <td align="right">${size}</td><td>&nbsp;</td></tr>`;
 };
 
+const footerClose = '<address>nohost/0.0.2 (Web)</address></body></html>';
+
 /**
  * Send an Apache-style 404
  */
@@ -51,9 +53,7 @@ export const format404 = url => {
             </head><body>
             <h1>Not Found</h1>
             <p>The requested URL ${url} was not found on this server.</p>
-            <hr>
-            <address>nohost/0.0.2 (Web) Server</address>
-            </body></html>`;
+            <hr>${footerClose}`;
 };
 
 /**
@@ -73,9 +73,7 @@ export const formatDir = (dirPath, entries) => {
                     <td><a href="/www${parent}">Parent Directory</a></td><td>&nbsp;</td>
                     <td align="right">  - </td><td>&nbsp;</td></tr>`;
 
-    const footer = `<tr><th colspan="5"><hr></th></tr>
-                    </table><address>nohost/0.0.2 (Web)</address>
-                    </body></html>`;
+    const footer = `<tr><th colspan="5"><hr></th></tr></table>${footerClose}`;
 
     const rows = entries.map(entry => {
         const ext = path.extname(entry.name);
@@ -100,7 +98,7 @@ export const formatDir = (dirPath, entries) => {
         }
 
         return formatRow(icon, alt, href, entry.name, entry.mtime, entry.size);
-    });
+    }).join('\n');
 
     return header + rows + footer;
 };

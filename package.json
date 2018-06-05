@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "postinstall": "node ./tools/install.js",
-        "test": "jest tests",
+        "test": "npm run build-server && jest tests",
         "build-docs": "npm run build-server && cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",

@@ -7,24 +7,26 @@ window.Filer = Filer;
 import 'v86';
 
 window.addEventListener('DOMContentLoaded', () => {
-    const emulator = window.emulator = new window.V86Starter({
+    const emulator = (window.emulator = new window.V86Starter({
         memory_size: 32 * 1024 * 1024,
         vga_memory_size: 2 * 1024 * 1024,
         screen_container: document.getElementById('screen_container'),
         bios: {
-            url: 'seabios.bin'
+            url: 'seabios.bin',
         },
         vga_bios: {
-            url: 'vgabios.bin'
+            url: 'vgabios.bin',
         },
         cdrom: {
-            url: 'linux3.iso'
+            url: 'linux3.iso',
         },
         filesystem: {
             // XXXhack: need to force the Plan9 Filesystem to load
         },
         autostart: true,
-    });
+    }));
 
-    emulator.add_listener('emulator-ready', () => console.log('Emulator Ready'));
+    emulator.add_listener('emulator-ready', () =>
+        console.log('Emulator Ready')
+    );
 });

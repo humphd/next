@@ -2,4 +2,3 @@
 import Filer from '../../node_modules/filer/dist/filer';
 
 export default new Filer.FileSystem();
-
