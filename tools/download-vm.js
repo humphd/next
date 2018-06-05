@@ -5,17 +5,19 @@
  * Also grab the bios from GitHub.
  */
 
-const https = require('https');
+const request = require('request');
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
 const isoUrl = 'https://copy.sh/v86/images/linux3.iso';
 const biosUrl = 'https://github.com/copy/v86/blob/master/bios/seabios.bin?raw=true';
+const vgaBiosUrl = 'https://github.com/copy/v86/blob/master/bios/vgabios.bin?raw=true';
 
 const terminalDir = path.join(__dirname, '..', 'dist', 'terminal');
 const isoDestPath = path.join(terminalDir, 'linux3.iso');
 const biosDestPath = path.join(terminalDir, 'seabios.bin');
+const vgaBiosDest = path.join(terminalDir, 'vgabios.bin');
 
 const download = (url, dest) => {
     return new Promise((resolve, reject) => {
@@ -25,11 +27,9 @@ const download = (url, dest) => {
                     return reject(err);
                 } else {
                     console.log(`Downloading ${url} to ${dest}...`);
-                    https.get(url, response => {
-                        response
-                            .pipe(fs.createWriteStream(dest))
-                            .on('finish', resolve);
-                    });
+                    request(url)
+                        .pipe(fs.createWriteStream(dest))
+                        .on('finish', resolve);
                 }
             } else {
                 console.log(`Skipping download for ${dest}. File already exists`);
@@ -44,7 +44,8 @@ mkdirp(terminalDir, err => {
 
     Promise.all([
         download(isoUrl, isoDestPath),
-        download(biosUrl, biosDestPath)
+        download(biosUrl, biosDestPath),
+        download(vgaBiosUrl, vgaBiosDest)
     ])
         .then(() => console.log('Done.'))
         .catch(err => console.error(err));

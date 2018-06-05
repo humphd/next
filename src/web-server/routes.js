@@ -1,5 +1,4 @@
 import { format404 } from './html-formatter';
-import { getMimeType } from './content-type';
 
 const wwwRegex = /\/www(\/.*)/;
 
@@ -14,13 +13,14 @@ export default (workbox, webServer) => {
     workbox.routing.registerRoute(
         wwwRegex,
         async ({ url }) => {
-            const path = url.match(wwwRegex)[1];
+            const path = url.pathname.match(wwwRegex)[1];
             let body;
             let type;
             let status;
             try {
-                body = await webServer.serve(path);
-                type = getMimeType(path);
+                const result = await webServer.serve(path);
+                body = result.body;
+                type = result.type;
                 status = 200;
             } catch (err) {
                 body = format404(path);

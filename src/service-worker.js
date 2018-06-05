@@ -1,7 +1,12 @@
-import workbox from 'workbox-sw';
 import DatabaseServer from './db';
 import WebServer from './web-server';
 import docs from './docs';
+
+/* global workbox */
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
+
+// @ts-ignore
+workbox.setConfig();
 
 workbox.skipWaiting();
 workbox.clientsClaim();
@@ -16,6 +21,3 @@ webServer.init(workbox);
 // Create DatabaseServer and associated /data/* routes
 const dbServer = new DatabaseServer();
 dbServer.init(workbox);
-
-// @ts-ignore
-workbox.setConfig();

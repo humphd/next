@@ -1,9 +1,16 @@
 <!doctype html>
+<head>
 <title>Terminal</title>
+</head>
 
-<div id="screen_container">
-    <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
-    <canvas style="display: none"></canvas>
-</div>
+<body>
+    <div id="screen_container">
+        <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
+        <canvas></canvas>
+    </div>
 
-<script src="index.js"></script>
+    <!-- XXX: button assumed in libv86.js crashes without this -->
+    <button id="start_emulation" hidden>Start Emulation</button>
+
+    <script src="./index.js"></script>
+</body>

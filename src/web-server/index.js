@@ -1,21 +1,16 @@
-import Filer from 'filer';
-import { formatDir, formatFile } from './html-formatter';
+import fs from '../lib/fs';
+const sh = new fs.Shell();
+
+import { getMimeType } from './content-type';
+import { formatDir } from './html-formatter';
 import registerRoute from './routes';
 
 export default class {
-    constructor() {
-        this.fs = new Filer.FileSystem();
-        this.sh = this.fs.shell();
-    }
-
     init(workbox) {
         registerRoute(workbox, this);
     }
 
     async serve(path) {
-        const fs = this.fs;
-        const sh = this.sh;
-
         // TODO: need to add promises to Filer
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
@@ -29,14 +24,20 @@ export default class {
                         if (err) {
                             return reject(err);
                         }
-                        resolve(formatDir(path, entries));
+                        resolve({
+                            type: 'text/html',
+                            body: formatDir(path, entries)
+                        });
                     });
                 } else {
-                    fs.readFile(path, 'utf8', (err, contents) => {
+                    fs.readFile(path, (err, contents) => {
                         if (err) {
                             return reject(err);
                         }
-                        resolve(formatFile(path, contents));
+                        resolve({
+                            type: getMimeType(path),
+                            body: contents
+                        });
                     });
                 }
             });
