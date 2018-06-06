@@ -6,18 +6,22 @@
 	<title>WebTorrent Seed</title>
 </head>
 
-<body style="height: 250px; width: 250px;">
+<body style="height: 100%; width: 100%;">
 
-	<div style="height: 250px; width: 250px; background: seagreen">
-
+	<div style="border: 1px black solid; margin: 10px; padding: 30px; width: 80%;">
+		<input type="file" id="files" name="files[]" multiple />
+		<output id="list"></output>
+		<br/>
+		<br/>
+		<button id="btnSeed" style="margin-top:20px;">Seed</button>
 	</div>
-
-	<div id="descMagnet"></div>
-	<div id="myMagnet" style="width:90%; font-size: 9px;"></div>
 
 	<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
 
 	<script src="sd.js"></script>
+
+	<div id="descMagnet"></div>
+	<div id="myMagnet" style="width:90%; font-size: 9px;"></div>
 
 </body>
 
