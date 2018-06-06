@@ -32,7 +32,7 @@ export class IndexedDb {
         sch[tableName] = schema;
         this.db.version(this.version).stores(sch);
 
-        await this.db.open();
+        await this.openDB();
         return this._getTableIfExists(tableName);
     }
 
@@ -162,11 +162,7 @@ export class IndexedDb {
      * @param {*} param config Object with parameters to modify info retrieval.
      * @returns either an array of objects represinting the entire table, or a single object representing a specific row.
      */
-    async getData({
-        tableName = '',
-        propertyName = '',
-        value = ''
-    } = {}) {
+    async getData({ tableName = '', propertyName = '', value = '' } = {}) {
         await this.openDB();
         const query = {};
         // check to see if it is a number, since dexie is doing a strict comparison.
@@ -191,11 +187,7 @@ export class IndexedDb {
      * @param {*} param config Object that contains parameters for deletion
      * @returns promise that resolves with number of entries deleted if operation is successful.
      */
-    async deleteData({
-        tableName,
-        propertyName = '',
-        value = ''
-    }) {
+    async deleteData({ tableName, propertyName = '', value = '' }) {
         await this.openDB();
         const query = {};
         // check to see if it is a number, since dexie is doing a strict comparison.
