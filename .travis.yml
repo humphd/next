@@ -1,4 +1,10 @@
 language: node_js
+dist: trusty
+addons:
+  apt:
+    packages:
+      # This is required to run new chrome on old trusty
+      - libnss3
 node_js:
  - 'node'
  - 'lts/*'
@@ -12,6 +18,7 @@ before_script:
 # Check if the current build is done against a PR.
 # If yes, test whether all files(except json) conform with style guide defined by Prettier.
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./node_modules/.bin/precise-commits --whitelist="./**/!(*.json)" --check-only --head=$TRAVIS_PULL_REQUEST_SHA --base=$(git merge-base HEAD $TRAVIS_BRANCH); fi'
+  - cd src/db && npm run build
 
 before_deploy:
 # Do the database build
