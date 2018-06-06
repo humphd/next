@@ -47,6 +47,7 @@ workbox.routing.registerRoute(
     async ({ url }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = null;
+        let found = true;
         try {
             message = await db.getData({
                 tableName: params[0],
@@ -56,8 +57,11 @@ workbox.routing.registerRoute(
         } catch (err) {
             console.error(err);
             message = err.message;
+            found = false;
         }
-        return new Response(JSON.stringify({ query: message, method: 'GET' }));
+        return new Response(
+            JSON.stringify({ ok: found, query: message, method: 'GET' })
+        );
     },
     'GET'
 );
@@ -69,8 +73,8 @@ workbox.routing.registerRoute(
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
+            let found = true;
             try {
-                payload = JSON.parse(payload);
                 message = await db.addData({
                     tableName: params[0],
                     data: payload.data,
@@ -79,9 +83,14 @@ workbox.routing.registerRoute(
             } catch (err) {
                 console.error(err);
                 message = err.message;
+                found = false;
             }
             return new Response(
-                JSON.stringify({ query: message, method: 'POST' })
+                JSON.stringify({
+                    ok: found,
+                    query: message,
+                    method: 'POST',
+                })
             );
         });
     },
@@ -95,8 +104,8 @@ workbox.routing.registerRoute(
         return event.request.json().then(async payload => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = '';
+            let found = true;
             try {
-                payload = JSON.parse(payload);
                 message = await db.putData({
                     tableName: params[0],
                     primaryKey: params[1],
@@ -106,9 +115,14 @@ workbox.routing.registerRoute(
             } catch (err) {
                 console.error(err);
                 message = err.message;
+                found = false;
             }
             return new Response(
-                JSON.stringify({ query: message, method: 'PUT' })
+                JSON.stringify({
+                    ok: found,
+                    query: message,
+                    method: 'PUT',
+                })
             );
         });
     },
@@ -121,6 +135,7 @@ workbox.routing.registerRoute(
     async ({ url }) => {
         const params = pathFromUrl(url.pathname, apiUrl);
         let message = 0;
+        let found = true;
         try {
             message = await db.deleteData({
                 tableName: params[0],
@@ -130,15 +145,16 @@ workbox.routing.registerRoute(
         } catch (err) {
             console.error(err);
             message = err.message;
+            found = false;
         }
         return new Response(
-            JSON.stringify({ query: message, method: 'DELETE' })
+            JSON.stringify({ ok: found, query: message, method: 'DELETE' })
         );
     },
     'DELETE'
 );
 
-// returns an array where first position is tha table name and the second is the property to be updated(if present).
+// returns an array where first position is the table name and the second is the property to be updated(if ok).
 function pathFromUrl(url, match = '') {
     return url.substr(url.indexOf(match) + match.length + 1).split('/');
 }
