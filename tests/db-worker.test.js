@@ -136,6 +136,7 @@ describe('Testing /data/api/ endpoint', () => {
 
         test('Table that does not exist.', async () => {
             const response = await makeRequest(
+                // we allow empty table names
                 encodeURI(`${domain}/${endpoint}`),
                 {
                     method: 'GET',
