@@ -7,10 +7,13 @@
         "postinstall": "node ./tools/install.js",
         "pretest": "npm run build-server",
         "test": "jest tests",
-        "build-docs": "npm run build-server && cd src/docs/website && npm run build",
+        "build": "node ./tools/build.js",
+        "build-docs":
+            "npm run build-server && cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
-        "build-terminal": "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal":
+            "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix tools src/db"
     },
     "repository": {
@@ -31,6 +34,7 @@
     },
     "devDependencies": {
         "babel-plugin-transform-runtime": "^6.23.0",
+        "copy": "^0.3.2",
         "eslint": "^4.19.1",
         "expect-puppeteer": "^3.0.1",
         "husky": "^0.14.3",
