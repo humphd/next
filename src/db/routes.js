@@ -13,6 +13,7 @@ export default (workbox, db) => {
         async ({ url }) => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = null;
+            let ok = true;
             try {
                 message = await db.getData({
                     tableName: params[0],
@@ -22,9 +23,10 @@ export default (workbox, db) => {
             } catch (err) {
                 console.error(err);
                 message = err.message;
+                ok = false;
             }
             return new Response(
-                JSON.stringify({ query: message, method: 'GET' })
+                JSON.stringify({ ok: ok, query: message, method: 'GET' })
             );
         },
         'GET'
@@ -37,8 +39,8 @@ export default (workbox, db) => {
             return event.request.json().then(async payload => {
                 const params = pathFromUrl(url.pathname, apiUrl);
                 let message = '';
+                let ok = true;
                 try {
-                    payload = JSON.parse(payload);
                     message = await db.addData({
                         tableName: params[0],
                         data: payload.data,
@@ -47,9 +49,10 @@ export default (workbox, db) => {
                 } catch (err) {
                     console.error(err);
                     message = err.message;
+                    ok = false;
                 }
                 return new Response(
-                    JSON.stringify({ query: message, method: 'POST' })
+                    JSON.stringify({ ok: ok, query: message, method: 'POST' })
                 );
             });
         },
@@ -63,8 +66,8 @@ export default (workbox, db) => {
             return event.request.json().then(async payload => {
                 const params = pathFromUrl(url.pathname, apiUrl);
                 let message = '';
+                let ok = true;
                 try {
-                    payload = JSON.parse(payload);
                     message = await db.putData({
                         tableName: params[0],
                         primaryKey: params[1],
@@ -74,9 +77,10 @@ export default (workbox, db) => {
                 } catch (err) {
                     console.error(err);
                     message = err.message;
+                    ok = false;
                 }
                 return new Response(
-                    JSON.stringify({ query: message, method: 'PUT' })
+                    JSON.stringify({ ok: ok, query: message, method: 'PUT' })
                 );
             });
         },
@@ -89,6 +93,7 @@ export default (workbox, db) => {
         async ({ url }) => {
             const params = pathFromUrl(url.pathname, apiUrl);
             let message = 0;
+            let ok = true;
             try {
                 message = await db.deleteData({
                     tableName: params[0],
@@ -98,9 +103,10 @@ export default (workbox, db) => {
             } catch (err) {
                 console.error(err);
                 message = err.message;
+                ok = false;
             }
             return new Response(
-                JSON.stringify({ query: message, method: 'DELETE' })
+                JSON.stringify({ ok: ok, query: message, method: 'DELETE' })
             );
         },
         'DELETE'
