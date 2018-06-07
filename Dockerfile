@@ -14,7 +14,7 @@ RUN echo 'root:unbundeled' | chpasswd; \
     apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine;
 # install all deps.
 RUN apt-get -q -y install build-essential libncurses5-dev \
-    git bzr cvs libc6:i386 unzip bc wget cpio; \ 
+    git bzr cvs libc6:i386 unzip bc wget cpio libssl-dev; \ 
     apt-get -q -y autoremove; \
     apt-get -q -y clean; \
     # Install Buildroot
