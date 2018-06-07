@@ -7,12 +7,10 @@
         "postinstall": "node ./tools/install.js",
         "pretest": "npm run build-server",
         "test": "jest tests",
-        "build-docs":
-            "npm run build-server && cd src/docs/website && npm run build",
+        "build-docs": "npm run build-server && cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
-        "build-terminal":
-            "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal": "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix tools src/db"
     },
     "repository": {
