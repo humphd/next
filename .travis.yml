@@ -13,6 +13,7 @@ sudo: false
 cache: 
   directories:
     - "node_modules"
+    - "dist/terminal/bin"
 
 before_script:
   # Check if the current build is done against a PR.

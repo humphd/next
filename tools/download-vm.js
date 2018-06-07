@@ -14,7 +14,8 @@ const isoUrl = 'https://copy.sh/v86/images/linux3.iso';
 const biosUrl = 'https://github.com/copy/v86/blob/master/bios/seabios.bin?raw=true';
 const vgaBiosUrl = 'https://github.com/copy/v86/blob/master/bios/vgabios.bin?raw=true';
 
-const terminalDir = path.join(__dirname, '..', 'dist', 'terminal');
+// Put all binary files in `dist/terminal/bin` and we'll cache these on travis.
+const terminalDir = path.join(__dirname, '..', 'dist', 'terminal', 'bin');
 const isoDestPath = path.join(terminalDir, 'linux3.iso');
 const biosDestPath = path.join(terminalDir, 'seabios.bin');
 const vgaBiosDest = path.join(terminalDir, 'vgabios.bin');
