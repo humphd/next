@@ -135,3 +135,6 @@ dist/
 
 # vscode
 .vscode
+
+# deploy directory
+deploy

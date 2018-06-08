@@ -25,21 +25,15 @@ before_script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./node_modules/.bin/precise-commits --whitelist="./**/!(*.json)" --check-only --head=$TRAVIS_PULL_REQUEST_SHA --base=$(git merge-base HEAD $TRAVIS_BRANCH); fi'
 
 before_deploy:
-  # Do the server build
-  - npm run build-server
-  # Do the terminal build
-  - npm run build-terminal
-  # Do the docusaurus build
-  - npm run build-docs
-  # Do the editor build
-  - npm run build-editor
+  # Do the entire build
+  - npm run build
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_PAGES  # Set in the settings page of your repository, as a secure variable
   keep-history: false
-  local-dir: src/docs/website/build/next
+  local-dir: dist
   on:
     branch: master
     node: 'lts/*'

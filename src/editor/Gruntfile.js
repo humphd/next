@@ -28,7 +28,7 @@
 var Path = require('path');
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
     var swPrecache = require('sw-precache');
 
     // load dependencies
@@ -43,49 +43,53 @@ module.exports = function (grunt) {
             'grunt-usemin',
             'grunt-cleanempty',
             'grunt-exec',
-            'grunt-newer'
-        ]
+            'grunt-newer',
+        ],
     });
 
     grunt.loadTasks('tasks');
 
     // Project configuration.
     var config = {
-        pkg  : grunt.file.readJSON("package.json"),
+        pkg: grunt.file.readJSON('package.json'),
         clean: {
             dist: {
-                files: [{
-                    dot: true,
-                    src: [
-                        'dist',
-                        'src/.index.html',
-                        'src/styles/brackets.css'
-                    ]
-                }]
-            }
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            'dist',
+                            'src/.index.html',
+                            'src/styles/brackets.css',
+                        ],
+                    },
+                ],
+            },
         },
         uglify: {
             options: {
                 mangle: false,
-                compress: false
+                compress: false,
             },
             dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'dist/',
-                    src: [
-                        '**/*.js',
-                        '!**/extensions/extra/PDFView/thirdparty/**/*',
-                    ],
-                    dest: 'dist/'
-                }]
-            }
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'dist/',
+                        src: [
+                            '**/*.js',
+                            '!**/extensions/extra/PDFView/thirdparty/**/*',
+                        ],
+                        dest: 'dist/',
+                    },
+                ],
+            },
         },
         copy: {
             dist: {
                 files: [
                     {
-                        'dist/index.html': 'src/.index.html'
+                        'dist/index.html': 'src/.index.html',
                     },
                     /* static files */
                     {
@@ -100,8 +104,8 @@ module.exports = function (grunt) {
                             // XXXBramble: we don't use src/config.json like Brackets does,
                             // but it needs to exist in dist/ so copy it
                             'config.json',
-                            'bramble-live-dev-cache-sw.js'
-                        ]
+                            'bramble-live-dev-cache-sw.js',
+                        ],
                     },
                     /* extensions and CodeMirror modes */
                     {
@@ -116,17 +120,17 @@ module.exports = function (grunt) {
                             // We deal with extensions dynamically below in build-extensions
                             '!extensions/**/*',
                             'thirdparty/i18n/*.js',
-                            'thirdparty/text/*.js'
-                        ]
+                            'thirdparty/text/*.js',
+                        ],
                     },
                     /* styles, fonts and images - XXXBramble: we skip the fonts */
                     {
                         expand: true,
                         dest: 'dist/styles',
                         cwd: 'src/styles',
-                        src: ['jsTreeTheme.css', 'images/**/*']
-                    }
-                ]
+                        src: ['jsTreeTheme.css', 'images/**/*'],
+                    },
+                ],
             },
             thirdparty: {
                 files: [
@@ -140,57 +144,52 @@ module.exports = function (grunt) {
                             'lib/{,*/}*',
                             'mode/{,*/}*',
                             'theme/{,*/}*',
-                        ]
+                        ],
                     },
                     {
                         expand: true,
                         flatten: true,
                         dest: 'src/thirdparty',
                         cwd: 'src/node_modules',
-                        src: [
-                            'less/dist/less.min.js'
-                        ]
-                    }
-                ]
-            }
+                        src: ['less/dist/less.min.js'],
+                    },
+                ],
+            },
         },
         cleanempty: {
             options: {
                 force: true,
-                files: false
+                files: false,
             },
             src: ['dist/**/*'],
         },
         less: {
             dist: {
-                paths: [
-                    "src",
-                    "src/styles"
-                ],
+                paths: ['src', 'src/styles'],
                 files: {
                     // XXXBramble: if you change this, change configureExtensions() below too.
-                    "dist/styles/brackets.min.css": [
-                        "src/thirdparty/CodeMirror/lib/codemirror.css",
-                        "src/styles/bramble.less"
-                    ]
+                    'dist/styles/brackets.min.css': [
+                        'src/thirdparty/CodeMirror/lib/codemirror.css',
+                        'src/styles/bramble.less',
+                    ],
                 },
                 options: {
                     compress: true,
                     plugins: [
                         new LessPluginAutoPrefix({
                             browsers: [
-                                "Explorer >= 10",
-                                "Firefox >= 26",
-                                "Chrome >= 31",
-                                "Safari >= 7",
-                                "Opera >= 19",
-                                "iOS >= 3.2",
-                                "Android >= 4.4"
-                            ]
-                        })
-                    ]
-                }
-            }
+                                'Explorer >= 10',
+                                'Firefox >= 26',
+                                'Chrome >= 31',
+                                'Safari >= 7',
+                                'Opera >= 19',
+                                'iOS >= 3.2',
+                                'Android >= 4.4',
+                            ],
+                        }),
+                    ],
+                },
+            },
         },
         requirejs: {
             dist: {
@@ -204,24 +203,21 @@ module.exports = function (grunt) {
                     paths: {
                         // In various places in the code, it's useful to know if this is a dev vs. prod env.
                         // See src/main.js default dev loading in src/ builds.
-                        "envConfig": "bramble/config/config.prod",
-                        "Pica": "../node_modules/pica/dist/pica.min"
+                        envConfig: 'bramble/config/config.prod',
+                        Pica: '../node_modules/pica/dist/pica.min',
                     },
                     // brackets.js should not be loaded until after polyfills defined in "utils/Compatibility"
                     // so explicitly include it in main.js
-                    include: [
-                        "utils/Compatibility",
-                        "brackets"
-                    ],
+                    include: ['utils/Compatibility', 'brackets'],
                     // required to support SourceMaps
                     // http://requirejs.org/docs/errors.html#sourcemapcomments
                     preserveLicenseComments: false,
                     useStrict: true,
                     // Disable closure, we want define/require to be globals
                     wrap: false,
-                    exclude: ["text!config.json"],
-                    uglify2: {} // https://github.com/mishoo/UglifyJS2
-                }
+                    exclude: ['text!config.json'],
+                    uglify2: {}, // https://github.com/mishoo/UglifyJS2
+                },
             },
             iframe: {
                 // Define files involved, so grunt-newer knows whether to re-build or not
@@ -231,46 +227,47 @@ module.exports = function (grunt) {
                         'src/bramble/thirdparty/**/*.js',
                         'src/bramble/ChannelUtils.js',
                         'thirdparty/filer/dist/filer.min.js',
-                    ]
+                    ],
                 },
                 // Standalone, minified dist/bramble.js iframe api
                 options: {
                     name: 'thirdparty/almond',
                     baseUrl: 'src',
                     paths: {
-                        "EventEmitter": "../node_modules/wolfy87-eventemitter/EventEmitter.min"
+                        EventEmitter:
+                            '../node_modules/wolfy87-eventemitter/EventEmitter.min',
                     },
                     optimize: 'uglify2',
                     preserveLicenseComments: false,
                     useStrict: true,
                     wrap: {
                         startFile: 'src/bramble/client/bramble-start.frag',
-                        endFile: 'src/bramble/client/bramble-end.frag'
+                        endFile: 'src/bramble/client/bramble-end.frag',
                     },
                     include: ['bramble/client/main'],
                     out: 'dist/bramble.js',
-                    uglify2: {}
-                }
-            }
+                    uglify2: {},
+                },
+            },
         },
         targethtml: {
             dist: {
                 files: {
-                    'src/.index.html': 'src/index.html'
-                }
-            }
+                    'src/.index.html': 'src/index.html',
+                },
+            },
         },
         useminPrepare: {
             options: {
-                dest: 'dist'
+                dest: 'dist',
             },
-            html: 'src/.index.html'
+            html: 'src/.index.html',
         },
         usemin: {
             options: {
-                dirs: ['dist']
+                dirs: ['dist'],
             },
-            html: ['dist/{,*/}*.html']
+            html: ['dist/{,*/}*.html'],
         },
         htmlmin: {
             dist: {
@@ -285,16 +282,18 @@ module.exports = function (grunt) {
                     removeEmptyAttributes: true,
                     removeOptionalTags: true*/
                 },
-                files: [{
-                    expand: true,
-                    cwd: 'src',
-                    src: '*.html',
-                    dest: 'dist'
-                }]
-            }
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src',
+                        src: '*.html',
+                        dest: 'dist',
+                    },
+                ],
+            },
         },
-        meta : {
-            src   : [
+        meta: {
+            src: [
                 'src/**/*.js',
                 '!src/thirdparty/**',
                 '!src/widgets/bootstrap-*.js',
@@ -310,9 +309,9 @@ module.exports = function (grunt) {
                 '!src/extensions/disabled/**',
                 '!**/node_modules/**/*.js',
                 '!src/**/*-min.js',
-                '!src/**/*.min.js'
+                '!src/**/*.min.js',
             ],
-            test : [
+            test: [
                 'test/**/*.js',
                 '!test/perf/*-files/**/*.js',
                 '!test/spec/*-files/**/*.js',
@@ -321,127 +320,125 @@ module.exports = function (grunt) {
                 '!test/smokes/**',
                 '!test/temp/**',
                 '!test/thirdparty/**',
-                '!test/**/node_modules/**/*.js'
+                '!test/**/node_modules/**/*.js',
             ],
-            grunt: [
-                'Gruntfile.js',
-                'tasks/**/*.js'
-            ],
+            grunt: ['Gruntfile.js', 'tasks/**/*.js'],
             /* specs that can run in phantom.js */
-            specs : [
+            specs: [
                 'test/spec/CommandManager-test.js',
                 //'test/spec/LanguageManager-test.js',
                 //'test/spec/PreferencesManager-test.js',
-                'test/spec/ViewUtils-test.js'
-            ]
+                'test/spec/ViewUtils-test.js',
+            ],
         },
         watch: {
-            all : {
+            all: {
                 files: ['**/*', '!**/node_modules/**'],
-                tasks: ['eslint']
+                tasks: ['eslint'],
             },
-            grunt : {
+            grunt: {
                 files: ['<%= meta.grunt %>', 'tasks/**/*'],
-                tasks: ['eslint:grunt']
+                tasks: ['eslint:grunt'],
             },
-            src : {
+            src: {
                 files: ['<%= meta.src %>', 'src/**/*'],
-                tasks: ['eslint:src']
+                tasks: ['eslint:src'],
             },
-            test : {
+            test: {
                 files: ['<%= meta.test %>', 'test/**/*'],
-                tasks: ['eslint:test']
+                tasks: ['eslint:test'],
             },
-            bramble : {
+            bramble: {
                 files: ['src/bramble/**/*'],
-                tasks: ['build-browser-dev']
-            }
+                tasks: ['build-browser-dev'],
+            },
         },
         /* FIXME (jasonsanjose): how to handle extension tests */
-        jasmine : {
-            src : 'undefined.js', /* trick the default runner to run without importing src files */
-            options : {
-                junit : {
+        jasmine: {
+            src:
+                'undefined.js' /* trick the default runner to run without importing src files */,
+            options: {
+                junit: {
                     path: 'test/results',
-                    consolidate: true
+                    consolidate: true,
                 },
-                specs : '<%= meta.specs %>',
+                specs: '<%= meta.specs %>',
                 /* Keep in sync with test/SpecRunner.html dependencies */
-                vendor : [
+                vendor: [
                     // For reference to why this polyfill is needed see Issue #7951.
                     // The need for this should go away once the version of phantomjs gets upgraded to 2.0
                     'test/polyfills.js',
 
                     'src/thirdparty/jquery-2.1.3.min.js',
-                    'src/thirdparty/less.min.js'
+                    'src/thirdparty/less.min.js',
                 ],
-                helpers : [
-                    'test/spec/PhantomHelper.js'
-                ],
-                template : require('grunt-template-jasmine-requirejs'),
+                helpers: ['test/spec/PhantomHelper.js'],
+                template: require('grunt-template-jasmine-requirejs'),
                 templateOptions: {
-                    requireConfig : {
+                    requireConfig: {
                         baseUrl: 'src',
                         paths: {
-                            'test' : '../test',
-                            'perf' : '../test/perf',
-                            'spec' : '../test/spec',
-                            'text' : 'thirdparty/text/text',
-                            'i18n' : 'thirdparty/i18n/i18n'
-                        }
-                    }
-                }
-            }
+                            test: '../test',
+                            perf: '../test/perf',
+                            spec: '../test/spec',
+                            text: 'thirdparty/text/text',
+                            i18n: 'thirdparty/i18n/i18n',
+                        },
+                    },
+                },
+            },
         },
-        'jasmine_node': {
-            projectRoot: 'src/extensibility/node/spec/'
+        jasmine_node: {
+            projectRoot: 'src/extensibility/node/spec/',
         },
         eslint: {
-            grunt:  '<%= meta.grunt %>',
-            src:    '<%= meta.src %>',
-            test:   '<%= meta.test %>',
+            grunt: '<%= meta.grunt %>',
+            src: '<%= meta.src %>',
+            test: '<%= meta.test %>',
             options: {
-                quiet: true
-            }
+                quiet: true,
+            },
         },
         compress: {
             dist: {
                 options: {
-                    mode: "gzip"
+                    mode: 'gzip',
                 },
                 expand: true,
                 cwd: 'dist/',
                 src: ['**/*'],
-                dest: 'dist/'
+                dest: 'dist/',
             },
             // We need to compress the bramble-sw.js service worker file after compressing dist/
             sw: {
                 options: {
-                    mode: "gzip"
+                    mode: 'gzip',
                 },
                 expand: true,
                 cwd: 'dist/',
                 src: 'bramble-sw.js',
-                dest: 'dist'
-            }
+                dest: 'dist',
+            },
         },
 
         exec: {
-            'localize': 'npm run localize',
+            localize: 'npm run localize',
             'localize-dist': 'npm run localize-dist',
-            'unlocalize': 'npm run unlocalize'
+            unlocalize: 'npm run unlocalize',
         },
 
         swPrecache: {
             dist: {
-                rootDir: 'dist'
-            }
-        }
+                rootDir: 'dist',
+            },
+        },
     };
 
     // Dynamically add requirejs, less, and copy configs for all extensions
     function configureExtensions(config) {
-        var extensions = grunt.file.readJSON("src/extensions/bramble-extensions.json");
+        var extensions = grunt.file.readJSON(
+            'src/extensions/bramble-extensions.json'
+        );
 
         // Write a requirejs config for each included extension
         extensions.forEach(function(extension) {
@@ -450,22 +447,25 @@ module.exports = function (grunt) {
                     name: 'main',
                     baseUrl: 'src/' + extension.path,
                     paths: {
-                        'text' : '../../../thirdparty/text/text',
-                        'i18n' : '../../../thirdparty/i18n/i18n'
+                        text: '../../../thirdparty/text/text',
+                        i18n: '../../../thirdparty/i18n/i18n',
                     },
                     optimize: 'uglify2',
                     preserveLicenseComments: false,
                     useStrict: true,
                     uglify2: {},
-                    out: 'dist/' + extension.path + '/main.js'
-                }
+                    out: 'dist/' + extension.path + '/main.js',
+                },
             };
         });
 
         // Copy any LESS/CSS files from extensions to the less task file list.
         extensions.forEach(function(extension) {
-            if(extension.less) {
-                config.less.dist.files = Object.assign(config.less.dist.files, extension.less);
+            if (extension.less) {
+                config.less.dist.files = Object.assign(
+                    config.less.dist.files,
+                    extension.less
+                );
             }
         });
 
@@ -473,10 +473,10 @@ module.exports = function (grunt) {
         var extensionGlobs = [];
         extensions.forEach(function(extension) {
             // First, copy the dir itself.  The main.js will get built below.
-            extensionGlobs.push(extension.path.replace(/\/?$/, "/"));
+            extensionGlobs.push(extension.path.replace(/\/?$/, '/'));
 
             // If there are any globs defined for extra paths to copy, add those too.
-            if(extension.copy) {
+            if (extension.copy) {
                 extensionGlobs = extensionGlobs.concat(extension.copy);
             }
         });
@@ -485,7 +485,7 @@ module.exports = function (grunt) {
             expand: true,
             dest: 'dist/',
             cwd: 'src/',
-            src: extensionGlobs
+            src: extensionGlobs,
         });
 
         // Add a task for building all requirejs bundles for each extension
@@ -511,27 +511,31 @@ module.exports = function (grunt) {
                 // but take everything else in dist/
                 'dist/{styles,thirdparty}/**/*',
                 'dist/extensions/default/**/*',
-                'dist/*.*'
+                'dist/*.*',
             ],
-            runtimeCaching: [{
-                urlPattern: /^https:\/\/fonts\.googleapis\.com\/css/,
-                handler: 'fastest'
-            }, {
-                urlPattern: /\/dist\/nls\//,
-                handler: 'fastest'
-            }, {
-                urlPattern: /\/dist\/extensions\/extra\//,
-                handler: 'fastest'
-            }],
+            runtimeCaching: [
+                {
+                    urlPattern: /^https:\/\/fonts\.googleapis\.com\/css/,
+                    handler: 'fastest',
+                },
+                {
+                    urlPattern: /\/dist\/nls\//,
+                    handler: 'fastest',
+                },
+                {
+                    urlPattern: /\/dist\/extensions\/extra\//,
+                    handler: 'fastest',
+                },
+            ],
             stripPrefix: 'dist/',
-            importScripts: [
-                "bramble-live-dev-cache-sw.js"
-            ],
-            ignoreUrlParametersMatching: [/./]
+            importScripts: ['bramble-live-dev-cache-sw.js'],
+            ignoreUrlParametersMatching: [/./],
         };
 
-        swPrecache.write(Path.join(rootDir, 'bramble-sw.js'), config, function(err) {
-            if(err) {
+        swPrecache.write(Path.join(rootDir, 'bramble-sw.js'), config, function(
+            err
+        ) {
+            if (err) {
                 grunt.fail.warn(err);
             }
             done();
@@ -539,18 +543,25 @@ module.exports = function (grunt) {
     });
 
     // task: install
-    grunt.registerTask('install', ['write-config', 'less', 'npm-install-source']);
+    grunt.registerTask('install', [
+        'write-config',
+        'less',
+        'npm-install-source',
+    ]);
 
     // task: test
     grunt.registerTask('test', ['eslint']);
 
     // task: set-release
     // Update version number in package.json and rewrite src/config.json
-    grunt.registerTask('set-release', ['update-release-number', 'write-config']);
+    grunt.registerTask('set-release', [
+        'update-release-number',
+        'write-config',
+    ]);
 
     // task: build
     grunt.registerTask('build', [
-        'eslint:src',
+        //'eslint:src',
         'clean',
         'less',
         'targethtml',
@@ -566,15 +577,13 @@ module.exports = function (grunt) {
          'npm-install', */
         'cleanempty',
         'exec:unlocalize',
-        'usemin'
+        'usemin',
         /* XXXBramble: we skip this, since we don't bother with its info, and copy it in copy:dist
         'build-config' */
     ]);
 
     // task: build for development, skipping most steps: only build iframe API if needed.
-    grunt.registerTask('build-browser-dev', [
-        'newer:requirejs:iframe'
-    ]);
+    grunt.registerTask('build-browser-dev', ['newer:requirejs:iframe']);
 
     // task: build dist/ for browser
     grunt.registerTask('build-browser', [
@@ -582,7 +591,7 @@ module.exports = function (grunt) {
         'requirejs:iframe',
         'exec:localize-dist',
         'build-extensions',
-        'uglify'
+        'uglify',
     ]);
 
     // task: build dist/ for browser, pre-compressed with gzip and SW precache
@@ -590,7 +599,7 @@ module.exports = function (grunt) {
         'build-browser',
         'compress:dist',
         'swPrecache',
-        'compress:sw'
+        'compress:sw',
     ]);
 
     // Default task.
