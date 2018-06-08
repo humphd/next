@@ -5,9 +5,12 @@
     "main": "index.js",
     "scripts": {
         "postinstall": "node ./tools/install.js",
+        "pretest": "npm run build-server",
         "test": "jest tests",
-        "build-docs": "cd src/docs/website && npm run build",
+        "build-docs": "npm run build-server && cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
+        "build-server": "parcel build src/index.html",
+        "build-terminal": "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix tools src/db"
     },
     "repository": {
@@ -21,17 +24,24 @@
     },
     "homepage": "https://github.com/humphd/next#readme",
     "dependencies": {
-        "filer": "humphd/filer#9p-filer"
+        "dexie": "^2.0.4",
+        "filer": "humphd/filer#9p-filer",
+        "mime-types": "^2.1.18",
+        "v86": "humphd/v86#filer-9p-lastknowngood"
     },
     "devDependencies": {
+        "babel-plugin-transform-runtime": "^6.23.0",
         "eslint": "^4.19.1",
         "expect-puppeteer": "^3.0.1",
         "husky": "^0.14.3",
         "jest": "^23.1.0",
         "jest-puppeteer": "^3.0.1",
+        "mkdirp": "^0.5.1",
+        "parcel-bundler": "^1.8.1",
         "precise-commits": "^1.0.2",
         "prettier": "^1.12.1",
         "puppeteer": "^1.4.0",
+        "request": "^2.87.0",
         "serve": "^7.2.0"
     },
     "jest": {

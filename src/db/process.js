@@ -10,7 +10,7 @@ const submitForm = () => {
         methodElement.value === 'GET' || methodElement.value === 'DELETE'
             ? null
             : // @ts-ignore
-              bodyElement.value;
+            bodyElement.value;
     // @ts-ignore
     url += urlElement.value;
 
