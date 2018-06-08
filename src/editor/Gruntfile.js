@@ -99,6 +99,7 @@ module.exports = function(grunt) {
                             'thirdparty/github-markdown.css',
                             'thirdparty/bitjs/bitjs-untar.min.js',
                             'index.*',
+                            'routes.js',
                             // XXXBramble: we don't use src/config.json like Brackets does,
                             // but it needs to exist in dist/ so copy it
                             'config.json',
@@ -589,7 +590,7 @@ module.exports = function(grunt) {
         'requirejs:iframe',
         'exec:localize-dist',
         'build-extensions',
-        'uglify',
+        // 'uglify',
         'swPrecache'
     ]);
 
