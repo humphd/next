@@ -1,6 +1,7 @@
 node_modules/*
 src/*
 tools/*
+dist/*
 
 .eslintignore
 .eslintrc.yml
