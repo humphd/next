@@ -138,3 +138,6 @@ dist/
 
 # deploy directory
 deploy
+
+#.q files
+q

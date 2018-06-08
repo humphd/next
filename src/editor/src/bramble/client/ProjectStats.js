@@ -1,5 +1,5 @@
 define([
-    "thirdparty/filer/dist/filer.min",
+    "../../../../../node_modules/filer/dist/filer.min",
     "EventEmitter",
     "bramble/client/PathCache"
 ], function(Filer, EventEmitter, PathCache) {

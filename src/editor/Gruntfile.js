@@ -54,17 +54,15 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         clean: {
             dist: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'dist',
-                            'src/.index.html',
-                            'src/styles/brackets.css',
-                        ],
-                    },
-                ],
-            },
+                files: [{
+                    dot: true,
+                    src: [
+                        'dist',
+                        'src/.editor.html',
+                        'src/styles/brackets.css'
+                    ]
+                }]
+            }
         },
         uglify: {
             options: {
@@ -89,7 +87,7 @@ module.exports = function(grunt) {
             dist: {
                 files: [
                     {
-                        'dist/index.html': 'src/.index.html',
+                        'dist/editor.html': 'src/.editor.html'
                     },
                     /* static files */
                     {
@@ -100,7 +98,7 @@ module.exports = function(grunt) {
                             'nls/{,*/}*.js',
                             'thirdparty/github-markdown.css',
                             'thirdparty/bitjs/bitjs-untar.min.js',
-                            'hosted.*',
+                            'index.*',
                             // XXXBramble: we don't use src/config.json like Brackets does,
                             // but it needs to exist in dist/ so copy it
                             'config.json',
@@ -226,8 +224,8 @@ module.exports = function(grunt) {
                         'src/bramble/client/**/*.js',
                         'src/bramble/thirdparty/**/*.js',
                         'src/bramble/ChannelUtils.js',
-                        'thirdparty/filer/dist/filer.min.js',
-                    ],
+                        '../../../node_modules/filer/dist/filer.min.js',
+                    ]
                 },
                 // Standalone, minified dist/bramble.js iframe api
                 options: {
@@ -253,15 +251,15 @@ module.exports = function(grunt) {
         targethtml: {
             dist: {
                 files: {
-                    'src/.index.html': 'src/index.html',
-                },
-            },
+                    'src/.editor.html': 'src/editor.html'
+                }
+            }
         },
         useminPrepare: {
             options: {
                 dest: 'dist',
             },
-            html: 'src/.index.html',
+            html: 'src/.editor.html'
         },
         usemin: {
             options: {
@@ -592,6 +590,7 @@ module.exports = function(grunt) {
         'exec:localize-dist',
         'build-extensions',
         'uglify',
+        'swPrecache'
     ]);
 
     // task: build dist/ for browser, pre-compressed with gzip and SW precache

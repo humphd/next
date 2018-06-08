@@ -31,7 +31,7 @@ require.config({
 define([
     // NOTE: if you modify the files involved here, also change the requirejs:iframe files list in Gruntfile.js
     // filer.min - change this to filer vs. filer.min if you need to debug Filer
-    "thirdparty/filer/dist/filer.min",
+    "../../../../../node_modules/filer/dist/filer.min",
     "bramble/ChannelUtils",
     "EventEmitter",
     "bramble/client/StateManager",
@@ -535,7 +535,7 @@ define([
                 setReadyState(Bramble.MOUNTING);
 
                 root = Path.normalize(root);
-                filename = Path.resolve(root, filename || (_state.fullPath || "index.html"));
+                filename = Path.resolve(root, filename || (_state.fullPath || "editor.html"));
 
                 // Make sure the path we were given exists in the filesystem, and is a dir
                 _fs.stat(root, function(err, stats) {
