@@ -535,7 +535,7 @@ define([
                 setReadyState(Bramble.MOUNTING);
 
                 root = Path.normalize(root);
-                filename = Path.resolve(root, filename || (_state.fullPath || "editor.html"));
+                filename = Path.resolve(root, filename || (_state.fullPath || "index.html"));
 
                 // Make sure the path we were given exists in the filesystem, and is a dir
                 _fs.stat(root, function(err, stats) {

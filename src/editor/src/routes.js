@@ -1,15 +1,10 @@
+import fs from '../../lib/fs';
+const sh = new fs.Shell();
+
 // Returns the URL's paths
 function splitURL(urlPath) {
     return urlPath.substr(6).split('/');
 }
-
-// Determines whether path is a file
-function isFile(pathname) {
-    return pathname.split('/').pop().indexOf('.') > -1;
-}
-
-// Determines whether path is a directory
-function isDir(pathname) { return !isFile(pathname); }
 
 const editRegex = new RegExp('\/edit(\/.*)/');
 
@@ -19,29 +14,29 @@ export default {
         workbox.routing.registerRoute(
             editRegex,
             async ({ url, event }) => {
+                const path = url.pathname.match(editRegex)[1];
                 const paths = splitURL(url.pathname);
 
                 let folder = file = redirectURL = "";
+                
+                // Untested Code!!!!
+                fs.stat(path, (err, stats) => {
+                    if (err) {
+                        redirectURL = `${url.origin}/editor`;
+                    }
 
-                // If URL contains a file
-                if (isFile(paths[paths.length - 1])) {
-                    file = paths[paths.length - 1];
-                    paths.pop();
-                    folder = paths.join('/');
-                    redirectURL = `${url.origin}/editor?folder=${folder}&file=${file}`;
-                }
-                else {
-                    folder = paths.join('/');
-                    redirectURL = `${url.origin}/editor?folder=${folder}`;
-                }
+                    if (stats.isDirectory()) {
+                        folder = paths.join('/');
+                        redirectURL = `${url.origin}/editor?folder=${folder}`;
+                    } else {
+                        file = paths[paths.length - 1];
+                        paths.pop();
+                        folder = paths.join('/');
+                        redirectURL = `${url.origin}/editor?folder=${folder}&file=${file}`;
+                    }
 
-                return fetch(event.request)
-                    .then((response) => {
-                        return response.text();
-                    })
-                    .then((responseBody) => {
-                        return Response.redirect(redirectURL);
-                    });
+                    return Response.redirect(redirectURL);
+                });
             },
             'GET'
         );
