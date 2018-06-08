@@ -8,12 +8,14 @@
         "pretest": "npm run build-server",
         "test": "jest tests",
         "build": "node ./tools/build.js",
-        "build-docs":
-            "npm run build-server && cd src/docs/website && npm run build",
+        "prebuild-docs": "npm run build-server",
+        "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
+        "build-vm": "node tools/download-vm.js",
+        "prebuild-terminal": "npm run build-vm",
         "build-terminal":
-            "node tools/download-vm.js && parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix tools src/db"
     },
     "repository": {
