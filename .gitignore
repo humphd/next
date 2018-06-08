@@ -69,7 +69,7 @@ src/docs/website/i18n/*
 #All OSX .DS_Store files
 .DS_Store
 
-src/editor/Thumbs.db
+Thumbs.db
 
 # ignore jenkins build info
 src/editor/build.prop
