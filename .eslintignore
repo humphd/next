@@ -1,1 +1,13 @@
+# generated folders
 src/**/node_modules/**/*
+**/dist/**/*
+**/deploy/**/*
+
+# editor
+**/src/editor/**/*
+
+# temporarily exclude React files until we figure out how we want to format them. 
+**/website/core/**/*
+**/website/pages/**/*
+
+

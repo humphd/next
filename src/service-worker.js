@@ -3,7 +3,9 @@ import WebServer from './web-server';
 import docs from './docs';
 
 /* global workbox */
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
+importScripts(
+    'https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js'
+);
 
 // @ts-ignore
 workbox.setConfig();

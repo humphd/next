@@ -4,7 +4,6 @@ const commandRunner = require('./run-command');
 const util = require('util');
 
 var mkdirp = util.promisify(require('mkdirp'));
-var rimraf = util.promisify(require('rimraf'));
 var copy = util.promisify(require('copy'));
 
 mkdirp('dist')

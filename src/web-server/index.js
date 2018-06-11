@@ -26,7 +26,7 @@ export default class {
                         }
                         resolve({
                             type: 'text/html',
-                            body: formatDir(path, entries)
+                            body: formatDir(path, entries),
                         });
                     });
                 } else {
@@ -36,7 +36,7 @@ export default class {
                         }
                         resolve({
                             type: getMimeType(path),
-                            body: contents
+                            body: contents,
                         });
                     });
                 }
