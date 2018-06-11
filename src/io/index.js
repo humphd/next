@@ -30,48 +30,51 @@ export default class {
         // });
     }
 
+    async upload(file) {
+        return new Promise((resolve, reject) => {
+            fs.writeFile('/home/' + file.name, file.buffer, function (err) {
+                if (err) throw err;
+                resolve({
+                    type: 'text/html',
+                    body: "yes"
+                });
+            });
+        });
+    }
+
     async serve(path) {
         // TODO: need to add promises to Filer
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
                 if (err) {
-                    return reject(err);
-                }
-                // If this is a dir, show a dir listing
-                if (stats.isDirectory()) {
-                    sh.ls(path, { recursive: true }, (err, entries) => {
-                        if (err) {
-                            return reject(err);
-                        }
+                    fs.mkdir(path, function(err) {
+                        if(err) return reject(err);
 
-//                         var len = entries.length, output = [];
-//                             for(var i = 0; i < len; i++) {
-//                                 let size;
-//                                 if ( entries[i].type == "DIRECTORY" ) {
-//                                     size = entries[i].content ? entries[i].content.length : 0;
-//                                 } else {
-//                                     size = entries[i].size;
-//                                 }
-//                                 var entry = { "name": entries[i].name, "type": entries[i].type, "size": size, "content": entries[i] };
-//                                 output.push(entry)
-//                             }
-// console.log(output);
-//                             exit;
-                        resolve({
-                            type: 'text/html',
-                            body: formatDir(path, entries)
-                        });
+                        serve(path);
                     });
                 } else {
-                    fs.readFile(path, (err, contents) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        resolve({
-                            type: getMimeType(path),
-                            body: contents
+                    // If this is a dir, show a dir listing
+                    if (stats.isDirectory()) {
+                        sh.ls(path, { recursive: true }, (err, entries) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve({
+                                type: 'text/html',
+                                body: formatDir(path, entries)
+                            });
                         });
-                    });
+                    } else {
+                        fs.readFile(path, (err, contents) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve({
+                                type: getMimeType(path),
+                                body: contents
+                            });
+                        });
+                    }
                 }
             });
         });
