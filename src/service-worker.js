@@ -1,4 +1,5 @@
 import DatabaseServer from './db';
+import IOServer from './io';
 import WebServer from './web-server';
 import docs from './docs';
 import editor from './editor/src/routes.js';
@@ -31,3 +32,7 @@ dbServer.init(workbox);
 
 // Setup caching for terminal and vm binary resources
 terminal.init(workbox);
+
+// Setup io routes
+const ioServer = new IOServer();
+ioServer.init(workbox);
