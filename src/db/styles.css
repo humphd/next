@@ -1,0 +1,50 @@
+.drop-zone {
+    /*Sort of important*/
+    width: 47%;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    /*Sort of important*/
+    height: 200px;
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    font-family: Arial;
+    text-align: center;
+    position: relative;
+    line-height: 180px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.3);
+}
+/*Important*/
+.drop-zone.mouse-over {
+    border: 2px dashed rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+input {
+    display: none;
+}
+
+button {
+    margin: 10px;
+}
+
+.controls {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.vl {
+    border-left: 2px solid grey;
+    height: 200px;
+    display: inline-block;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.download-container {
+    display: inline-block;
+    width: 47%;
+}

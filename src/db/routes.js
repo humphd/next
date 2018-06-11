@@ -3,9 +3,7 @@ const pathFromUrl = (url, match = '') => {
     return url.substr(url.indexOf(match) + match.length + 1).split('/');
 };
 // endpoints to be trimmed from urls
-const apiUrl = 'data/api',
-    uploadUrl = 'data/upload',
-    downloadUrl = 'data/download';
+const apiUrl = 'data/api';
 
 // regex to match different endpoints
 const apiRegex = /\/data\/api.*/,
@@ -36,10 +34,10 @@ export default (workbox, db) => {
         uploadRegex,
         async ({ event }) => {
             return event.request.json().then(async payload => {
-                let message = null;
+                let message = 'Success';
                 let ok = true;
                 try {
-                    message = await db.uploadDb(payload);
+                    await db.uploadDb(payload);
                 } catch (err) {
                     console.error(err);
                     message = err.message;
