@@ -2,11 +2,57 @@
 const pathFromUrl = (url, match = '') => {
     return url.substr(url.indexOf(match) + match.length + 1).split('/');
 };
+// endpoints to be trimmed from urls
+const apiUrl = 'data/api',
+    uploadUrl = 'data/upload',
+    downloadUrl = 'data/download';
 
-const apiUrl = 'data/api';
-const apiRegex = /\/data\/api.*/;
+// regex to match different endpoints
+const apiRegex = /\/data\/api.*/,
+    uploadRegex = /\/data\/upload.*/,
+    downloadRegex = /\/data\/download.*/;
 
 export default (workbox, db) => {
+    workbox.routing.registerRoute(
+        downloadRegex,
+        async () => {
+            let message = null;
+            let ok = true;
+            try {
+                message = await db.downloadDb();
+            } catch (err) {
+                console.error(err);
+                message = err.message;
+                ok = false;
+            }
+            return new Response(
+                JSON.stringify({ ok: ok, query: message, method: 'GET' })
+            );
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        uploadRegex,
+        async ({ event }) => {
+            return event.request.json().then(async payload => {
+                let message = null;
+                let ok = true;
+                try {
+                    message = await db.uploadDb(payload);
+                } catch (err) {
+                    console.error(err);
+                    message = err.message;
+                    ok = false;
+                }
+                return new Response(
+                    JSON.stringify({ ok: ok, query: message, method: 'POST' })
+                );
+            });
+        },
+        'POST'
+    );
+
     // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
