@@ -1,4 +1,5 @@
 import DatabaseServer from './db';
+import IOServer from './io';
 import WebServer from './web-server';
 import docs from './docs';
 
@@ -23,3 +24,6 @@ webServer.init(workbox);
 // Create DatabaseServer and associated /data/* routes
 const dbServer = new DatabaseServer();
 dbServer.init(workbox);
+
+const ioServer = new IOServer();
+ioServer.init(workbox);
