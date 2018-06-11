@@ -7,7 +7,7 @@ const root = path.resolve(path.join(__dirname, '..'));
 const v86defconfigDir = path.join(root, 'buildroot-v86');
 const v86outDir = path.join(root, 'v86-out');
 
-// docker run --rm --name build-v86 -v $PWD/v86-out:/build -v $PWD:/buildroot-ext-tree buildroot
+// docker run --rm --name build-v86 -v $PWD/v86-out:/build -v $PWD:/buildroot-v86 buildroot
 const args = [
     'run',
     '--rm',    
@@ -16,7 +16,7 @@ const args = [
     '-v',
     `${v86outDir}:/build`,
     '-v',
-    `${v86defconfigDir}:/buildroot-ext-tree`,
+    `${v86defconfigDir}:/buildroot-v86`,
     'buildroot'
 ];
 

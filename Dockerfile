@@ -28,8 +28,8 @@ ENV LANG='C' \
     NOTVISIBLE="in users profile" \
     TERM=xterm
 
-VOLUME /buildroot-ext-tree
+VOLUME /buildroot-v86
 VOLUME /build
 
 WORKDIR /root/buildroot-${BUILD_ROOT_RELEASE}
-ENTRYPOINT ["/buildroot-ext-tree/build-v86.sh"]
+ENTRYPOINT ["/buildroot-v86/build-v86.sh"]
