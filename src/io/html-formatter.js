@@ -93,6 +93,8 @@ export const formatDir = (dirPath, entries) => {
                                 <span>No files here.</span>
                             </div>
 
+                            <div class="fileupload"></div>
+
                         </div>
 
                         <script> 

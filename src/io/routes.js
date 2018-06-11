@@ -41,9 +41,29 @@ export default (workbox, ioServer) => {
         ioImportRegex,
         async ({ url, event, params }) => {
             return event.request.formData().then(async formData => {
-                return new Response(
-                    formData.getAll('name')
-                );
+                let body;
+                let status;
+                let type;
+                try {
+                    // var file = JSON.parse(formData.get('file1'));
+                    // file.buffer = Object.values(file.buffer);
+                    const result = await ioServer.upload(file);
+                    body = result.body;
+                    status = 200;
+                } catch (err) {
+                    body = "err";
+                    type = 'text/html';
+                    // TODO: should probably do a better job here on mapping to err
+                    status = 404;
+                }
+
+                const init = {
+                    status,
+                    statusText: 'OK',
+                    headers: { 'Content-Type': type },
+                };
+    
+                return new Response(body, init);
             }).catch(err => { return new Response(
                 err
             ); });
