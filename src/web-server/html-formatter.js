@@ -8,11 +8,26 @@ import iconBack from './icons/back.png';
 import iconBlank from './icons/blank.png';
 import path from '../lib/path';
 
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+];
 
 // 20-Apr-2004 17:14
 const formatDate = d => {
-    return `${d.getDate()}-${months[d.getMonth()]}-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+    return `${d.getDate()}-${
+        months[d.getMonth()]
+    }-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
 };
 
 const formatSize = s => {
@@ -75,30 +90,39 @@ export const formatDir = (dirPath, entries) => {
 
     const footer = `<tr><th colspan="5"><hr></th></tr></table>${footerClose}`;
 
-    const rows = entries.map(entry => {
-        const ext = path.extname(entry.name);
-        const href = '/www' + path.join(dirPath, entry.name);
-        let icon;
-        let alt;
+    const rows = entries
+        .map(entry => {
+            const ext = path.extname(entry.name);
+            const href = '/www' + path.join(dirPath, entry.name);
+            let icon;
+            let alt;
 
-        if (entry.type === 'DIRECTORY') {
-            icon = iconFolder;
-            alt = '[DIR]';
-        } else {
-            if (isImage(ext)) {
-                icon = iconImage;
-                alt = '[IMG]';
-            } else if (isMedia(ext)) {
-                icon = iconMovie;
-                alt = '[MOV]';
+            if (entry.type === 'DIRECTORY') {
+                icon = iconFolder;
+                alt = '[DIR]';
             } else {
-                icon = iconText;
-                alt = '[TXT]';
+                if (isImage(ext)) {
+                    icon = iconImage;
+                    alt = '[IMG]';
+                } else if (isMedia(ext)) {
+                    icon = iconMovie;
+                    alt = '[MOV]';
+                } else {
+                    icon = iconText;
+                    alt = '[TXT]';
+                }
             }
-        }
 
-        return formatRow(icon, alt, href, entry.name, entry.mtime, entry.size);
-    }).join('\n');
+            return formatRow(
+                icon,
+                alt,
+                href,
+                entry.name,
+                entry.mtime,
+                entry.size
+            );
+        })
+        .join('\n');
 
     return header + rows + footer;
 };

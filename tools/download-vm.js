@@ -11,8 +11,10 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 
 const isoUrl = 'https://copy.sh/v86/images/linux3.iso';
-const biosUrl = 'https://github.com/copy/v86/blob/master/bios/seabios.bin?raw=true';
-const vgaBiosUrl = 'https://github.com/copy/v86/blob/master/bios/vgabios.bin?raw=true';
+const biosUrl =
+    'https://github.com/copy/v86/blob/master/bios/seabios.bin?raw=true';
+const vgaBiosUrl =
+    'https://github.com/copy/v86/blob/master/bios/vgabios.bin?raw=true';
 
 // Put all binary files in `dist/terminal/bin` and we'll cache these on travis.
 const terminalDir = path.join(__dirname, '..', 'dist', 'terminal', 'bin');
@@ -23,8 +25,8 @@ const vgaBiosDest = path.join(terminalDir, 'vgabios.bin');
 const download = (url, dest) => {
     return new Promise((resolve, reject) => {
         fs.stat(dest, err => {
-            if(err) {
-                if(err.code !== 'ENOENT') {
+            if (err) {
+                if (err.code !== 'ENOENT') {
                     return reject(err);
                 } else {
                     console.log(`Downloading ${url} to ${dest}...`);
@@ -33,7 +35,9 @@ const download = (url, dest) => {
                         .on('finish', resolve);
                 }
             } else {
-                console.log(`Skipping download for ${dest}. File already exists`);
+                console.log(
+                    `Skipping download for ${dest}. File already exists`
+                );
                 return resolve();
             }
         });
@@ -41,12 +45,12 @@ const download = (url, dest) => {
 };
 
 mkdirp(terminalDir, err => {
-    if(err) throw err;
+    if (err) throw err;
 
     Promise.all([
         download(isoUrl, isoDestPath),
         download(biosUrl, biosDestPath),
-        download(vgaBiosUrl, vgaBiosDest)
+        download(vgaBiosUrl, vgaBiosDest),
     ])
         .then(() => console.log('Done.'))
         .catch(err => console.error(err));
