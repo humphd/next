@@ -200,7 +200,7 @@ export default class {
         }
     }
 
-    async downloadDb() {
+    async download() {
         await this.openDB();
         const rc = {};
         try {
@@ -224,7 +224,7 @@ export default class {
         return rc;
     }
 
-    async uploadDb(bulk) {
+    async upload(bulk) {
         const tables = Object.keys(bulk);
         const dbSchema = {};
         tables.forEach(table => {
@@ -238,7 +238,6 @@ export default class {
         this.db.version(this.version).stores(dbSchema);
 
         // create a new instance
-        // await this.openDB();
         await this.db.open();
 
         tables.forEach(table => {

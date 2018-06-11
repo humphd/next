@@ -17,7 +17,7 @@ export default (workbox, db) => {
             let message = null;
             let ok = true;
             try {
-                message = await db.downloadDb();
+                message = await db.download();
             } catch (err) {
                 console.error(err);
                 message = err.message;
@@ -37,7 +37,7 @@ export default (workbox, db) => {
                 let message = 'Success';
                 let ok = true;
                 try {
-                    await db.uploadDb(payload);
+                    await db.upload(payload);
                 } catch (err) {
                     console.error(err);
                     message = err.message;
