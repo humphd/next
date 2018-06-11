@@ -18,6 +18,7 @@
             "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "v86:setup": "docker build -t buildroot .",
+        "v86:bash": "node tools/build-v86 -ti --entrypoint \"bash\"",
         "v86:build": "node tools/build-v86"
     },
     "repository": {
