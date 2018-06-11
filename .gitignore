@@ -138,3 +138,6 @@ dist/
 
 # deploy directory
 deploy
+
+# Output dir for v86 buildroot build
+v86-out/

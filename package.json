@@ -14,8 +14,11 @@
         "build-server": "parcel build src/index.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
-        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
-        "eslint": "eslint --fix ."
+        "build-terminal": 
+            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "eslint": "eslint --fix .",
+        "v86:setup": "docker build -t buildroot .",
+        "v86:build": "node tools/build-v86"
     },
     "repository": {
         "type": "git",

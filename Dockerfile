@@ -3,7 +3,7 @@ FROM rastasheep/ubuntu-sshd:16.04
 WORKDIR /root
 
 # Buildroot version to use
-ARG RELEASE=2018.02
+ARG BUILD_ROOT_RELEASE=2018.02
 
 # configure root password
 RUN echo 'root:unbundeled' | chpasswd; \
@@ -18,8 +18,8 @@ RUN apt-get -q -y install build-essential libncurses5-dev \
     apt-get -q -y autoremove; \
     apt-get -q -y clean; \
     # Install Buildroot
-    wget -c http://buildroot.org/downloads/buildroot-${RELEASE}.tar.gz; \
-    tar axf buildroot-${RELEASE}.tar.gz;
+    wget -c http://buildroot.org/downloads/buildroot-${BUILD_ROOT_RELEASE}.tar.gz; \
+    tar axf buildroot-${BUILD_ROOT_RELEASE}.tar.gz;
 
 # configure the locales
 ENV LANG='C' \
@@ -27,3 +27,9 @@ ENV LANG='C' \
     LC_ALL='C' \ 
     NOTVISIBLE="in users profile" \
     TERM=xterm
+
+VOLUME /buildroot-ext-tree
+VOLUME /build
+
+WORKDIR /root/buildroot-${BUILD_ROOT_RELEASE}
+ENTRYPOINT ["/buildroot-ext-tree/build-v86.sh"]
