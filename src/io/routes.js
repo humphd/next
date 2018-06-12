@@ -45,41 +45,9 @@ export default (workbox, ioServer) => {
                 let type;
                 try {
                     var files = JSON.parse(formData.get('file'));
-                    
-                    // Note that async functions return a promise
-                    const promises = files.map(async (file) => {
-                        var file = JSON.parse(file);
-                            
-                        file.buffer = Object.values(file.buffer);
-                        const result = await ioServer.upload(file);
-
-                        return result;
-                    });
-                    const results = await Promise.all(promises);
-                    console.log(results);
-                    return new Response(results);
-
-                    // return new Response(files);
-                    async (files) => {
-                        
-                        for (let i = 0; i < files.length; i++) {
-                            var file = JSON.parse(files[i]);
-                            
-                            file.buffer = Object.values(file.buffer);
-                            const result = await ioServer.upload(file);
-    
-                            body = result.body;
-                            status = 200;
-                        }
-                      }
-                    // files.forEach((file_) => {
-                    //     var file = JSON.parse(file_);
-                    //     file.buffer = Object.values(file.buffer);
-                    //     const result = await ioServer.upload(file);
-
-                    //     body = result.body;
-                    //     status = 200;
-                    // });
+                    const result = await ioServer.uploadFiles(files);
+                    body = result.body;
+                    status = 200;
                 } catch (err) {
                     body = err;
                     type = 'text/html';
