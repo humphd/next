@@ -1,4 +1,5 @@
 import fs from '../lib/fs';
+import Filer from '../../node_modules/filer/dist/filer';
 const sh = new fs.Shell();
 
 import { getMimeType } from './content-type';
@@ -14,25 +15,10 @@ export default class {
         registerRoutes(workbox, this);
     }
 
-    async createPath() {
-        // Create /home and then /home/carl directories
-        // fs.mkdir('/home/sam', function(err) {
-        //     if(err) throw err;
-        // });
-
-        // fs.mkdir('/home/jerry/folder1', function(err) {
-        //     if(err) throw err;
-        // });
-
-        // // Write UTF8 text file
-        // fs.writeFile('/home/jerry/myfile2.txt', "...data...", function (err) {
-        //     if (err) throw err;
-        // });
-    }
-
     async upload(file) {
         return new Promise((resolve, reject) => {
-            fs.writeFile('/home/' + file.name, file.buffer, function (err) {
+            var buffer = new Filer.Buffer(file.buffer);
+            fs.writeFile('/home/'+file.name, buffer, function (err) {
                 if (err) throw err;
                 resolve({
                     type: 'text/html',
