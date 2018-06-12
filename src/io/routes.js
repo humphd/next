@@ -1,5 +1,4 @@
 import { formatDir, format404 } from './html-formatter';
-import scriptIn from './in.js';
 
 const ioInRegex = /\/io\/in(\/.*)/;
 const ioImportRegex = /\/io\/import/;
@@ -45,13 +44,44 @@ export default (workbox, ioServer) => {
                 let status;
                 let type;
                 try {
-                    // var file = JSON.parse(formData.get('file1'));
-                    // file.buffer = Object.values(file.buffer);
-                    const result = await ioServer.upload(file);
-                    body = result.body;
-                    status = 200;
+                    var files = JSON.parse(formData.get('file'));
+                    
+                    // Note that async functions return a promise
+                    const promises = files.map(async (file) => {
+                        var file = JSON.parse(file);
+                            
+                        file.buffer = Object.values(file.buffer);
+                        const result = await ioServer.upload(file);
+
+                        return result;
+                    });
+                    const results = await Promise.all(promises);
+                    console.log(results);
+                    return new Response(results);
+
+                    // return new Response(files);
+                    async (files) => {
+                        
+                        for (let i = 0; i < files.length; i++) {
+                            var file = JSON.parse(files[i]);
+                            
+                            file.buffer = Object.values(file.buffer);
+                            const result = await ioServer.upload(file);
+    
+                            body = result.body;
+                            status = 200;
+                        }
+                      }
+                    // files.forEach((file_) => {
+                    //     var file = JSON.parse(file_);
+                    //     file.buffer = Object.values(file.buffer);
+                    //     const result = await ioServer.upload(file);
+
+                    //     body = result.body;
+                    //     status = 200;
+                    // });
                 } catch (err) {
-                    body = "err";
+                    body = err;
                     type = 'text/html';
                     // TODO: should probably do a better job here on mapping to err
                     status = 404;
@@ -63,7 +93,7 @@ export default (workbox, ioServer) => {
                     headers: { 'Content-Type': type },
                 };
     
-                return new Response(body, init);
+                // return new Response(body, init);
             }).catch(err => { return new Response(
                 err
             ); });

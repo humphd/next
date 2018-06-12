@@ -235,16 +235,16 @@ $(function () {
 					e.preventDefault();
 
 					// gathering the form data
-					var ajaxData = new FormData( $form.get( 0 ) );
-					if( droppedFiles )
-					{
-						$.each( droppedFiles, function( i, file )
-						{
-							ajaxData.append( $input.attr( 'name' ), file );
-						});
-                    }
-                    
-                    ajaxData.append( 'file1', JSON.stringify(bufferFiles[0]) );
+					var ajaxData = new FormData(  );
+					// if( droppedFiles )
+					// {
+					// 	$.each( droppedFiles, function( i, file )
+					// 	{
+					// 		ajaxData.append( $input.attr( 'name' ), file );
+					// 	});
+                    // }
+
+                    ajaxData.append( 'file', JSON.stringify(bufferFiles) );
 
 					// ajax request
 					$.ajax(
@@ -308,18 +308,19 @@ $(function () {
     })( jQuery, window, document );
 
     function handleFileSelect(evt) {
-        debugger;
-        var file = evt.target.files[0]; // FileList object
+        var files = evt.target.files;
         
-        reader = new FileReader();
-        reader.onloadend = function (e) {
-            console.log(e);
-            var buf = new Int8Array(e.target.result);
-            console.log(buf);
-            bufferFiles[0] = {name: file.name, buffer: buf};
-        };
-        
-        reader.readAsArrayBuffer(file);
+        Array.from(files).forEach(file => { 
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                var buf = new Int8Array(e.target.result);
+                var nextDir = window.location.href;
+                var path = nextDir.substring(nextDir.indexOf('io/in/') + 5);
+                    path = path.replace(/\/?$/, '/');
+                bufferFiles.push({name: file.name, buffer: buf, path: path});
+            };
+            reader.readAsArrayBuffer(file);
+        });
       }
     
     document.getElementById('file').addEventListener('change', handleFileSelect, false);
