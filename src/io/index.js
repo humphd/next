@@ -18,7 +18,7 @@ export default class {
     async upload(file) {
         return new Promise((resolve, reject) => {
             var buffer = new Filer.Buffer(file.buffer);
-            fs.writeFile('/home/'+file.name, buffer, function (err) {
+            fs.writeFile(file.path+file.name, buffer, function (err) {
                 if (err) throw err;
                 resolve({
                     type: 'text/html',
@@ -26,6 +26,13 @@ export default class {
                 });
             });
         });
+    }
+
+    async uploadFiles(files) {
+        for (const file of files ) {
+            file.buffer = Object.values(file.buffer);
+            const result = await this.upload(file);
+        }
     }
 
     async serve(path) {
