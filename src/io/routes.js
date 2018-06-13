@@ -1,12 +1,13 @@
 import { formatDir, format404 } from './html-formatter';
 
 const ioInRegex = /\/io\/in(\/.*)/;
+const ioOutRegex = /\/io\/out(\/.*)/;
 const ioImportRegex = /\/io\/import/;
 const ioFromTextRegex = /\/io\/from\/text(\/.*)/;
 const ioFromDataURIRegex = /\/io\/from\/dataurl(\/.*)/;
 
 export default (workbox, ioServer) => {
-    // @ts-ignore
+    
     workbox.routing.registerRoute(
         ioInRegex,
         async ({ url }) => {
@@ -125,6 +126,34 @@ export default (workbox, ioServer) => {
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
                 body = err;
+                status = 404;
+            }
+
+            const init = {
+                status,
+                statusText: 'OK',
+                headers: { 'Content-Type': type },
+            };
+
+            return new Response(body, init);
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioOutRegex,
+        async ({ url }) => {
+            const path = url.pathname.match(ioOutRegex)[1];
+            let body, type, status, result;
+            try {
+                result = await ioServer.getFile(path);
+                body = result.body;
+                type = 'application/octet-stream';
+                status = 200;
+            } catch (err) {
+                body = err;
+                type = 'text/html';
+                // TODO: should probably do a better job here on mapping to err
                 status = 404;
             }
 
