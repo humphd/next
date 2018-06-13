@@ -27,7 +27,9 @@ function waitForServiceWorkers() {
                         resolve();
                     } else {
                         reg.onupdatefound = () => {
-                            setTimeout(resolve, 1000);
+                            // simulate passage of time inside browser,
+                            // so that service worker can install on the next tick.
+                            setTimeout(resolve, 10);
                         };
                     }
                 })
