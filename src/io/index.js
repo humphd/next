@@ -159,6 +159,33 @@ export default class {
         });
     }
 
+    async getFile(path) {
+        // TODO: need to add promises to Filer
+        return new Promise((resolve, reject) => {
+            fs.stat(path, (err, stats) => {
+                if (err) {
+                    return reject(err);
+                } else {
+                    // If this is a dir, show a dir listing
+                    if (stats.isDirectory()) {
+                        // Todo: Better error handling needed.
+                        reject("Path does not link to a File.")
+                    } else {
+                        fs.readFile(path, (err, contents) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve({
+                                type: getMimeType(path),
+                                body: contents,
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    }
+
     async serve(path) {
         // TODO: need to add promises to Filer
         return new Promise((resolve, reject) => {
