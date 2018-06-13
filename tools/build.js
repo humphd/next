@@ -12,6 +12,9 @@ mkdirp('dist')
     .then(() => commandRunner('npm run build-editor'))
     .then(() => mkdirp('dist/editor'))
     .then(() => copy('./src/editor/dist/**', './dist/editor'))
+    // Temporary Need a better way of handling this
+    .then(() => copy('./src/io/css/**', './dist/css'))
+    .then(() => copy('./src/io/scripts/**', './dist/scripts'))
     .then(() => commandRunner('npm run build-terminal'))
     .catch(err => {
         throw err;
