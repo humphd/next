@@ -6,7 +6,33 @@ function splitURL(urlPath) {
     return urlPath.substr(6).split('/');
 }
 
-const editRegex = new RegExp('\/edit(\/.*)/');
+// Uploads a file into filesystem
+async function getRedirectionLink(url) {
+    return new Promise((resolve, reject) => {
+        const path = url.pathname.match(editRegex)[1];
+        const paths = splitURL(url.pathname);
+        let folder, file, redirectURL;
+        fs.stat(path, (err, stats) => {
+            if (err) {
+                var redirectURL = `${url.origin}/editor`;
+                resolve(redirectURL);
+            }
+            if (stats.isDirectory()) {
+                folder = paths.join('/');
+                redirectURL = `${url.origin}/editor?folder=${folder}`;
+            } else {
+                file = paths[paths.length - 1];
+                paths.pop();
+                folder = paths.join('/');
+                redirectURL = `${url.origin}/editor?folder=${folder}&file=${file}`;
+            }
+
+            return resolve(redirectURL);
+        });
+    });
+}
+
+const editRegex = /\/edit(\/.*)/;
 
 export default {
     init: (workbox) => {
@@ -14,29 +40,15 @@ export default {
         workbox.routing.registerRoute(
             editRegex,
             async ({ url, event }) => {
-                const path = url.pathname.match(editRegex)[1];
-                const paths = splitURL(url.pathname);
-
-                let folder = file = redirectURL = "";
+                let redirectURL = `${url.origin}/editor`;
+                try {
+                    redirectURL = await getRedirectionLink(url);
+                }
+                catch(err) {
+                    console.log(err);
+                }
                 
-                // Untested Code!!!!
-                fs.stat(path, (err, stats) => {
-                    if (err) {
-                        redirectURL = `${url.origin}/editor`;
-                    }
-
-                    if (stats.isDirectory()) {
-                        folder = paths.join('/');
-                        redirectURL = `${url.origin}/editor?folder=${folder}`;
-                    } else {
-                        file = paths[paths.length - 1];
-                        paths.pop();
-                        folder = paths.join('/');
-                        redirectURL = `${url.origin}/editor?folder=${folder}&file=${file}`;
-                    }
-
-                    return Response.redirect(redirectURL);
-                });
+                return Response.redirect(redirectURL);
             },
             'GET'
         );
