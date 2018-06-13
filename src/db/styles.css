@@ -1,7 +1,6 @@
 .drop-zone {
     /*Sort of important*/
-    width: 47%;
-    display: inline-block;
+    width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -28,6 +27,7 @@ input {
 }
 
 button {
+    height: 20px;
     margin: 10px;
 }
 
@@ -38,13 +38,34 @@ button {
 
 .vl {
     border-left: 2px solid grey;
-    height: 200px;
-    display: inline-block;
     margin-left: 2%;
     margin-right: 2%;
 }
 
-.download-container {
-    display: inline-block;
+.upload-container,
+.download-container,
+.delete-container {
+    flex-direction: column;
+}
+
+.upload-container {
     width: 47%;
+}
+
+.download-container,
+.delete-container {
+    width: 20%;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.container {
+    overflow: visible;
+    position: relative;
+    vertical-align: top;
+    display: flex;
+    width: 100%;
 }

@@ -231,10 +231,9 @@ export default class {
             dbSchema[table] = bulk[table].schema;
         });
         // clear old version of the db
-        this.db.close();
-        await this.db.delete();
+        await this.delete();
 
-        this.version++;
+        this.version = 1;
         this.db.version(this.version).stores(dbSchema);
 
         // create a new instance
@@ -243,5 +242,14 @@ export default class {
         tables.forEach(table => {
             this.db[table].bulkAdd(bulk[table].data);
         });
+    }
+
+    async delete(createNew = false) {
+        this.db.close();
+        await this.db.delete();
+
+        if (createNew) {
+            await this.openDB();
+        }
     }
 }

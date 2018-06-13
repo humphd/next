@@ -4,6 +4,7 @@ window.addEventListener('load', () => {
     const uploadButton = document.getElementById('upload');
     const clearButton = document.getElementById('clear');
     const downloadButton = document.getElementById('download');
+    const deleteButton = document.getElementById('delete');
     const dlAnchorElem = document.getElementById('downloadAnchorElem');
 
     // intialize drag and drop zone
@@ -25,10 +26,9 @@ window.addEventListener('load', () => {
             fileInput.files = e.dataTransfer.files;
         }
         if (fileInput.files.length) {
-            container.textContent =
-                fileInput.files.length > 1
-                    ? `Received ${fileInput.files.length} files.`
-                    : `Received ${fileInput.files.item(0).name}`;
+            container.textContent = `Received ${
+                fileInput.files.item(fileInput.files.length - 1).name
+            }`;
         }
         e.preventDefault();
     };
@@ -41,6 +41,8 @@ window.addEventListener('load', () => {
     // attempt to upload the file. NOTE only the last file is used, if multiple files are droped.
     uploadButton.onclick = () => {
         if (!fileInput.files.length) {
+            document.getElementById('result').innerText =
+                'Please supply a file before attempting an upload.';
             return;
         }
 
@@ -71,7 +73,11 @@ window.addEventListener('load', () => {
                     return res.json();
                 })
                 .then(data => {
-                    document.getElementById('result').innerText = data.query;
+                    if (!data.ok) {
+                        throw `Unable to upload. ${data.message}`;
+                    }
+                    document.getElementById('result').innerText =
+                        'Succesfully uploaded.';
                 })
                 .catch(err => {
                     document.getElementById('result').innerText = err;
@@ -103,7 +109,11 @@ window.addEventListener('load', () => {
                 return res.json();
             })
             .then(data => {
-                document.getElementById('result').innerText = 'Success';
+                if (!data.ok) {
+                    throw `Unable to download. ${data.message}`;
+                }
+                document.getElementById('result').innerText =
+                    'Successfully downloaded.';
                 const dataStr =
                     'data:text/json;charset=utf-8,' +
                     encodeURIComponent(JSON.stringify(data.query));
@@ -111,6 +121,31 @@ window.addEventListener('load', () => {
                 dlAnchorElem.setAttribute('href', dataStr);
                 dlAnchorElem.setAttribute('download', 'db.json');
                 dlAnchorElem.click();
+            })
+            .catch(err => {
+                document.getElementById('result').innerText = err;
+            });
+    };
+
+    deleteButton.onclick = () => {
+        fetch(
+            new Request(encodeURI('/data/reset'), {
+                method: 'GET',
+                body: null,
+            })
+        )
+            .then(res => {
+                if (!res.ok) {
+                    throw `${res.status}. ${res.statusText} for ${res.url}`;
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (!data.ok) {
+                    throw `Unable to reset. ${data.message}`;
+                }
+                document.getElementById('result').innerText =
+                    'Succesfully deleted.';
             })
             .catch(err => {
                 document.getElementById('result').innerText = err;

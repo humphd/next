@@ -8,9 +8,27 @@ const apiUrl = 'data/api';
 // regex to match different endpoints
 const apiRegex = /\/data\/api.*/,
     uploadRegex = /\/data\/upload.*/,
-    downloadRegex = /\/data\/download.*/;
+    downloadRegex = /\/data\/download.*/,
+    resetRegex = /\/data\/reset.*/;
 
 export default (workbox, db) => {
+    workbox.routing.registerRoute(
+        resetRegex,
+        async () => {
+            let message = null;
+            let ok = true;
+            try {
+                message = await db.delete(true);
+            } catch (err) {
+                console.error(err);
+                message = err.message;
+                ok = false;
+            }
+            return new Response(JSON.stringify({ ok: ok, query: message }));
+        },
+        'GET'
+    );
+
     workbox.routing.registerRoute(
         downloadRegex,
         async () => {
@@ -23,9 +41,7 @@ export default (workbox, db) => {
                 message = err.message;
                 ok = false;
             }
-            return new Response(
-                JSON.stringify({ ok: ok, query: message, method: 'GET' })
-            );
+            return new Response(JSON.stringify({ ok: ok, query: message }));
         },
         'GET'
     );
@@ -34,7 +50,7 @@ export default (workbox, db) => {
         uploadRegex,
         async ({ event }) => {
             return event.request.json().then(async payload => {
-                let message = 'Success';
+                let message = null;
                 let ok = true;
                 try {
                     await db.upload(payload);
@@ -43,9 +59,7 @@ export default (workbox, db) => {
                     message = err.message;
                     ok = false;
                 }
-                return new Response(
-                    JSON.stringify({ ok: ok, query: message, method: 'POST' })
-                );
+                return new Response(JSON.stringify({ ok: ok, query: message }));
             });
         },
         'POST'
@@ -69,9 +83,7 @@ export default (workbox, db) => {
                 message = err.message;
                 ok = false;
             }
-            return new Response(
-                JSON.stringify({ ok: ok, query: message, method: 'GET' })
-            );
+            return new Response(JSON.stringify({ ok: ok, query: message }));
         },
         'GET'
     );
@@ -95,9 +107,7 @@ export default (workbox, db) => {
                     message = err.message;
                     ok = false;
                 }
-                return new Response(
-                    JSON.stringify({ ok: ok, query: message, method: 'POST' })
-                );
+                return new Response(JSON.stringify({ ok: ok, query: message }));
             });
         },
         'POST'
@@ -123,9 +133,7 @@ export default (workbox, db) => {
                     message = err.message;
                     ok = false;
                 }
-                return new Response(
-                    JSON.stringify({ ok: ok, query: message, method: 'PUT' })
-                );
+                return new Response(JSON.stringify({ ok: ok, query: message }));
             });
         },
         'PUT'
@@ -149,9 +157,7 @@ export default (workbox, db) => {
                 message = err.message;
                 ok = false;
             }
-            return new Response(
-                JSON.stringify({ ok: ok, query: message, method: 'DELETE' })
-            );
+            return new Response(JSON.stringify({ ok: ok, query: message }));
         },
         'DELETE'
     );
