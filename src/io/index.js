@@ -190,6 +190,72 @@ export default class {
         });
     }
 
+    async test(path, entries) {
+        const promises = Object.values(entries).map(async p => {
+            if (p.type == "DIRECTORY" && p.contents.length != 0) {
+                return await this.deletePathRecursive(path + "/" + p.name);
+            } else if (p.type == "DIRECTORY" && p.contents.length == 0) {
+                return await this.deleteDirectory(path + "/" + p.name);
+            } else {
+                return await this.deleteFile(path + "/" + p.name);
+            }
+        });
+        const results = await Promise.all(promises).catch(function(err) {
+                console.log(err.message);
+            });
+
+        return results;
+    }
+
+    // Deletes everything in Path
+    async deletePathRecursive(path) {
+        var self = this;
+        return new Promise((resolve, reject) => {
+            fs.stat(path, function(err, stats) {
+                if(err) return callback(err);
+                
+                // If this is a dir, show a dir listing
+                if (stats.isDirectory()) {
+                    sh.ls(path, { recursive: true }, (err, entries) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        const handle = async (path, entries) => {
+                            try {
+                                const r = await self.test(path, entries);
+                                resolve(r);
+                            } catch (e) {
+                                reject(e.message);
+                            }
+                        };
+                        handle(path, entries);
+                    });
+                }
+            });
+        });
+    }
+
+    // Deletes a given Directory /A
+    async deleteDirectory(path) {
+        return new Promise((resolve, reject) => {
+            fs.rmdir(path, function(err) {
+                if (err) reject(err);
+                resolve();
+            });
+        });
+    }
+
+    // Deletes a given File /A.txt
+    async deleteFile(path) {
+        return new Promise((resolve, reject) => {
+            fs.unlink(path, function(err) {
+                if (err) reject(err);
+                resolve();
+            });
+        });
+    }
+
     // Creates a given Path /A
     async createPath(path) {
         return new Promise((resolve, reject) => {
