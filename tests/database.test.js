@@ -1,74 +1,32 @@
-const port = require('../jest-puppeteer.config').server.port;
+const {
+    domain,
+    makeRequest,
+    populateTable,
+    waitForServiceWorkers,
+} = require('./lib/shared.js');
 const timeout = 10000;
 jest.setTimeout(timeout);
 
-const domain = 'http://localhost:' + port;
+let page = null;
 
-async function populateTable(url, requests, page) {
-    for (let req of requests) {
-        await makeRequest(
-            url,
-            {
-                method: 'PUT',
-                body: JSON.stringify(req),
-            },
-            page
-        );
-    }
-}
+beforeAll(async () => {
+    page = (await browser.pages())[0];
+    await page.goto(domain, { waitUntil: 'networkidle0' });
+    // wait until service worker installs
+    await waitForServiceWorkers(page);
+});
 
-function waitForServiceWorkers() {
-    return navigator.serviceWorker.getRegistrations().then(registrations => {
-        const promises = [];
-        registrations.forEach(reg => {
-            promises.push(
-                new Promise(resolve => {
-                    if (reg.active) {
-                        resolve();
-                    } else {
-                        reg.onupdatefound = () => {
-                            // simulate passage of time inside browser,
-                            // so that service worker can install on the next tick.
-                            setTimeout(resolve, 10);
-                        };
-                    }
-                })
-            );
-        });
-        return Promise.all(promises);
-    });
-}
-
-function makeRequest(url, config, page) {
-    return page.evaluate(
-        (url, req) =>
-            fetch(url, req)
-                .then(res => res.json())
-                .catch(err => err),
-        encodeURI(url),
-        config
-    );
-}
 // it is essential that the order of the top level describes is mainained,
 // because of the async nature of indexed db and speed of puppeteer.
 // indexed db does not keep up with puppeteer's instructions, which might create race conditions because of db blocks.
 describe('Testing /data/api/ endpoint', () => {
     const endpoint = 'data/api';
-    let page = null;
 
     const insertTable = [
         [{ data: { my: 'test' } }, 'test'],
         [{ data: { my: 'test' }, schema: '++a' }, 'test1'],
         [{ data: { my: 'test', a: 3 }, schema: '++a' }, 'test2'],
     ];
-
-    beforeAll(async () => {
-        page = (await browser.pages())[0];
-        await page.goto(domain, { waitUntil: 'networkidle0' });
-        // wait until service worker installs
-        // await page.evaluate(waitForServiceWorkers);
-        await page.waitFor(2000);
-    });
 
     afterAll(async () => {
         // clear indexed db before finishing
@@ -92,7 +50,6 @@ describe('Testing /data/api/ endpoint', () => {
                     },
                     page
                 );
-                //
                 expect(response.ok).toBeTruthy();
             }
         );
@@ -255,15 +212,9 @@ describe('Testing /data/api/ endpoint', () => {
 });
 
 describe('Testing /data/download', () => {
-    let page = null;
     const endpoint = 'data/download';
 
     beforeAll(async () => {
-        page = (await browser.pages())[0];
-        await page.goto(domain, { waitUntil: 'networkidle0' });
-        // wait until service worker installs
-        await page.evaluate(waitForServiceWorkers);
-
         //populate table with some data
         await populateTable(
             `${domain}/data/api/jedis1`,
@@ -318,15 +269,9 @@ describe('Testing /data/download', () => {
 });
 
 describe('Testing /data/reset', () => {
-    let page = null;
     const endpoint = 'data/reset';
 
     beforeAll(async () => {
-        page = (await browser.pages())[0];
-        await page.goto(domain, { waitUntil: 'networkidle0' });
-        // wait until service worker installs
-        await page.evaluate(waitForServiceWorkers);
-
         //populate table with some data
         await populateTable(
             `${domain}/data/api/jedis`,
@@ -371,15 +316,7 @@ describe('Testing /data/reset', () => {
 });
 
 describe('Testing /data/upload', () => {
-    let page = null;
     const endpoint = 'data/upload';
-
-    beforeAll(async () => {
-        page = (await browser.pages())[0];
-        await page.goto(domain, { waitUntil: 'networkidle0' });
-        // wait until service worker installs
-        await page.evaluate(waitForServiceWorkers);
-    });
 
     afterAll(async () => {
         // clear indexed db before finishing
