@@ -26,7 +26,7 @@ export default (workbox, ioServer) => {
                     .catch(exist => {
                         pathExist = exist;
                     });
-
+                
                 if (pathExist) {
                     result = await ioServer.serve(path);
                 } else {

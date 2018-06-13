@@ -28,17 +28,19 @@ export const formatDir = (dirPath, entries) => {
     var len = entries.length,
         output = [];
     for (var i = 0; i < len; i++) {
-        let size;
+        let size, filePath;
         if (entries[i].type == 'DIRECTORY') {
             size = entries[i].contents.length;
+            filePath = '/io/in' + path.join(dirPath, entries[i].name);
         } else {
             size = entries[i].size;
+            filePath = '/io/out' + path.join(dirPath, entries[i].name);
         }
         var entry = {
             name: entries[i].name,
             type: entries[i].type,
             size: size,
-            path: '/io/in' + path.join(dirPath, entries[i].name),
+            path: filePath,
         };
         output.push(JSON.stringify(entry));
     }
