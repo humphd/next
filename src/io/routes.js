@@ -31,7 +31,7 @@ export default (workbox, ioServer) => {
                     result = await ioServer.serve(path);
                 } else {
                     // If not, create full path then serve
-                    await ioServer.createPathRecursive(path);
+                    await ioServer.createPath(path);
                     result = await ioServer.serve(path);
                 }
 
@@ -208,7 +208,7 @@ export default (workbox, ioServer) => {
             
             let body, type, status;
             try {
-                const result = await ioServer.deletePathRecursive("/");
+                const result = await ioServer.clearFileSystem();
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
                 console.log(err);

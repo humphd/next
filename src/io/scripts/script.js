@@ -1,4 +1,4 @@
-$(function() {
+addEventListener('DOMContentLoaded', function() {
     var filemanager = $('.filemanager'),
         breadcrumbs = $('.breadcrumbs'),
         fileList = filemanager.find('.data');
@@ -129,9 +129,9 @@ $(function() {
 
         fileList.animate({ display: 'inline-block' });
 
-        $("#uploadform").fadeIn();
+        $('#uploadform').fadeIn();
     }
-    
+
     // Splits a file path and turns it into clickable breadcrumbs
     function generateBreadcrumbs(nextDir) {
         var path = nextDir.substring(nextDir.indexOf('io/in/') + 6);
@@ -326,8 +326,6 @@ $(function() {
                     $input.removeClass('has-focus');
                 });
         });
-
-        
     })(jQuery, window, document);
 
     function handleFileSelect(evt) {
