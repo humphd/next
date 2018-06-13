@@ -1,6 +1,7 @@
 import fs from '../lib/fs';
+import formatFS from '../lib/format-fs';
+var sh = new fs.Shell();
 import Filer from '../../node_modules/filer/dist/filer';
-const sh = new fs.Shell();
 
 import { getMimeType } from './content-type';
 import { formatDir } from './html-formatter';
@@ -256,10 +257,20 @@ export default class {
         });
     }
 
+    // Deletes a given File /A.txt
+    async clearFileSystem() {
+        return new Promise((resolve, reject) => {
+            formatFS(function(err) {
+                if (err) reject(err);
+                resolve();
+            });
+        });
+    }
+
     // Creates a given Path /A
     async createPath(path) {
         return new Promise((resolve, reject) => {
-            fs.mkdir(path, function(err) {
+            sh.mkdirp(path, function(err) {
                 if (err) reject(err);
                 resolve();
             });
