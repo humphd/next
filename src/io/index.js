@@ -45,6 +45,7 @@ export default class {
     }
 
     // Makes FileReader Api work with async/await
+    // Get file as ArrayBuffer
     async readUploadedFileAsArrayBuffer(inputFile) {
         const temporaryFileReader = new FileReader();
         return new Promise((resolve, reject) => {
@@ -57,6 +58,23 @@ export default class {
                 resolve(temporaryFileReader.result);
             };
             temporaryFileReader.readAsArrayBuffer(inputFile);
+        });
+    }
+
+    // Makes FileReader Api work with async/await
+    // Get file as DataURL
+    async readUploadedFileAsDataURL(inputFile) {
+        const temporaryFileReader = new FileReader();
+        return new Promise((resolve, reject) => {
+            temporaryFileReader.onerror = () => {
+                temporaryFileReader.abort();
+                reject(new DOMException('Problem parsing input file.'));
+            };
+
+            temporaryFileReader.onload = () => {
+                resolve(temporaryFileReader.result);
+            };
+            temporaryFileReader.readAsDataURL(inputFile);
         });
     }
 
@@ -90,6 +108,29 @@ export default class {
                 }
             };
             handleUpload(blob);
+        });
+    }
+
+    // Generates a Data URI for the specified file
+    async getFileDataURL(path) {
+        return new Promise((resolve, reject) => {
+            const handle = async () => {
+                try {
+                    const fileInfo = await this.getFileInfo(path);
+                    var contents = fileInfo.body.contents;
+                    var name = fileInfo.body.name;
+                    var file = new File([contents], name, {
+                        type: fileInfo.type,
+                      });
+                    const fileDataURI = await this.readUploadedFileAsDataURL(
+                        file
+                    );
+                    resolve({name: name, dataurl: fileDataURI});
+                } catch (e) {
+                    reject(e.message);
+                }
+            };
+            handle();
         });
     }
 
@@ -159,6 +200,7 @@ export default class {
         });
     }
 
+    // Retrieves a file
     async getFile(path) {
         // TODO: need to add promises to Filer
         return new Promise((resolve, reject) => {
@@ -178,6 +220,34 @@ export default class {
                             resolve({
                                 type: getMimeType(path),
                                 body: contents,
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    // Gets file info
+    async getFileInfo(path) {
+        // TODO: need to add promises to Filer
+        return new Promise((resolve, reject) => {
+            fs.stat(path, (err, stats) => {
+                if (err) {
+                    return reject(err);
+                } else {
+                    // If this is a dir, show a dir listing
+                    if (stats.isDirectory()) {
+                        // Todo: Better error handling needed.
+                        reject("Path does not link to a File.")
+                    } else {
+                        fs.readFile(path, 'utf8', (err, contents) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve({
+                                type: getMimeType(path),
+                                body: {name: stats.name, contents: contents, lastModified: stats.mtime},
                             });
                         });
                     }
