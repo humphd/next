@@ -2,6 +2,8 @@ import { formatDir, format404 } from './html-formatter';
 
 const ioInRegex = /\/io\/in(\/.*)/;
 const ioImportRegex = /\/io\/import/;
+const ioFromTextRegex = /\/io\/from\/text(\/.*)/;
+const ioFromDataURIRegex = /\/io\/from\/dataurl(\/.*)/;
 
 export default (workbox, ioServer) => {
     // @ts-ignore
@@ -62,7 +64,7 @@ export default (workbox, ioServer) => {
                         type = 'text/html';
                     try {
                         var files = JSON.parse(formData.get('file'));
-                        const result = await ioServer.uploadFiles(files);
+                        const result = await ioServer.createFilesFromArrayBuffer(files);
                         body = JSON.stringify(result);
                         status = 200;
                     } catch (err) {
@@ -83,5 +85,57 @@ export default (workbox, ioServer) => {
                 });
         },
         'POST'
+    );
+
+    workbox.routing.registerRoute(
+        ioFromTextRegex,
+        async ({ url }) => {
+            const path = url.pathname.match(ioFromTextRegex)[1];
+            let body,
+                status,
+                type = 'text/html';
+            try {
+                const result = await ioServer.createFileFromEncodedText(path);
+                return Response.redirect(`${url.origin}/io/in${result.path}`);
+            } catch (err) {
+                body = err;
+                status = 404;
+            }
+
+            const init = {
+                status,
+                statusText: 'OK',
+                headers: { 'Content-Type': type },
+            };
+
+            return new Response(body, init);
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioFromDataURIRegex,
+        async ({ url }) => {
+            const path = url.pathname.match(ioFromDataURIRegex)[1];
+            let body,
+                status,
+                type = 'text/html';
+            try {
+                const result = await ioServer.createFileFromEncodedDataURI(path);
+                return Response.redirect(`${url.origin}/io/in${result.path}`);
+            } catch (err) {
+                body = err;
+                status = 404;
+            }
+
+            const init = {
+                status,
+                statusText: 'OK',
+                headers: { 'Content-Type': type },
+            };
+
+            return new Response(body, init);
+        },
+        'GET'
     );
 };
