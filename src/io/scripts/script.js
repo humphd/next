@@ -262,7 +262,7 @@ $(function() {
                             });
 
                             if (res) {
-                                // location.reload();
+                                location.reload();
                             } else {
                                 $form.addClass('is-error');
                                 debugger;
