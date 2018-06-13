@@ -130,7 +130,7 @@ window.addEventListener('load', () => {
     deleteButton.onclick = () => {
         fetch(
             new Request(encodeURI('/data/reset'), {
-                method: 'GET',
+                method: 'DELETE',
                 body: null,
             })
         )

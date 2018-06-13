@@ -217,8 +217,7 @@ export default class {
             }
         } catch (err) {
             err.message = `Unable to download ${this.db.name}.
-            ${err.message}
-            `;
+            ${err.message}`;
             throw err;
         }
         return rc;

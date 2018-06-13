@@ -26,7 +26,7 @@ export default (workbox, db) => {
             }
             return new Response(JSON.stringify({ ok: ok, query: message }));
         },
-        'GET'
+        'DELETE'
     );
 
     workbox.routing.registerRoute(
