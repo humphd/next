@@ -1,6 +1,7 @@
 import { formatDir, format404 } from './html-formatter';
 
 const ioInRegex = /\/io\/in(\/.*)/;
+const ioResetRegex = /\/io\/reset/;
 const ioToRegex = /\/io\/to\/dataurl(\/.*)/;
 const ioOutRegex = /\/io\/out(\/.*)/;
 const ioImportRegex = /\/io\/import/;
@@ -181,6 +182,34 @@ export default (workbox, ioServer) => {
                 body = `File Name: ${result.name} </br> Data URI: ${result.dataurl}`;
                 type = 'text/html';
                 status = 200;
+            } catch (err) {
+                console.log(err);
+                body = err;
+                type = 'text/html';
+                // TODO: should probably do a better job here on mapping to err
+                status = 404;
+            }
+
+            const init = {
+                status,
+                statusText: 'OK',
+                headers: { 'Content-Type': type },
+            };
+
+            return new Response(body, init);
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioResetRegex,
+        async ({ url }) => {
+            const path = url.pathname.match(ioResetRegex)[1];
+            
+            let body, type, status;
+            try {
+                const result = await ioServer.deletePathRecursive("/");
+                return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
                 console.log(err);
                 body = err;
