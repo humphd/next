@@ -14,26 +14,12 @@ export default (workbox, ioServer) => {
         ioInRegex,
         async ({ url }) => {
             const path = url.pathname.match(ioInRegex)[1];
-            let body, type, status, result;
+            let body, type, status;
             try {
                 let pathExist;
                 // Check if path exist
-                await ioServer
-                    .dirExists(path)
-                    .then(exist => {
-                        pathExist = exist;
-                    })
-                    .catch(exist => {
-                        pathExist = exist;
-                    });
-                
-                if (pathExist) {
-                    result = await ioServer.serve(path);
-                } else {
-                    // If not, create full path then serve
-                    await ioServer.createPath(path);
-                    result = await ioServer.serve(path);
-                }
+                const res = await ioServer.createPath(path);
+                const result = await ioServer.serve(path);
 
                 body = result.body;
                 type = result.type;
@@ -93,7 +79,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioFromTextRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioFromTextRegex)[1];
+            const path = decodeURIComponent(url.pathname.match(ioFromTextRegex)[1]);
             let body,
                 status,
                 type = 'text/html';
@@ -119,7 +105,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioFromDataURIRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioFromDataURIRegex)[1];
+            const path = decodeURIComponent(url.pathname.match(ioFromDataURIRegex)[1]);
             let body,
                 status,
                 type = 'text/html';

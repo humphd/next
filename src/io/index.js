@@ -2,7 +2,7 @@ import fs from '../lib/fs';
 var sh = new fs.Shell();
 import formatFS from '../lib/format-fs';
 import buffer from '../lib/buffer';
-import path from '../lib/path';
+import pth from '../lib/path';
 
 import { getMimeType } from './content-type';
 import { formatDir } from './html-formatter';
@@ -19,16 +19,14 @@ export default class {
     // Creates a file from an encoded text
     async createFileFromEncodedText(path) {
         return new Promise((resolve, reject) => {
-            var pathPieces = path.split('/');
-            var file = pathPieces.slice(Math.max(pathPieces.length - 2, 1));
-            file[0] = pathPieces.slice(0, pathPieces.length - 1).join('/');
-            file[1] = atob(file[1]);
-            fs.writeFile(file[0], file[1], function(err) {
+            var text = pth.basename(path);
+            var paths = path.substring(0, path.indexOf(text) - 1);
+            var fileName = pth.basename(paths);
+            var filePath = pth.join(pth.dirname(paths), fileName);
+            
+            fs.writeFile(filePath, text, function(err) {
                 if (err) reject({ success: false, err: err });
-                var pathPieces = file[0].split('/');
-                pathPieces.pop();
-                var finalPath = pathPieces.join('/');
-                resolve({ success: true, path: finalPath});
+                resolve({ success: true, path: pth.dirname(paths)});
             });
         });
     }
@@ -83,17 +81,11 @@ export default class {
     // Creates a file from an encoded data uri
     async createFileFromEncodedDataURI(path) {
         return new Promise((resolve, reject) => {
-            var pathPieces = path
-                .substring(0, path.indexOf('data:'))
-                .split('/')
-                .filter(p => p != '');
-
-            var fileName = pathPieces.pop();
-            var filePath = '/' + pathPieces.join('/');
-            filePath = filePath.replace(/\/?$/, '/');
-
             var dataURL = path.substring(path.indexOf('data:'));
             var blob = this.dataURLtoBlob(dataURL);
+            var paths = path.substring(0, path.indexOf('data:') - 1);
+            var fileName = pth.basename(paths);
+            var filePath = pth.dirname(paths) + "/";
 
             const handleUpload = async blob => {
                 try {
@@ -162,76 +154,17 @@ export default class {
         return results;
     }
 
-    // Creates Paths Recursively /A/B/C
-    async createPathRecursive(paths) {
-        var pathArray = paths
-            .split('/')
-            .filter(path => path != '')
-            .map((path, index, array) => {
-                return '/' + array.slice(0, index + 1).join('/');
-            });
-        const promises = pathArray.map(async path => {
-            return await this.createPath(path);
-        });
-
-        const results = await Promise.all(promises).catch(function(err) {
-            console.log(err.message);
-        });
-
-        return results;
-    }
-
-    // Checks if directory exists
-    async dirExists(path) {
-        return new Promise((resolve, reject) => {
-            fs.stat(path, function(err, stats) {
-                if (err) return reject(false);
-                var exists = stats.type === 'DIRECTORY';
-                resolve(exists);
-            });
-        });
-    }
-
-    async test(path, entries) {
-        const promises = Object.values(entries).map(async p => {
-            if (p.type == "DIRECTORY" && p.contents.length != 0) {
-                return await this.deletePathRecursive(path + "/" + p.name);
-            } else if (p.type == "DIRECTORY" && p.contents.length == 0) {
-                return await this.deleteDirectory(path + "/" + p.name);
-            } else {
-                return await this.deleteFile(path + "/" + p.name);
-            }
-        });
-        const results = await Promise.all(promises).catch(function(err) {
-                console.log(err.message);
-            });
-
-        return results;
-    }
-
     // Deletes everything in Path
-    async deletePathRecursive(path) {
-        var self = this;
+    async deleteDirectoryRecursively(path) {
         return new Promise((resolve, reject) => {
             fs.stat(path, function(err, stats) {
                 if(err) return callback(err);
                 
-                // If this is a dir, show a dir listing
+                // If this is a dir, begin recursive deletion
                 if (stats.isDirectory()) {
-                    sh.ls(path, { recursive: true }, (err, entries) => {
-                        if (err) {
-                            return reject(err);
-                        }
-
-                        const handle = async (path, entries) => {
-                            try {
-                                const r = await self.test(path, entries);
-                                resolve(r);
-                            } catch (e) {
-                                reject(e.message);
-                            }
-                        };
-                        handle(path, entries);
+                    sh.rm(path, { recursive: true }, function(err) {
+                        if(err) reject(err);
+                        resolve();
                     });
                 }
             });
@@ -258,7 +191,7 @@ export default class {
         });
     }
 
-    // Deletes a given File /A.txt
+    // Format filesystem
     async clearFileSystem() {
         return new Promise((resolve, reject) => {
             formatFS(function(err) {
