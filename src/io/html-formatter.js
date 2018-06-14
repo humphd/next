@@ -31,10 +31,14 @@ export const formatDir = (dirPath, entries) => {
         let size, filePath;
         if (entries[i].type == 'DIRECTORY') {
             size = entries[i].contents.length;
-            filePath = '/io/in' + path.join(dirPath, encodeURIComponent(entries[i].name));
+            filePath =
+                '/io/in' +
+                path.join(dirPath, encodeURIComponent(entries[i].name));
         } else {
             size = entries[i].size;
-            filePath = '/io/out' + path.join(dirPath, encodeURIComponent(entries[i].name));
+            filePath =
+                '/io/out' +
+                path.join(dirPath, encodeURIComponent(entries[i].name));
         }
         var entry = {
             name: entries[i].name,
