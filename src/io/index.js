@@ -4,7 +4,7 @@ import formatFS from '../lib/format-fs';
 import buffer from '../lib/buffer';
 import pth from '../lib/path';
 
-import { getMimeType } from './content-type';
+import { getMimeType } from '../web-server/content-type';
 import { formatDir, format404 } from './html-formatter';
 import registerRoutes from './routes';
 
