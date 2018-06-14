@@ -145,7 +145,9 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioOutRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioOutRegex)[1];
+            let path = url.pathname.match(ioOutRegex)[1];
+            path = decodeURIComponent(decodeURIComponent(path));
+
             let body, type, status, result;
             try {
                 result = await ioServer.getFile(path);
@@ -179,7 +181,7 @@ export default (workbox, ioServer) => {
             try {
                 const result = await ioServer.getFileDataURL(path);
                 
-                body = `File Name: ${result.name} </br> Data URI: ${result.dataurl}`;
+                body = `File Name: ${result.name} </br> Data URI: <textarea> ${result.dataurl} </textarea>`;
                 type = 'text/html';
                 status = 200;
             } catch (err) {
