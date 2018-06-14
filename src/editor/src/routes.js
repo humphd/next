@@ -1,30 +1,26 @@
 import fs from '../../lib/fs';
 const sh = new fs.Shell();
-
-// Returns the URL's paths
-function splitURL(urlPath) {
-    return urlPath.substr(6).split('/');
-}
+import path from '../../lib/path';
 
 // Uploads a file into filesystem
-async function getRedirectionLink(url) {
+async function getRedirectionLink(url, editRegex) {
     return new Promise((resolve, reject) => {
-        const path = url.pathname.match(editRegex)[1];
-        const paths = splitURL(url.pathname);
+        const pathDir = url.pathname.match(editRegex)[1];
         let folder, file, redirectURL;
-        fs.stat(path, (err, stats) => {
+        fs.stat(pathDir, (err, stats) => {
             if (err) {
                 var redirectURL = `${url.origin}/editor`;
-                resolve(redirectURL);
+                return reject(redirectURL);
             }
             if (stats.isDirectory()) {
-                folder = paths.join('/');
+                folder = pathDir;
                 redirectURL = `${url.origin}/editor?folder=${folder}`;
             } else {
-                file = paths[paths.length - 1];
-                paths.pop();
-                folder = paths.join('/');
-                redirectURL = `${url.origin}/editor?folder=${folder}&file=${file}`;
+                file = path.basename(pathDir);
+                folder = path.dirname(pathDir);
+                redirectURL = `${
+                    url.origin
+                }/editor?folder=${folder}&file=${file}`;
             }
 
             return resolve(redirectURL);
@@ -35,22 +31,21 @@ async function getRedirectionLink(url) {
 const editRegex = /\/edit(\/.*)/;
 
 export default {
-    init: (workbox) => {
+    init: workbox => {
         // @ts-ignore
         workbox.routing.registerRoute(
             editRegex,
             async ({ url, event }) => {
                 let redirectURL = `${url.origin}/editor`;
                 try {
-                    redirectURL = await getRedirectionLink(url);
+                    redirectURL = await getRedirectionLink(url, editRegex);
+                } catch (err) {
+                    console.error(err);
                 }
-                catch(err) {
-                    console.log(err);
-                }
-                
+
                 return Response.redirect(redirectURL);
             },
             'GET'
         );
-    }
+    },
 };
