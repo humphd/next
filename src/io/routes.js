@@ -1,5 +1,6 @@
-import { formatDir, format404 } from './html-formatter';
+import { format404 } from './html-formatter';
 
+const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
 const ioResetRegex = /\/io\/reset/;
 const ioRemoveRegex = /\/io\/remove\/(.+)/;
@@ -35,6 +36,44 @@ export default (workbox, ioServer) => {
                 headers: { 'Content-Type': type },
             };
 
+            const request = async () => {
+                const response = await fetch('/io.html');
+                const json = await response.text();
+                return json;
+            }
+
+            return request().then(html => {
+                return new Response(html, init);
+            });
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioEntriesRegex,
+        async ({ url }) => {
+            const path = decodeURIComponent(url.pathname.match(ioEntriesRegex)[1]);
+            let body, type, status;
+            try {
+                const res = await ioServer.createPath(path);
+                const result = await ioServer.getEntries(path);
+
+                body = result.body;
+                type = result.type;
+                status = 200;
+            } catch (err) {
+                body = err;
+                type = 'text/html';
+                // TODO: should probably do a better job here on mapping to err
+                status = 404;
+            }
+
+            const init = {
+                status,
+                statusText: 'OK',
+                headers: { 'Content-Type': type },
+            };
+            
             return new Response(body, init);
         },
         'GET'
