@@ -31,10 +31,10 @@ export const formatDir = (dirPath, entries) => {
         let size, filePath;
         if (entries[i].type == 'DIRECTORY') {
             size = entries[i].contents.length;
-            filePath = '/io/in' + path.join(dirPath, entries[i].name);
+            filePath = '/io/in' + path.join(dirPath, encodeURIComponent(entries[i].name));
         } else {
             size = entries[i].size;
-            filePath = '/io/out' + path.join(dirPath, entries[i].name);
+            filePath = '/io/out' + path.join(dirPath, encodeURIComponent(entries[i].name));
         }
         var entry = {
             name: entries[i].name,
@@ -74,6 +74,7 @@ export const formatDir = (dirPath, entries) => {
                                             .split('},')
                                             .map(entry => { if (entry.substr(-1) != '}') entry += '}'; return JSON.parse(entry) });
                             }
+                            console.table(entries);
                         </script>
                         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
                         <script src="/scripts/script.js"></script>

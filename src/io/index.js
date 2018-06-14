@@ -1,7 +1,8 @@
 import fs from '../lib/fs';
-import formatFS from '../lib/format-fs';
 var sh = new fs.Shell();
-import Filer from '../../node_modules/filer/dist/filer';
+import formatFS from '../lib/format-fs';
+import buffer from '../lib/buffer';
+import path from '../lib/path';
 
 import { getMimeType } from './content-type';
 import { formatDir } from './html-formatter';
@@ -138,8 +139,8 @@ export default class {
     // Uploads a file into filesystem
     async createFileFromArrayBuffer(file) {
         return new Promise((resolve, reject) => {
-            var buffer = new Filer.Buffer(file.buffer);
-            fs.writeFile(file.path + file.name, buffer, function(err) {
+            var buf = buffer(file.buffer);
+            fs.writeFile(file.path + file.name, buf, function(err) {
                 if (err) reject({ success: false, err: err });
                 else resolve({ success: true });
             });
