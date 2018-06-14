@@ -110,12 +110,12 @@ addEventListener('DOMContentLoaded', function() {
                     '<a href="/io/in/' +
                     u +
                     '"><span class="folderName">' +
-                    name[name.length - 1] +
+                    fullyDecodeURI(name[name.length - 1]) +
                     '</span></a> <span class="arrow">→</span> ';
             } else {
                 url +=
                     '<span class="folderName">' +
-                    name[name.length - 1] +
+                    fullyDecodeURI(name[name.length - 1]) +
                     '</span>';
             }
         });
@@ -171,6 +171,20 @@ addEventListener('DOMContentLoaded', function() {
         .addEventListener('click', importFiles, false);
 });
 
+function isEncoded(uri) {
+    uri = uri || '';
+
+    return uri !== decodeURIComponent(uri);
+}
+
+function fullyDecodeURI(uri) {
+    while (isEncoded(uri)) {
+        uri = decodeURIComponent(uri);
+    }
+
+    return uri;
+}
+
 // Splits a file path and turns it into clickable breadcrumbs
 function generateBreadcrumbs(nextDir) {
     let path = nextDir.substring(nextDir.indexOf('io/in/') + 6);
@@ -200,7 +214,7 @@ function handleFileSelect(evt) {
             let buf = new Int8Array(e.target.result);
             let nextDir = window.location.href;
             let path = nextDir.substring(nextDir.indexOf('io/in/') + 5);
-            path = path.replace(/\/?$/, '/');
+            path = deciodeURIComponent(path.replace(/\/?$/, '/'));
             bufferFiles.push({ name: file.name, buffer: buf, path: path });
         };
         reader.readAsArrayBuffer(file);

@@ -16,19 +16,20 @@ export default class {
         registerRoutes(workbox, this);
     }
 
-    // Creates a file from an encoded text
-    async createFileFromEncodedText(path) {
-        return new Promise((resolve, reject) => {
-            var text = pth.basename(path);
-            var paths = path.substring(0, path.indexOf(text) - 1);
-            var fileName = pth.basename(paths);
-            var filePath = pth.join(pth.dirname(paths), fileName);
-
-            fs.writeFile(filePath, text, function(err) {
-                if (err) return reject({ success: false, err: err });
-                resolve({ success: true, path: pth.dirname(paths) });
-            });
-        });
+    // Checks if URI is encoded
+    isEncoded(uri) {
+        uri = uri || '';
+    
+        return uri !== decodeURIComponent(uri);
+    }
+    
+    // Completely decodes URI
+    fullyDecodeURI(uri) {
+        while (this.isEncoded(uri)) {
+            uri = decodeURIComponent(uri);
+        }
+    
+        return uri;
     }
 
     // Converts Data URL to a Blob
@@ -42,6 +43,21 @@ export default class {
             u8arr[n] = bstr.charCodeAt(n);
         }
         return new Blob([u8arr], { type: mime });
+    }
+
+    // Creates a file from an encoded text
+    async createFileFromEncodedText(path) {
+        return new Promise((resolve, reject) => {
+            var text = pth.basename(path);
+            var paths = path.substring(0, path.indexOf(text) - 1);
+            var fileName = pth.basename(paths);
+            var filePath = pth.join(pth.dirname(paths), fileName);
+
+            fs.writeFile(filePath, text, function(err) {
+                if (err) return reject({ success: false, err: err });
+                resolve({ success: true, path: pth.dirname(paths) });
+            });
+        });
     }
 
     // Makes FileReader Api work with async/await
@@ -143,6 +159,7 @@ export default class {
     async createFilesFromArrayBuffer(files) {
         const promises = files.map(async file => {
             file.buffer = Object.values(file.buffer);
+            file.path = this.fullyDecodeURI(file.path);
             const result = await this.createFileFromArrayBuffer(file);
             return result;
         });
