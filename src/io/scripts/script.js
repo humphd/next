@@ -1,12 +1,13 @@
 addEventListener('DOMContentLoaded', function() {
+    ('use strict');
+
     var filemanager = $('.filemanager'),
         breadcrumbs = $('.breadcrumbs'),
-        fileList = filemanager.find('.data');
+        fileList = filemanager.find('.data'),
+        breadcrumbsUrls = [],
+        bufferFiles = [];
 
-    var breadcrumbsUrls = [];
-
-    // Start by fetching the file data from scan.php with an AJAX request
-
+    // Render UI
     function render(entries) {
         var scannedFolders = [],
             scannedFiles = [];
@@ -144,17 +145,12 @@ addEventListener('DOMContentLoaded', function() {
     }
 
     // Convert file sizes from bytes to human readable units
-
     function bytesToSize(bytes) {
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         if (bytes == 0) return '0 Bytes';
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
-
-    var bufferFiles = [];
-
-    ('use strict');
 
     (function($, window, document, undefined) {
         // feature detection for drag&drop upload
@@ -328,6 +324,7 @@ addEventListener('DOMContentLoaded', function() {
         });
     })(jQuery, window, document);
 
+    // Handles when file is added
     function handleFileSelect(evt) {
         bufferFiles = [];
         var files = evt.target.files;

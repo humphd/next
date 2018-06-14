@@ -5,7 +5,7 @@ import buffer from '../lib/buffer';
 import pth from '../lib/path';
 
 import { getMimeType } from './content-type';
-import { formatDir } from './html-formatter';
+import { formatDir, format404 } from './html-formatter';
 import registerRoutes from './routes';
 
 /**
@@ -23,10 +23,10 @@ export default class {
             var paths = path.substring(0, path.indexOf(text) - 1);
             var fileName = pth.basename(paths);
             var filePath = pth.join(pth.dirname(paths), fileName);
-            
+
             fs.writeFile(filePath, text, function(err) {
-                if (err) reject({ success: false, err: err });
-                resolve({ success: true, path: pth.dirname(paths)});
+                if (err) return reject({ success: false, err: err });
+                resolve({ success: true, path: pth.dirname(paths) });
             });
         });
     }
@@ -51,7 +51,7 @@ export default class {
         return new Promise((resolve, reject) => {
             temporaryFileReader.onerror = () => {
                 temporaryFileReader.abort();
-                reject(new DOMException('Problem parsing input file.'));
+                return reject('Problem parsing input file.');
             };
 
             temporaryFileReader.onload = () => {
@@ -68,7 +68,7 @@ export default class {
         return new Promise((resolve, reject) => {
             temporaryFileReader.onerror = () => {
                 temporaryFileReader.abort();
-                reject(new DOMException('Problem parsing input file.'));
+                return reject('Problem parsing input file.');
             };
 
             temporaryFileReader.onload = () => {
@@ -85,7 +85,7 @@ export default class {
             var blob = this.dataURLtoBlob(dataURL);
             var paths = path.substring(0, path.indexOf('data:') - 1);
             var fileName = pth.basename(paths);
-            var filePath = pth.dirname(paths) + "/";
+            var filePath = pth.dirname(paths) + '/';
 
             const handleUpload = async blob => {
                 try {
@@ -98,7 +98,7 @@ export default class {
                     result.path = filePath;
                     resolve(result);
                 } catch (e) {
-                    reject(e.message);
+                    return reject(e.message);
                 }
             };
             handleUpload(blob);
@@ -115,13 +115,13 @@ export default class {
                     var name = fileInfo.body.name;
                     var file = new File([contents], name, {
                         type: fileInfo.type,
-                      });
+                    });
                     const fileDataURI = await this.readUploadedFileAsDataURL(
                         file
                     );
-                    resolve({name: name, dataurl: fileDataURI});
+                    resolve({ name: name, dataurl: fileDataURI });
                 } catch (e) {
-                    reject(e.message);
+                    return reject(e.message);
                 }
             };
             handle();
@@ -133,7 +133,7 @@ export default class {
         return new Promise((resolve, reject) => {
             var buf = buffer(file.buffer);
             fs.writeFile(file.path + file.name, buf, function(err) {
-                if (err) reject({ success: false, err: err });
+                if (err) return reject({ success: false, err: err });
                 else resolve({ success: true });
             });
         });
@@ -147,24 +147,25 @@ export default class {
             return result;
         });
 
-        const results = await Promise.all(promises).catch(function(err) {
-            console.log(err.message);
-        });
-
-        return results;
+        return await Promise.all(promises);
     }
 
     // Deletes everything in Path
-    async deleteDirectoryRecursively(path) {
+    async deletePathRecursively(path) {
         return new Promise((resolve, reject) => {
             fs.stat(path, function(err, stats) {
-                if(err) return callback(err);
-                
+                if (err) return reject(format404(path));
+
                 // If this is a dir, begin recursive deletion
                 if (stats.isDirectory()) {
                     sh.rm(path, { recursive: true }, function(err) {
-                        if(err) reject(err);
-                        resolve();
+                        if (err) return reject(err);
+                        resolve(`Successfully removed ${path}.`);
+                    });
+                } else {
+                    fs.unlink(path, function(err) {
+                        if (err) return reject(err);
+                        resolve(`Successfully removed ${path}.`);
                     });
                 }
             });
@@ -175,7 +176,7 @@ export default class {
     async deleteDirectory(path) {
         return new Promise((resolve, reject) => {
             fs.rmdir(path, function(err) {
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve();
             });
         });
@@ -185,7 +186,7 @@ export default class {
     async deleteFile(path) {
         return new Promise((resolve, reject) => {
             fs.unlink(path, function(err) {
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve();
             });
         });
@@ -195,7 +196,7 @@ export default class {
     async clearFileSystem() {
         return new Promise((resolve, reject) => {
             formatFS(function(err) {
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve();
             });
         });
@@ -205,7 +206,7 @@ export default class {
     async createPath(path) {
         return new Promise((resolve, reject) => {
             sh.mkdirp(path, function(err) {
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve();
             });
         });
@@ -222,7 +223,7 @@ export default class {
                     // If this is a dir, show a dir listing
                     if (stats.isDirectory()) {
                         // Todo: Better error handling needed.
-                        reject("Path does not link to a File.")
+                        return reject('Path does not link to a File.');
                     } else {
                         fs.readFile(path, (err, contents) => {
                             if (err) {
@@ -250,7 +251,7 @@ export default class {
                     // If this is a dir, show a dir listing
                     if (stats.isDirectory()) {
                         // Todo: Better error handling needed.
-                        reject("Path does not link to a File.")
+                        return reject('Path does not link to a File.');
                     } else {
                         fs.readFile(path, 'utf8', (err, contents) => {
                             if (err) {
@@ -258,7 +259,11 @@ export default class {
                             }
                             resolve({
                                 type: getMimeType(path),
-                                body: {name: stats.name, contents: contents, lastModified: stats.mtime},
+                                body: {
+                                    name: stats.name,
+                                    contents: contents,
+                                    lastModified: stats.mtime,
+                                },
                             });
                         });
                     }
