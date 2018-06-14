@@ -13,7 +13,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioInRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioInRegex)[1];
+            const path = decodeURIComponent(url.pathname.match(ioInRegex)[1]);
             let body, type, status;
             try {
                 const res = await ioServer.createPath(path);
@@ -43,7 +43,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioRemoveRegex,
         async ({ url }) => {
-            const path = '/' + url.pathname.match(ioRemoveRegex)[1];
+            const path = '/' + decodeURIComponent(url.pathname.match(ioRemoveRegex)[1]);
             let body, type, status;
             try {
                 const result = await ioServer.deletePathRecursively(path);
@@ -193,7 +193,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioToRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioToRegex)[1];
+            const path = decodeURIComponent(url.pathname.match(ioToRegex)[1]);
 
             let body, type, status;
             try {
@@ -226,7 +226,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioResetRegex,
         async ({ url }) => {
-            const path = url.pathname.match(ioResetRegex)[1];
+            const path = decodeURIComponent(url.pathname.match(ioResetRegex)[1]);
 
             let body, type, status;
             try {
