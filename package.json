@@ -12,6 +12,7 @@
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
+        "postbuild-server": "parcel build src/io/io.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
         "build-terminal":
