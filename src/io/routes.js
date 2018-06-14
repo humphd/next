@@ -14,7 +14,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioInRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(url.pathname.match(ioInRegex)[1]);
+            const path = ioServer.fullyDecodeURI(url.pathname.match(ioInRegex)[1]);
             let body, type, status;
             try {
                 const res = await ioServer.createPath(path);
@@ -40,7 +40,7 @@ export default (workbox, ioServer) => {
                 const response = await fetch('/io.html');
                 const json = await response.text();
                 return json;
-            }
+            };
 
             return request().then(html => {
                 return new Response(html, init);
@@ -52,7 +52,9 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioEntriesRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(url.pathname.match(ioEntriesRegex)[1]);
+            const path = ioServer.fullyDecodeURI(
+                url.pathname.match(ioEntriesRegex)[1]
+            );
             let body, type, status;
             try {
                 const res = await ioServer.createPath(path);
@@ -73,7 +75,7 @@ export default (workbox, ioServer) => {
                 statusText: 'OK',
                 headers: { 'Content-Type': type },
             };
-            
+
             return new Response(body, init);
         },
         'GET'
@@ -82,7 +84,8 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioRemoveRegex,
         async ({ url }) => {
-            const path = '/' + decodeURIComponent(url.pathname.match(ioRemoveRegex)[1]);
+            const path =
+                '/' + ioServer.fullyDecodeURI(url.pathname.match(ioRemoveRegex)[1]);
             let body, type, status;
             try {
                 const result = await ioServer.deletePathRecursively(path);
@@ -144,7 +147,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioFromTextRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(
+            const path = ioServer.fullyDecodeURI(
                 url.pathname.match(ioFromTextRegex)[1]
             );
             let body,
@@ -172,7 +175,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioFromDataURIRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(
+            const path = ioServer.fullyDecodeURI(
                 url.pathname.match(ioFromDataURIRegex)[1]
             );
             let body,
@@ -203,7 +206,7 @@ export default (workbox, ioServer) => {
         ioOutRegex,
         async ({ url }) => {
             let path = url.pathname.match(ioOutRegex)[1];
-            path = decodeURIComponent(decodeURIComponent(path));
+            path = ioServer.fullyDecodeURI(path);
 
             let body, type, status, result;
             try {
@@ -232,7 +235,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioToRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(url.pathname.match(ioToRegex)[1]);
+            const path = ioServer.fullyDecodeURI(url.pathname.match(ioToRegex)[1]);
 
             let body, type, status;
             try {
@@ -265,7 +268,9 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioResetRegex,
         async ({ url }) => {
-            const path = decodeURIComponent(url.pathname.match(ioResetRegex)[1]);
+            const path = ioServer.fullyDecodeURI(
+                url.pathname.match(ioResetRegex)[1]
+            );
 
             let body, type, status;
             try {
