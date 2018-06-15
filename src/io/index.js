@@ -4,13 +4,10 @@ import formatFS from '../lib/format-fs';
 import buffer from '../lib/buffer';
 import pth from '../lib/path';
 
-import { getMimeType } from '../web-server/content-type';
-import { format404, formatEntries } from './html-formatter';
+import { getMimeType } from '../lib/content-type';
+import { format404, formatEntries, notAFile } from '../lib/html-formatter';
 import registerRoutes from './routes';
 
-/**
- *
- */
 export default class {
     init(workbox) {
         registerRoutes(workbox, this);
@@ -19,16 +16,16 @@ export default class {
     // Checks if URI is encoded
     isEncoded(uri) {
         uri = uri || '';
-    
+
         return uri !== decodeURIComponent(uri);
     }
-    
+
     // Completely decodes URI
     fullyDecodeURI(uri) {
         while (this.isEncoded(uri)) {
             uri = decodeURIComponent(uri);
         }
-    
+
         return uri;
     }
 
@@ -49,25 +46,38 @@ export default class {
     async createFileFromEncodedText(path) {
         return new Promise((resolve, reject) => {
             var text = pth.basename(path);
-            var paths = path.substring(0, path.indexOf(text) - 1);
+            var paths = pth.join(path, '..');
             var fileName = pth.basename(paths);
-            var filePath = pth.join(pth.dirname(paths), fileName);
+            var directory = pth.dirname(paths);
+            var filePath = pth.join(directory, fileName);
 
-            fs.writeFile(filePath, text, function(err) {
-                if (err) return reject({ success: false, err: err });
-                resolve({ success: true, path: pth.dirname(paths) });
-            });
+            const createPath = async directory => {
+                const result = await this.createPath(directory);
+                fs.writeFile(filePath, text, function(err) {
+                    if (err) {
+                        return reject({
+                            success: false,
+                            err: err,
+                        });
+                    }
+                    resolve({
+                        success: true,
+                        path: pth.dirname(paths),
+                    });
+                });
+            };
+            const result = createPath(directory);
         });
     }
 
     // Makes FileReader Api work with async/await
     // Get file as ArrayBuffer
     async readUploadedFileAsArrayBuffer(inputFile) {
-        const temporaryFileReader = new FileReader();
         return new Promise((resolve, reject) => {
+            const temporaryFileReader = new FileReader();
             temporaryFileReader.onerror = () => {
                 temporaryFileReader.abort();
-                return reject('Problem parsing input file.');
+                reject('Problem parsing input file.');
             };
 
             temporaryFileReader.onload = () => {
@@ -80,11 +90,11 @@ export default class {
     // Makes FileReader Api work with async/await
     // Get file as DataURL
     async readUploadedFileAsDataURL(inputFile) {
-        const temporaryFileReader = new FileReader();
         return new Promise((resolve, reject) => {
+            const temporaryFileReader = new FileReader();
             temporaryFileReader.onerror = () => {
                 temporaryFileReader.abort();
-                return reject('Problem parsing input file.');
+                reject('Problem parsing input file.');
             };
 
             temporaryFileReader.onload = () => {
@@ -99,12 +109,13 @@ export default class {
         return new Promise((resolve, reject) => {
             var dataURL = path.substring(path.indexOf('data:'));
             var blob = this.dataURLtoBlob(dataURL);
-            var paths = path.substring(0, path.indexOf('data:') - 1);
+            var paths = pth.join(path, '../..');
             var fileName = pth.basename(paths);
             var filePath = pth.dirname(paths) + '/';
 
-            const handleUpload = async blob => {
+            const handleImport = async (blob, filePath) => {
                 try {
+                    const res = await this.createPath(filePath);
                     const fileContents = await this.readUploadedFileAsArrayBuffer(
                         blob
                     );
@@ -114,10 +125,10 @@ export default class {
                     result.path = filePath;
                     resolve(result);
                 } catch (e) {
-                    return reject(e.message);
+                    reject(e.message);
                 }
             };
-            handleUpload(blob);
+            handleImport(blob, filePath);
         });
     }
 
@@ -127,17 +138,23 @@ export default class {
             const handle = async () => {
                 try {
                     const fileInfo = await this.getFileInfo(path);
+
                     var contents = fileInfo.body.contents;
-                    var name = fileInfo.body.name;
-                    var file = new File([contents], name, {
+                    var file = new File([contents], fileInfo.body.name, {
                         type: fileInfo.type,
+                        lastModified: fileInfo.body.lastModified,
                     });
+
                     const fileDataURI = await this.readUploadedFileAsDataURL(
                         file
                     );
-                    resolve({ name: name, dataurl: fileDataURI });
+
+                    resolve({
+                        name: fileInfo.body.name,
+                        dataurl: fileDataURI,
+                    });
                 } catch (e) {
-                    return reject(e.message);
+                    reject(e);
                 }
             };
             handle();
@@ -149,8 +166,15 @@ export default class {
         return new Promise((resolve, reject) => {
             var buf = buffer(file.buffer);
             fs.writeFile(file.path + file.name, buf, function(err) {
-                if (err) return reject({ success: false, err: err });
-                else resolve({ success: true });
+                if (err) {
+                    return reject({
+                        success: false,
+                        err: err,
+                    });
+                }
+                resolve({
+                    success: true,
+                });
             });
         });
     }
@@ -160,51 +184,20 @@ export default class {
         const promises = files.map(async file => {
             file.buffer = Object.values(file.buffer);
             file.path = this.fullyDecodeURI(file.path);
-            const result = await this.createFileFromArrayBuffer(file);
-            return result;
+            return await this.createFileFromArrayBuffer(file);
         });
 
         return await Promise.all(promises);
     }
 
     // Deletes everything in Path
-    async deletePathRecursively(path) {
+    async deletePath(path) {
         return new Promise((resolve, reject) => {
-            fs.stat(path, function(err, stats) {
-                if (err) return reject(format404(path));
-
-                // If this is a dir, begin recursive deletion
-                if (stats.isDirectory()) {
-                    sh.rm(path, { recursive: true }, function(err) {
-                        if (err) return reject(err);
-                        resolve(`Successfully removed ${path}.`);
-                    });
-                } else {
-                    fs.unlink(path, function(err) {
-                        if (err) return reject(err);
-                        resolve(`Successfully removed ${path}.`);
-                    });
+            sh.rm(path, { recursive: true }, function(err) {
+                if (err) {
+                    return reject(err);
                 }
-            });
-        });
-    }
-
-    // Deletes a given Directory /A
-    async deleteDirectory(path) {
-        return new Promise((resolve, reject) => {
-            fs.rmdir(path, function(err) {
-                if (err) return reject(err);
-                resolve();
-            });
-        });
-    }
-
-    // Deletes a given File /A.txt
-    async deleteFile(path) {
-        return new Promise((resolve, reject) => {
-            fs.unlink(path, function(err) {
-                if (err) return reject(err);
-                resolve();
+                resolve(`Successfully removed ${path}.`);
             });
         });
     }
@@ -213,7 +206,9 @@ export default class {
     async clearFileSystem() {
         return new Promise((resolve, reject) => {
             formatFS(function(err) {
-                if (err) return reject(err);
+                if (err) {
+                    return reject(err);
+                }
                 resolve();
             });
         });
@@ -223,7 +218,9 @@ export default class {
     async createPath(path) {
         return new Promise((resolve, reject) => {
             sh.mkdirp(path, function(err) {
-                if (err) return reject(err);
+                if (err) {
+                    return reject(err);
+                }
                 resolve();
             });
         });
@@ -249,7 +246,7 @@ export default class {
                             });
                         });
                     } else {
-                        return reject('Path does not link to a Directory.');
+                        reject('Path does not link to a Directory.');
                     }
                 }
             });
@@ -290,14 +287,15 @@ export default class {
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
                 if (err) {
-                    return reject(err);
+                    reject(err);
                 } else {
                     // If this is a dir, show a dir listing
                     if (stats.isDirectory()) {
                         // Todo: Better error handling needed.
-                        return reject('Path does not link to a File.');
+                        reject(notAFile(path));
                     } else {
-                        fs.readFile(path, 'utf8', (err, contents) => {
+                        console.log('7');
+                        fs.readFile(path, (err, contents) => {
                             if (err) {
                                 return reject(err);
                             }

@@ -1,4 +1,4 @@
-import { format404 } from './html-formatter';
+import { format404 } from '../lib/html-formatter';
 
 const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
@@ -10,19 +10,25 @@ const ioImportRegex = /\/io\/import/;
 const ioFromTextRegex = /\/io\/from\/text(\/.*)/;
 const ioFromDataURIRegex = /\/io\/from\/dataurl(\/.*)/;
 
+// Handles the response status
+function handleResponseStatus(status, type) {
+    return {
+        status,
+        statusText: 'OK',
+        headers: { 'Content-Type': type },
+    };
+}
+
 export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioInRegex,
         async ({ url }) => {
-            const path = ioServer.fullyDecodeURI(url.pathname.match(ioInRegex)[1]);
+            const path = ioServer.fullyDecodeURI(
+                url.pathname.match(ioInRegex)[1]
+            );
             let body, type, status;
             try {
-                const res = await ioServer.createPath(path);
-                const result = await ioServer.serve(path);
-
-                body = result.body;
-                type = result.type;
-                status = 200;
+                const result = await ioServer.createPath(path);
             } catch (err) {
                 body = err;
                 type = 'text/html';
@@ -30,16 +36,11 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             const request = async () => {
                 const response = await fetch('/io.html');
-                const json = await response.text();
-                return json;
+                return await response.text();
             };
 
             return request().then(html => {
@@ -70,11 +71,7 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -85,23 +82,22 @@ export default (workbox, ioServer) => {
         ioRemoveRegex,
         async ({ url }) => {
             const path =
-                '/' + ioServer.fullyDecodeURI(url.pathname.match(ioRemoveRegex)[1]);
+                '/' +
+                ioServer.fullyDecodeURI(url.pathname.match(ioRemoveRegex)[1]);
             let body, type, status;
             try {
-                const result = await ioServer.deletePathRecursively(path);
+                const result = await ioServer.deletePath(path);
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
-                body = err;
+                // Need better way, for now just claiming directory doesn't exist
+                // body = err;
+                body = format404(path);
                 type = 'text/html';
                 // TODO: should probably do a better job here on mapping to err
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -129,11 +125,7 @@ export default (workbox, ioServer) => {
                         status = 404;
                     }
 
-                    const init = {
-                        status,
-                        statusText: 'OK',
-                        headers: { 'Content-Type': type },
-                    };
+                    const init = handleResponseStatus(status, type);
 
                     return new Response(body, init);
                 })
@@ -161,11 +153,7 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -191,11 +179,7 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -221,11 +205,7 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -235,30 +215,37 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioToRegex,
         async ({ url }) => {
-            const path = ioServer.fullyDecodeURI(url.pathname.match(ioToRegex)[1]);
+            const path = ioServer.fullyDecodeURI(
+                url.pathname.match(ioToRegex)[1]
+            );
 
             let body, type, status;
             try {
                 const result = await ioServer.getFileDataURL(path);
 
-                body = `File Name: ${result.name} </br> Data URI: <textarea> ${
-                    result.dataurl
-                } </textarea>`;
+                body = `
+                    File Name: ${result.name} </br> </br>
+                    Data URI: </br>
+                    <textarea style="width: 600px;
+                                               height: 120px;
+                                               border: 3px solid #cccccc;
+                                               padding: 5px;
+                                               font-family: Tahoma, sans-serif;
+                                               background-position: bottom right;
+                                               background-repeat: no-repeat;"> ${
+                                                   result.dataurl
+                                               } </textarea>
+                `;
                 type = 'text/html';
                 status = 200;
             } catch (err) {
-                console.log(err);
                 body = err;
                 type = 'text/html';
                 // TODO: should probably do a better job here on mapping to err
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },
@@ -284,11 +271,7 @@ export default (workbox, ioServer) => {
                 status = 404;
             }
 
-            const init = {
-                status,
-                statusText: 'OK',
-                headers: { 'Content-Type': type },
-            };
+            const init = handleResponseStatus(status, type);
 
             return new Response(body, init);
         },

@@ -1,4 +1,4 @@
-import { format404 } from './html-formatter';
+import { format404 } from '../lib/html-formatter';
 
 const wwwRegex = /\/www(\/.*)/;
 
