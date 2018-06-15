@@ -215,12 +215,12 @@ export default class {
                     data: await table.toArray(),
                 };
             }
+            return rc;
         } catch (err) {
             err.message = `Unable to download ${this.db.name}.
             ${err.message}`;
             throw err;
         }
-        return rc;
     }
 
     async upload(bulk) {

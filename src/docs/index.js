@@ -3,7 +3,7 @@ export default {
         // Cache main docs content
         workbox.routing.registerRoute(
             /\b(blog|css|docs|en|img).*/,
-            workbox.strategies.networkFirst()
+            workbox.strategies.staleWhileRevalidate()
         );
     },
 };
