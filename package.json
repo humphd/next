@@ -34,7 +34,8 @@
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
-        "v86": "humphd/v86#filer-9p-lastknowngood"
+        "v86": "humphd/v86#filer-9p-lastknowngood",
+        "xterm": "^3.4.1"
     },
     "devDependencies": {
         "babel-plugin-transform-runtime": "^6.23.0",
