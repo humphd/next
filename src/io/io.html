@@ -16,18 +16,16 @@
         </div>
         </br>
     </div>
-    <div id="dragndrop">
-        <div id="drop-area">
-            <form class="my-form" method="post" action="/io/import" enctype="multipart/form-data">
-                <p>Upload multiple files with the file dialog or by dragging and dropping files onto the dashed region</p>
-                <input type="file" id="fileElem" multiple>
-                <br>
-                <label class="button" for="fileElem">Select some files</label>
-                <div id="gallery"></div>
-                <br>
-                <button type="button" class="button submit" id="submit-btn">Import</button>
-            </form>
-        </div>
+    <div id="drop-area">
+        <form class="my-form" method="post" action="/io/import" enctype="multipart/form-data">
+            <p>Upload multiple files with the file dialog or by dragging and dropping files onto the dashed region</p>
+            <input type="file" id="fileElem" multiple>
+            <br>
+            <label class="button" for="fileElem">Select some files</label>
+            <div id="gallery"></div>
+            <br>
+            <button type="button" class="button submit" id="submit-btn">Import</button>
+        </form>
     </div>
     <script src="./io.js"></script>
 </body>
