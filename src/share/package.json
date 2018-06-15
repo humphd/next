@@ -1,0 +1,25 @@
+{
+    "name": "torrent",
+    "version": "1.0.0",
+    "description": "npm install",
+    "main": "index.js",
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "browserify main.js -o mainjs.js",
+        "start-import": "browserify imp.js -o import.js",
+        "start-export": "browserify exp.js -o export.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "browserify": "^16.2.2",
+        "browserify-fs": "^1.0.0",
+        "drag-drop": "^4.1.0",
+        "filer": "0.0.44",
+        "idb-chunk-store": "^0.2.0",
+        "ramda": "^0.25.0",
+        "webtorrent": "^0.99.4"
+    }
+}
