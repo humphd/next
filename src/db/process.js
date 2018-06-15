@@ -3,7 +3,7 @@ const submitForm = () => {
     const bodyElement = window.document.getElementById('body');
     const methodElement = document.getElementById('method');
 
-    let url = `${window.location.hostname}/data/api/`;
+    let url = `${window.location.hostname}`;
 
     let body =
         // @ts-ignore

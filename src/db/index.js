@@ -16,6 +16,7 @@ export default class {
 
     init(workbox) {
         registerRoutes(workbox, this);
+        this.openDB();
     }
 
     /**
@@ -37,7 +38,7 @@ export default class {
         sch[tableName] = schema;
         this.db.version(this.version).stores(sch);
 
-        await this.db.open();
+        await this.openDB();
         return this._getTableIfExists(tableName);
     }
 
@@ -92,7 +93,6 @@ export default class {
                     schema: schema ? schema : '_id++',
                 });
             } catch (err) {
-                console.error(err);
                 err.message = `Unable to create table ${tableName}. ${
                     err.message
                 }`;
@@ -188,7 +188,6 @@ export default class {
         // check to see if it is a number, since dexie is doing a strict comparison.
         const num = parseFloat(value);
         query[propertyName] = isNaN(num) ? value : num;
-        console.log(JSON.stringify(query) + ' ' + tableName);
         if (!propertyName) {
             await this._modifyDB({ tableName: tableName, schema: null });
             // a single table was deleted
@@ -198,6 +197,58 @@ export default class {
                 .table(tableName)
                 .where(query)
                 .delete();
+        }
+    }
+
+    async download() {
+        await this.openDB();
+        const rc = {};
+        try {
+            for (const table of this.db.tables) {
+                let schema = table.schema.indexes.reduce(
+                    (acc, index) => acc + `,${index.src}`,
+                    ''
+                );
+                schema = table.schema.primKey.src + schema;
+                rc[table.name] = {
+                    schema: schema,
+                    data: await table.toArray(),
+                };
+            }
+            return rc;
+        } catch (err) {
+            err.message = `Unable to download ${this.db.name}.
+            ${err.message}`;
+            throw err;
+        }
+    }
+
+    async upload(bulk) {
+        const tables = Object.keys(bulk);
+        const dbSchema = {};
+        tables.forEach(table => {
+            dbSchema[table] = bulk[table].schema;
+        });
+        // clear old version of the db
+        await this.delete();
+
+        this.version = 1;
+        this.db.version(this.version).stores(dbSchema);
+
+        // create a new instance
+        await this.db.open();
+
+        tables.forEach(table => {
+            this.db[table].bulkAdd(bulk[table].data);
+        });
+    }
+
+    async delete(createNew = false) {
+        this.db.close();
+        await this.db.delete();
+
+        if (createNew) {
+            await this.openDB();
         }
     }
 }
