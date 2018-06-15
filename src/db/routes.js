@@ -2,29 +2,40 @@
 const pathFromUrl = (url, match = '') => {
     return url.substr(url.indexOf(match) + match.length + 1).split('/');
 };
+
+const constructResponse = async func => {
+    let message = null;
+    let ok = true;
+    try {
+        message = await func();
+    } catch (err) {
+        console.error(err);
+        message = err.message;
+        ok = false;
+    }
+    return new Response(JSON.stringify({ ok: ok, message: message }));
+};
+
+const constructInternalError = async message => {
+    return new Response(JSON.stringify({ ok: false, message: message }), {
+        status: 500,
+        statusText: 'Internal Server Error',
+    });
+};
 // endpoints to be trimmed from urls
 const apiUrl = 'data/api';
 
 // regex to match different endpoints
-const apiRegex = /\/data\/api.*/,
-    uploadRegex = /\/data\/upload.*/,
-    downloadRegex = /\/data\/download.*/,
-    resetRegex = /\/data\/reset.*/;
+const apiRegex = /\/data\/api.*/;
+const uploadRegex = /\/data\/upload.*/;
+const downloadRegex = /\/data\/download.*/;
+const resetRegex = /\/data\/reset.*/;
 
 export default (workbox, db) => {
     workbox.routing.registerRoute(
         resetRegex,
         async () => {
-            let message = null;
-            let ok = true;
-            try {
-                message = await db.delete(true);
-            } catch (err) {
-                console.error(err);
-                message = err.message;
-                ok = false;
-            }
-            return new Response(JSON.stringify({ ok: ok, query: message }));
+            return await constructResponse(db.delete.bind(db, true));
         },
         'DELETE'
     );
@@ -32,16 +43,7 @@ export default (workbox, db) => {
     workbox.routing.registerRoute(
         downloadRegex,
         async () => {
-            let message = null;
-            let ok = true;
-            try {
-                message = await db.download();
-            } catch (err) {
-                console.error(err);
-                message = err.message;
-                ok = false;
-            }
-            return new Response(JSON.stringify({ ok: ok, query: message }));
+            return await constructResponse(db.download.bind(db));
         },
         'GET'
     );
@@ -49,18 +51,15 @@ export default (workbox, db) => {
     workbox.routing.registerRoute(
         uploadRegex,
         async ({ event }) => {
-            return event.request.json().then(async payload => {
-                let message = null;
-                let ok = true;
-                try {
-                    await db.upload(payload);
-                } catch (err) {
-                    console.error(err);
-                    message = err.message;
-                    ok = false;
-                }
-                return new Response(JSON.stringify({ ok: ok, query: message }));
-            });
+            let payload = null;
+            try {
+                payload = await event.request.json();
+            } catch (err) {
+                return constructInternalError(
+                    'Request body is not a valid JSON.'
+                );
+            }
+            return await constructResponse(db.upload.bind(db, payload));
         },
         'POST'
     );
@@ -70,20 +69,13 @@ export default (workbox, db) => {
         apiRegex,
         async ({ url }) => {
             const params = pathFromUrl(url.pathname, apiUrl);
-            let message = null;
-            let ok = true;
-            try {
-                message = await db.getData({
+            return await constructResponse(
+                db.getData.bind(db, {
                     tableName: params[0],
                     propertyName: params[1],
                     value: params[2],
-                });
-            } catch (err) {
-                console.error(err);
-                message = err.message;
-                ok = false;
-            }
-            return new Response(JSON.stringify({ ok: ok, query: message }));
+                })
+            );
         },
         'GET'
     );
@@ -91,24 +83,23 @@ export default (workbox, db) => {
     // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
-        ({ url, event }) => {
-            return event.request.json().then(async payload => {
-                const params = pathFromUrl(url.pathname, apiUrl);
-                let message = '';
-                let ok = true;
-                try {
-                    message = await db.addData({
-                        tableName: params[0],
-                        data: payload.data,
-                        schema: payload.schema,
-                    });
-                } catch (err) {
-                    console.error(err);
-                    message = err.message;
-                    ok = false;
-                }
-                return new Response(JSON.stringify({ ok: ok, query: message }));
-            });
+        async ({ url, event }) => {
+            let payload = null;
+            try {
+                payload = await event.request.json();
+            } catch (err) {
+                return constructInternalError(
+                    'Request body is not a valid JSON.'
+                );
+            }
+            const params = pathFromUrl(url.pathname, apiUrl);
+            return await constructResponse(
+                db.addData.bind(db, {
+                    tableName: params[0],
+                    data: payload.data,
+                    schema: payload.schema,
+                })
+            );
         },
         'POST'
     );
@@ -116,25 +107,24 @@ export default (workbox, db) => {
     // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
-        ({ url, event }) => {
-            return event.request.json().then(async payload => {
-                const params = pathFromUrl(url.pathname, apiUrl);
-                let message = '';
-                let ok = true;
-                try {
-                    message = await db.putData({
-                        tableName: params[0],
-                        primaryKey: params[1],
-                        data: payload.data,
-                        schema: payload.schema,
-                    });
-                } catch (err) {
-                    console.error(err);
-                    message = err.message;
-                    ok = false;
-                }
-                return new Response(JSON.stringify({ ok: ok, query: message }));
-            });
+        async ({ url, event }) => {
+            let payload = null;
+            try {
+                payload = await event.request.json();
+            } catch (err) {
+                return constructInternalError(
+                    'Request body is not a valid JSON.'
+                );
+            }
+            const params = pathFromUrl(url.pathname, apiUrl);
+            return await constructResponse(
+                db.putData.bind(db, {
+                    tableName: params[0],
+                    primaryKey: params[1],
+                    data: payload.data,
+                    schema: payload.schema,
+                })
+            );
         },
         'PUT'
     );
@@ -144,20 +134,13 @@ export default (workbox, db) => {
         apiRegex,
         async ({ url }) => {
             const params = pathFromUrl(url.pathname, apiUrl);
-            let message = 0;
-            let ok = true;
-            try {
-                message = await db.deleteData({
+            return await constructResponse(
+                db.deleteData.bind(db, {
                     tableName: params[0],
                     propertyName: params[1],
                     value: params[2],
-                });
-            } catch (err) {
-                console.error(err);
-                message = err.message;
-                ok = false;
-            }
-            return new Response(JSON.stringify({ ok: ok, query: message }));
+                })
+            );
         },
         'DELETE'
     );
