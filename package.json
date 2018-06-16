@@ -12,6 +12,8 @@
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
+        "build-share":
+            "parcel build src/share/index.html && parcel build src/share/export.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
         "build-terminal":
@@ -32,7 +34,8 @@
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
-        "v86": "humphd/v86#filer-9p-lastknowngood"
+        "v86": "humphd/v86#filer-9p-lastknowngood",
+        "webtorrent": "^0.100.0"
     },
     "devDependencies": {
         "babel-plugin-transform-runtime": "^6.23.0",

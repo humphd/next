@@ -1,14 +1,15 @@
 import fs from '../lib/fs';
 const sh = new fs.Shell();
+// var WebTorrent = require('webtorrent')
 import WebTorrent from 'webtorrent';
 
-//route wil lcall this function
+//route will call this function
 export default () =>
     new Promise((resolve, reject) => {
+        console.log('I am inside of exp promise #1');
         const client = new WebTorrent();
 
         const files = [];
-        function startSeed() {}
 
         function processPath(path, next) {
             // Process the path somehow, in this case we print it.
@@ -26,26 +27,24 @@ export default () =>
                 files.push(data);
                 next();
             });
-
             // All done, let the process continue by invoking second arg:
         }
 
         // Get every path (NOTE: no name or regex provided) below the root, depth first
-        sh.find('/', { exec: processPath }, function(err) {
+        sh.find('/', { exec: processPath }, err => {
             if (err) {
                 console.error(err);
                 return reject(err);
             }
-
-            client.seed(files, function(torrent) {
-                // console.log(typeof files);
-                // document.getElementById('descMagnet').innerHTML =
-                //     'Your torrent magnet is:';
-                // document.getElementById('myMagnet').innerHTML =
-                //     torrent.magnetURI;
-                // console.log('Client is seeding ' + torrent.magnetURI);
-                resolve(torrent.magnetURI);
-            });
+            console.log('Inside of exp.sh.find');
+            try {
+                client.seed(files, function(torrent) {
+                    console.log('magnetUR= ' + torrent.magnetURI);
+                    resolve(torrent.magnetURI);
+                });
+            } catch (err) {
+                console.log('seed err: ', err);
+            }
         });
 
         //get list of all files in dir -> shell.ls

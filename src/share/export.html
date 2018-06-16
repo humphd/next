@@ -8,20 +8,14 @@
 
 <body style="height: 100%; width: 100%;">
 
-	<div style="border: 1px black dotted; margin: 10px; padding: 30px; width: 80%; border-radius: 10px;">
-		<input type="file" id="files" name="files[]" multiple />
-		<output id="list"></output>
-		<br/>
-		<br/>
-		<button id="btnSeed" style="margin-top:20px;">Seed</button>
-	</div>
+	<button id="btnSeed" style="margin-top:20px;">Seed</button>
 
 	<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
 
-	<script src="export.js"></script>
+	<p id="magnetURI_p"></p>
+	<div id="magnetURI" style="width:90%; font-size: 9px;"></div>
 
-	<div id="descMagnet"></div>
-	<div id="myMagnet" style="width:90%; font-size: 9px;"></div>
+	<script src="./export.js"></script>
 
 </body>
 

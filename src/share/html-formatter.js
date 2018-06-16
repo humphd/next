@@ -21,14 +21,11 @@ export const format404 = url => {
 /**
  * Send an Apache-style directory listing
  */
-export const formatDir = (dirPath, entries) => {
-    const parent = path.dirname(dirPath);
-
+export const formatIndex = () => {
     const header = `<!DOCTYPE html>
-                    <html><head><title>Index of ${dirPath}</title></head>`;
+                    <html><head><title>Index of Share</title></head>`;
 
     const body = `<body>
-                    
                     <ul>
                         <li>
                         <a href="import.html">Import</a> - import files</li>
@@ -37,13 +34,7 @@ export const formatDir = (dirPath, entries) => {
                     </ul>
 
                     <script src="mainjs.js"></script>
-                    <script src="index.js"></script>
+                    <script src="index.js"></script>`;
 
-                    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-                    <script src="/scripts/script.js"></script>
-                  </body>`;
-
-    const footer = `</body>`;
-
-    return header + body + footer;
+    return header + body + footerClose;
 };

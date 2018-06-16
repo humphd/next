@@ -19,7 +19,6 @@
         "drag-drop": "^4.1.0",
         "filer": "0.0.44",
         "idb-chunk-store": "^0.2.0",
-        "ramda": "^0.25.0",
-        "webtorrent": "^0.99.4"
+        "ramda": "^0.25.0"
     }
 }

@@ -1,7 +1,7 @@
 import DatabaseServer from './db';
 import WebServer from './web-server';
 import docs from './docs';
-import share from './share';
+import Share from './share';
 
 /* global workbox */
 importScripts(
@@ -18,6 +18,7 @@ workbox.clientsClaim();
 docs.init(workbox);
 
 // Setup routes for main share content
+const share = new Share();
 share.init(workbox);
 
 // Create WebServer and associated /www/* routes
