@@ -138,7 +138,3 @@ dist/
 
 # deploy directory
 deploy
-
-# web torrent generated files
-src/webtorrent/bundle.js
-src/webtorrent/sd.js

@@ -13,7 +13,7 @@
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
         "build-share":
-            "parcel build src/share/index.html && parcel build src/share/export.html",
+            "parcel build src/share/indexShare.html && parcel build src/share/export.html && parcel build src/share/import.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
         "build-terminal":

@@ -1,9 +1,10 @@
 import fs from '../lib/fs';
 import Buffer from '../lib/buffer';
 import Path from '../lib/path';
-// var WebTorrent = require('webtorrent');
 import WebTorrent from 'webtorrent';
 const sh = new fs.Shell();
+
+document.getElementById('btnDownload').addEventListener('click', startDownload);
 
 const downloadAllTorrentFiles = torrent =>
     Promise.all(
@@ -11,9 +12,7 @@ const downloadAllTorrentFiles = torrent =>
             file =>
                 new Promise((resolve, reject) => {
                     var filename = Path.join('/', file.path);
-                    console.log(filename);
                     file.getBuffer((err, buffer) => {
-                        console.log(err, buffer);
                         if (err) {
                             return reject(err);
                         }
@@ -35,34 +34,23 @@ const downloadAllTorrentFiles = torrent =>
         )
     );
 
-export default magnetURI =>
-    new Promise((resolve, reject) => {
-        console.log('I am inside of imp promise');
-        const client = new WebTorrent();
+function startDownload() {
+    let magnetURI = document.getElementById('torrentId').value;
 
-        console.log('webtorrent');
+    if (magnetURI == null) {
+        console.log('Need a torrent magnet link to proceed.');
+        return;
+    }
 
-        console.log('Downloading from: ' + magnetURI);
+    const client = new WebTorrent();
 
-        //Download the torrent
-        client.add(magnetURI, function(torrent) {
-            console.log('inside of client.add');
-            torrent.on('done', async () => {
-                console.log('inside of torrent.on');
-                // promise.all(elements)
-
-                await downloadAllTorrentFiles(torrent);
-                console.log('All torrents are complete');
-                // resolve('import is resolved');
-
-                // function download(text, name, type) {
-                //     var a = document.getElementById(file);
-                //     var file = new Blob([text], { type: type });
-                //     //a.href = URL.createObjectURL(file);
-                //     //a.download = name;
-                //     file.download;
-                //     console.log('i am done!');
-                // }
-            });
+    //Download the torrent
+    client.add(magnetURI, function(torrent) {
+        torrent.on('done', async () => {
+            await downloadAllTorrentFiles(torrent);
+            document.getElementById('isComplete').innerHTML =
+                'Torrent download is complete';
+            console.log('All torrents are complete');
         });
     });
+}
