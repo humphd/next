@@ -16,9 +16,11 @@
             "parcel build src/share/indexShare.html && parcel build src/share/export.html && parcel build src/share/import.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
-        "build-terminal":
-            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
-        "eslint": "eslint --fix ."
+        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "eslint": "eslint --fix .",
+        "v86:setup": "docker build -t buildroot .",
+        "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
+        "v86:build": "node tools/build-v86"
     },
     "repository": {
         "type": "git",
@@ -40,6 +42,7 @@
     "devDependencies": {
         "babel-plugin-transform-runtime": "^6.23.0",
         "copy": "^0.3.2",
+        "cross-env": "^5.2.0",
         "eslint": "^4.19.1",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-prettier": "^2.6.0",
