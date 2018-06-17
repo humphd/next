@@ -11,6 +11,7 @@
         "prebuild-docs": "npm run build-server",
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
+        "build-io": "parcel build src/io/io.html",
         "build-server": "parcel build src/index.html",
         "predownload-vm": "npm run build-server",
         "download-vm": "node tools/download-vm.js",

@@ -1,5 +1,7 @@
 import htmlFormatter from './html-formatter';
 import jsonFormatter from './json-formatter';
+import { format404 } from '../lib/html-formatter';
+import { fullyDecodeURI } from '../lib/utils';
 
 const wwwRegex = /\/www(\/.*)/;
 export default (workbox, webServer) => {

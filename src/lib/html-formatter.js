@@ -7,6 +7,7 @@ import iconUnknown from '../web-server/icons/unknown.png';
 import iconBack from '../web-server/icons/back.png';
 import iconBlank from '../web-server/icons/blank.png';
 import path from './path';
+import { formatSize } from '../lib/utils';
 
 const months = [
     'Jan',
@@ -28,15 +29,6 @@ const formatDate = d => {
     return `${d.getDate()}-${
         months[d.getMonth()]
     }-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
-};
-
-const formatSize = s => {
-    const units = ['', 'K', 'M'];
-    if (!s) {
-        return '-';
-    }
-    const i = Math.floor(Math.log(s) / Math.log(1024)) | 0;
-    return Math.round(s / Math.pow(1024, i), 2) + units[i];
 };
 
 const formatRow = (
@@ -161,14 +153,18 @@ export const formatEntries = (dirPath, entries) => {
         let size, filePath;
         if (entries[i].type == 'DIRECTORY') {
             size = entries[i].contents.length;
-            filePath =
-                '/io/in' +
-                path.join(dirPath, encodeURIComponent(entries[i].name));
+            filePath = path.join(
+                '/io/in',
+                dirPath,
+                encodeURIComponent(entries[i].name)
+            );
         } else {
             size = entries[i].size;
-            filePath =
-                '/io/out' +
-                path.join(dirPath, encodeURIComponent(entries[i].name));
+            filePath = path.join(
+                '/www',
+                dirPath,
+                encodeURIComponent(entries[i].name)
+            );
         }
         var entry = {
             name: entries[i].name,
