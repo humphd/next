@@ -62,13 +62,23 @@ const footerClose = '<address>nohost/0.0.2 (Web)</address></body></html>';
  * Send an Apache-style 404
  */
 export const format404 = url => {
-    return `<!DOCTYPE html>
+    return {
+        body: `<!DOCTYPE html>
             <html><head>
             <title>404 Not Found</title>
             </head><body>
             <h1>Not Found</h1>
             <p>The requested URL ${url} was not found on this server.</p>
-            <hr>${footerClose}`;
+            <hr>${footerClose}`,
+        type: 'text/html',
+    };
+};
+
+export const format404AsJson = url => {
+    return {
+        body: `The requested URL ${url} was not found on this server.`,
+        type: 'application/json',
+    };
 };
 
 /**
