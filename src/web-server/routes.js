@@ -6,7 +6,7 @@ export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
         /[^/]+\.png/,
-        workbox.strategies.cacheFirst()
+        workbox.strategies.staleWhileRevalidate()
     );
 
     // @ts-ignore

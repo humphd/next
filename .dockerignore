@@ -2,12 +2,19 @@ node_modules/*
 src/*
 tools/*
 dist/*
+v86-out/*
+tests/*
+dist/*
+.cache/*
 
+.babelrc
+.editorconfig
 .eslintignore
 .eslintrc.yml
 .gitignore
 .prettierrc.json
 .travis.yml
+jest-puppeteer.config.js
 LICENSE
 package*
 README.md

@@ -1,25 +1,40 @@
 FROM rastasheep/ubuntu-sshd:16.04
 
-WORKDIR /root
-
 # Buildroot version to use
-ARG RELEASE=2018.02
+ARG BUILD_ROOT_RELEASE=2018.02
+# Root password for SSH
+ARG ROOT_PASSWORD=unbundeled
 
-# configure root password
-RUN echo 'root:unbundeled' | chpasswd; \
+# Copy v86 buildroot board config into image.
+# NOTE: if you want to override this later to play with
+# the config (e.g., run `make menuconfig`), mount a volume:
+# docker run ... -v $PWD/buildroot-v86:/buildroot-v86 ...
+COPY ./buildroot-v86 /buildroot-v86
+
+# Setup SSH (for Windows users) and prepare apt-get
+RUN echo 'root:${ROOT_PASSWORD}' | chpasswd; \
     # Install all Buildroot deps
     sed -i 's|deb http://us.archive.ubuntu.com/ubuntu/|deb mirror://mirrors.ubuntu.com/mirrors.txt|g' /etc/apt/sources.list; \
     dpkg --add-architecture i386; \
-    apt-get -q update; \
-    apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine;
-# install all deps.
-RUN apt-get -q -y install build-essential libncurses5-dev \
-    git bzr cvs libc6:i386 unzip bc wget cpio libssl-dev; \ 
-    apt-get -q -y autoremove; \
-    apt-get -q -y clean; \
-    # Install Buildroot
-    wget -c http://buildroot.org/downloads/buildroot-${RELEASE}.tar.gz; \
-    tar axf buildroot-${RELEASE}.tar.gz;
+    apt-get -q update;
+
+# Install all Buildroot deps and prepare buildroot
+WORKDIR /root
+RUN apt-get -q -y install \
+        bc \
+        build-essential \
+        bzr \
+        cpio \
+        cvs \
+        git \
+        unzip \
+        wget \
+        libc6:i386 \
+        libncurses5-dev \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/*; \
+    wget -c http://buildroot.org/downloads/buildroot-${BUILD_ROOT_RELEASE}.tar.gz; \
+    tar axf buildroot-${BUILD_ROOT_RELEASE}.tar.gz;
 
 # configure the locales
 ENV LANG='C' \
@@ -27,3 +42,9 @@ ENV LANG='C' \
     LC_ALL='C' \ 
     NOTVISIBLE="in users profile" \
     TERM=xterm
+
+# Buildroot will place built artifacts here at the end.
+VOLUME /build
+
+WORKDIR /root/buildroot-${BUILD_ROOT_RELEASE}
+ENTRYPOINT ["/buildroot-v86/build-v86.sh"]
