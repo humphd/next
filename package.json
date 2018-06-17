@@ -11,8 +11,10 @@
         "prebuild-docs": "npm run build-server",
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
+        "build-io": "parcel build src/io/io.html",
         "build-server": "parcel build src/index.html",
-        "postbuild-server": "parcel build src/io/io.html",
+        "postbuild-server":
+            "npm run build-io -- --public-url /io --out-dir dist/io",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
         "build-terminal":
@@ -37,6 +39,7 @@
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
+        "strong-data-uri": "^1.0.6",
         "v86": "humphd/v86#filer-9p-lastknowngood"
     },
     "devDependencies": {

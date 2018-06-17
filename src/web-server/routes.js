@@ -1,4 +1,5 @@
 import { format404 } from '../lib/html-formatter';
+import { fullyDecodeURI } from '../lib/utils';
 
 const wwwRegex = /\/www(\/.*)/;
 
@@ -13,7 +14,7 @@ export default (workbox, webServer) => {
     workbox.routing.registerRoute(
         wwwRegex,
         async ({ url }) => {
-            const path = url.pathname.match(wwwRegex)[1];
+            const path = fullyDecodeURI(url.pathname.match(wwwRegex)[1]);
             let body;
             let type;
             let status;
