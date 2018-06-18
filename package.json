@@ -18,7 +18,8 @@
         "eslint": "eslint --fix .",
         "v86:setup": "docker build -t buildroot .",
         "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
-        "v86:build": "node tools/build-v86"
+        "v86:build": "node tools/build-v86",
+        "v86:travis-build": "npm run v86:setup && npm run v86:build"
     },
     "repository": {
         "type": "git",

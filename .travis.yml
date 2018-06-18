@@ -8,25 +8,46 @@ addons:
 node_js:
  - 'node'
  - 'lts/*'
-sudo: false
+sudo: required
+services:
+  - docker
 
 cache: 
   directories:
-    # cache the larger node_modules we use throughout the tree 
-    # - "node_modules"
-    # - "src/editor/node_modules"
-    # - "src/website/node_modules"
-    # cache the bios, linux binary images
-    - "dist/terminal/bin"
+    # For node module caching, https://stackoverflow.com/questions/42521884/should-i-have-travis-cache-node-modules-or-home-npm
+    - $HOME/.npm
+    - "v86-out"
 
 before_script:
   # Check if the current build is done against a PR.
   # If yes, test whether all files(except json) conform with style guide defined by Prettier.
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./node_modules/.bin/precise-commits --whitelist="./**/!(*.json)" --check-only --head=$TRAVIS_PULL_REQUEST_SHA --base=$(git merge-base HEAD $TRAVIS_BRANCH); fi'
+  # Just testing a forced buildroot rebuild to see how long it takes on Travis
+#  - BUILDROOT_V86_CHANGES=($(git diff --name-only HEAD...$TRAVIS_BRANCH | grep -e "$buildroot-v86/"))
+  - echo $BUILDROOT_V86_CHANGES;
+  # Build our buildroot v86 Linux ISO, telling Travis to wait for the build to complete
+  - docker build -t buildroot . > build.log 2>&1
+  # XXX: keep travis from failing with timeout on long, silent build - https://github.com/travis-ci/travis-ci/issues/4190#issuecomment-353342526
+  # Output something every 10 minutes or Travis kills the job
+  - while sleep 5m; do echo "=====[ $SECONDS seconds, buildroot still building... ]=====\n"; done &
+  - time docker run --rm -v $PWD/v86-out:/build buildroot >> build.log 2>&1
+  # Killing background sleep loop
+  - kill %1
+  #  - travis_wait 40 sleep infinity & docker run --rm -v $PWD/v86-out:/build buildroot >> build.log 2>&1
+  #  - cp v86-out/v86-linux.iso dist/terminal/bin
+
+after_failure:
+    # dump errors (if any) from our buildroot build
+    - echo "Last 500 lines of buildroot build:\n" && tail --lines=500 build.log 
 
 before_deploy:
   # Do the entire build
   - npm run build
+  # See if we need to rebuild the v86 image (only if things in buildroot-v86/ have changed)
+  - BUILDROOT_V86_CHANGES=($(git diff --name-only HEAD...$TRAVIS_BRANCH | grep -e "$buildroot-v86/"))
+  - echo $BUILDROOT_V86_CHANGES;
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run v86:travis-build > /dev/null; fi'
+  - cp v86-out/v86-linux.iso dist/terminal/bin
 
 deploy:
   provider: pages
@@ -37,4 +58,3 @@ deploy:
   on:
     branch: master
     node: 'lts/*'
-
