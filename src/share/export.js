@@ -6,6 +6,7 @@ var client = new WebTorrent();
 const files = [];
 
 document.getElementById('btnSeed').addEventListener('click', startSeeding);
+console.log('inside of export.js!');
 
 function processPath(path, next) {
     if (path.endsWith('/')) {
@@ -24,7 +25,12 @@ function processPath(path, next) {
 
 function startSeeding() {
     sh.find('/', { exec: processPath }, err => {
-        if (err) console.error(err);
+        if (err) {
+            console.error(err);
+            document.getElementById('magnetURI').innerHTML =
+                'Error seeding files';
+            return;
+        }
         try {
             client.seed(files, function(torrent) {
                 document.getElementById('magnetURI_p').innerHTML =

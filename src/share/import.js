@@ -5,6 +5,7 @@ import WebTorrent from 'webtorrent';
 const sh = new fs.Shell();
 
 document.getElementById('btnDownload').addEventListener('click', startDownload);
+console.log('inside of import!');
 
 const downloadAllTorrentFiles = torrent =>
     Promise.all(
@@ -37,7 +38,7 @@ const downloadAllTorrentFiles = torrent =>
 function startDownload() {
     let magnetURI = document.getElementById('torrentId').value;
 
-    if (magnetURI == null) {
+    if (!magnetURI) {
         console.log('Need a torrent magnet link to proceed.');
         return;
     }

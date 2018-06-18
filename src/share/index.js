@@ -9,13 +9,4 @@ export default class {
     init(workbox) {
         registerRoute(workbox, this);
     }
-
-    async torrent() {
-        return new Promise((resolve, reject) => {
-            resolve({
-                type: 'text/html',
-                body: formatIndex(),
-            });
-        });
-    }
 }

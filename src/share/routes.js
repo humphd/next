@@ -8,7 +8,7 @@ export default (workbox, Share) => {
     workbox.routing.registerRoute(
         shareRegex,
         async ({ url }) => {
-            return fetch('./indexShare.html');
+            return fetch('./index.html');
         },
         'GET'
     );
