@@ -25,11 +25,17 @@ export default class {
                         resolve(formatter.formatDir(path, entries));
                     });
                 } else {
-                    fs.readFile(path, async (err, contents) => {
+                    fs.readFile(path, async (err, content) => {
                         if (err) {
                             return reject(err);
                         }
-                        resolve(await formatter.formatFile(path, contents));
+                        resolve(
+                            formatter.formatFile({
+                                path,
+                                content,
+                                stats,
+                            })
+                        );
                     });
                 }
             });

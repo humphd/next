@@ -1,10 +1,7 @@
-import HtmlFormatter from './html-formatter';
-import JsonFormatter from './json-formatter';
+import htmlFormatter from './html-formatter';
+import jsonFormatter from './json-formatter';
 
 const wwwRegex = /\/www(\/.*)/;
-const jsonFormatter = new JsonFormatter();
-const htmlFormatter = new HtmlFormatter();
-
 export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
@@ -28,7 +25,6 @@ export default (workbox, webServer) => {
             } catch (err) {
                 res = formatter.format404(path);
             }
-
             const config = {
                 status: res.status,
                 statusText: 'OK',

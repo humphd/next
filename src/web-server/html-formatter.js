@@ -57,11 +57,11 @@ const formatRow = (
 };
 
 const footerClose = '<address>nohost/0.0.2 (Web)</address></body></html>';
-export default class {
+export default {
     /**
      * Send an Apache-style 404
      */
-    format404(url) {
+    format404: url => {
         return {
             body: `<!DOCTYPE html>
                 <html><head>
@@ -73,12 +73,12 @@ export default class {
             type: 'text/html',
             status: 404,
         };
-    }
+    },
 
     /**
      * Send an Apache-style directory listing
      */
-    formatDir(dirPath, entries) {
+    formatDir: (dirPath, entries) => {
         const parent = path.dirname(dirPath);
 
         const header = `<!DOCTYPE html>
@@ -133,13 +133,13 @@ export default class {
             status: 200,
             body: header + rows + footer,
         };
-    }
+    },
 
-    formatFile(path, content) {
+    formatFile: ({ path, content }) => {
         return {
             body: content,
             type: getMimeType(path),
             status: 200,
         };
-    }
-}
+    },
+};
