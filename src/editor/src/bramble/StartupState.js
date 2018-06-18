@@ -45,7 +45,7 @@ define(function (require, exports, module) {
     _url = Map({
         origin: window.location.origin,
         host: window.location.host,
-        base: window.location.origin + window.location.pathname.replace(/\/index.html*$/, "/")
+        base: window.location.origin + window.location.pathname.replace(/\/editor.html*$/, "/")
     });
 
 });

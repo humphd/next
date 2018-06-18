@@ -25,7 +25,7 @@
     "name": "bramble",
     "version": "1.9.0-0",
     "apiVersion": "1.9.0",
-    "homepage": "https://mozillathimblelivepreview.net/bramble/staging/dist/hosted.html",
+    "homepage": "https://mozillathimblelivepreview.net/bramble/staging/dist/index.html",
     "issues": {
         "url": "http://github.com/mozilla/brackets/issues"
     },

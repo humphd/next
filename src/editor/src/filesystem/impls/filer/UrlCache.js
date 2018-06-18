@@ -172,7 +172,7 @@ define(function (require, exports, module) {
         UrlProviderBase.call(this);
 
         this.projectCacheName = Path.join("vfs", StartupState.project("root"));
-        this.baseUrl = this.generateVFSUrlForPath(StartupState.project("root")) + "/";
+        this.baseUrl = this.generateVFSUrlForPath(StartupState.project("root")).replace(/\/?$/, '/');
         this.shouldRewriteUrls = false;
     }
     CacheStorageUrlProvider.prototype = Object.create(UrlProviderBase.prototype);
