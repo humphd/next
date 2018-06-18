@@ -589,8 +589,7 @@ module.exports = function(grunt) {
         'requirejs:iframe',
         'exec:localize-dist',
         'build-extensions',
-        'uglify',
-        'swPrecache'
+        'uglify'
     ]);
 
     // task: build dist/ for browser, pre-compressed with gzip and SW precache
