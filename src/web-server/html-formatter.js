@@ -1,4 +1,4 @@
-import { isMedia, isImage } from './content-type';
+import { isMedia, isImage, getMimeType } from './content-type';
 import iconImage from './icons/image2.png';
 import iconFolder from './icons/folder.png';
 import iconMovie from './icons/movie.png';
@@ -57,82 +57,89 @@ const formatRow = (
 };
 
 const footerClose = '<address>nohost/0.0.2 (Web)</address></body></html>';
+export default class {
+    /**
+     * Send an Apache-style 404
+     */
+    format404(url) {
+        return {
+            body: `<!DOCTYPE html>
+                <html><head>
+                <title>404 Not Found</title>
+                </head><body>
+                <h1>Not Found</h1>
+                <p>The requested URL ${url} was not found on this server.</p>
+                <hr>${footerClose}`,
+            type: 'text/html',
+            status: 404,
+        };
+    }
 
-/**
- * Send an Apache-style 404
- */
-export const format404 = url => {
-    return {
-        body: `<!DOCTYPE html>
-            <html><head>
-            <title>404 Not Found</title>
-            </head><body>
-            <h1>Not Found</h1>
-            <p>The requested URL ${url} was not found on this server.</p>
-            <hr>${footerClose}`,
-        type: 'text/html',
-    };
-};
+    /**
+     * Send an Apache-style directory listing
+     */
+    formatDir(dirPath, entries) {
+        const parent = path.dirname(dirPath);
 
-export const format404AsJson = url => {
-    return {
-        body: `The requested URL ${url} was not found on this server.`,
-        type: 'application/json',
-    };
-};
+        const header = `<!DOCTYPE html>
+                        <html><head><title>Index of ${dirPath}</title></head>
+                        <body><h1>Index of ${dirPath}</h1>
+                        <table><tr><th><img src="${iconBlank}" alt="[ICO]"></th>
+                        <th><b>Name</b></th><th><b>Last modified</b></th>
+                        <th><b>Size</b></th><th><b>Description</b></th></tr>
+                        <tr><th colspan="5"><hr></th></tr>
+                        <tr><td valign="top"><img src="${iconBack}" alt="[DIR]"></td>
+                        <td><a href="/www${parent}">Parent Directory</a></td><td>&nbsp;</td>
+                        <td align="right">  - </td><td>&nbsp;</td></tr>`;
 
-/**
- * Send an Apache-style directory listing
- */
-export const formatDir = (dirPath, entries) => {
-    const parent = path.dirname(dirPath);
+        const footer = `<tr><th colspan="5"><hr></th></tr></table>${footerClose}`;
 
-    const header = `<!DOCTYPE html>
-                    <html><head><title>Index of ${dirPath}</title></head>
-                    <body><h1>Index of ${dirPath}</h1>
-                    <table><tr><th><img src="${iconBlank}" alt="[ICO]"></th>
-                    <th><b>Name</b></th><th><b>Last modified</b></th>
-                    <th><b>Size</b></th><th><b>Description</b></th></tr>
-                    <tr><th colspan="5"><hr></th></tr>
-                    <tr><td valign="top"><img src="${iconBack}" alt="[DIR]"></td>
-                    <td><a href="/www${parent}">Parent Directory</a></td><td>&nbsp;</td>
-                    <td align="right">  - </td><td>&nbsp;</td></tr>`;
+        const rows = entries
+            .map(entry => {
+                const ext = path.extname(entry.name);
+                const href = '/www' + path.join(dirPath, entry.name);
+                let icon;
+                let alt;
 
-    const footer = `<tr><th colspan="5"><hr></th></tr></table>${footerClose}`;
-
-    const rows = entries
-        .map(entry => {
-            const ext = path.extname(entry.name);
-            const href = '/www' + path.join(dirPath, entry.name);
-            let icon;
-            let alt;
-
-            if (entry.type === 'DIRECTORY') {
-                icon = iconFolder;
-                alt = '[DIR]';
-            } else {
-                if (isImage(ext)) {
-                    icon = iconImage;
-                    alt = '[IMG]';
-                } else if (isMedia(ext)) {
-                    icon = iconMovie;
-                    alt = '[MOV]';
+                if (entry.type === 'DIRECTORY') {
+                    icon = iconFolder;
+                    alt = '[DIR]';
                 } else {
-                    icon = iconText;
-                    alt = '[TXT]';
+                    if (isImage(ext)) {
+                        icon = iconImage;
+                        alt = '[IMG]';
+                    } else if (isMedia(ext)) {
+                        icon = iconMovie;
+                        alt = '[MOV]';
+                    } else {
+                        icon = iconText;
+                        alt = '[TXT]';
+                    }
                 }
-            }
 
-            return formatRow(
-                icon,
-                alt,
-                href,
-                entry.name,
-                entry.mtime,
-                entry.size
-            );
-        })
-        .join('\n');
+                return formatRow(
+                    icon,
+                    alt,
+                    href,
+                    entry.name,
+                    entry.mtime,
+                    entry.size
+                );
+            })
+            .join('\n');
 
-    return header + rows + footer;
-};
+        return {
+            type: 'text/html',
+            status: 200,
+            body: header + rows + footer,
+        };
+    }
+
+    formatFile(path, content) {
+        return {
+            body: content,
+            type: getMimeType(path),
+            status: 200,
+        };
+    }
+}
