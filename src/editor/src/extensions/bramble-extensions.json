@@ -156,36 +156,6 @@
         ]
     },
     {
-        "path": "extensions/default/UploadFiles",
-        "less": {
-            "dist/extensions/default/UploadFiles/styles.css": [
-                "src/extensions/default/UploadFiles/styles.less"
-            ]
-        },
-        "copy": [
-            "extensions/default/UploadFiles/images/*.svg"
-        ]
-    },
-    {
-        "path": "extensions/default/bramble-move-file",
-        "less": {
-            "dist/extensions/default/bramble-move-file/styles/style.css": [
-                "src/extensions/default/bramble-move-file/styles/style.less"
-            ]
-        },
-        "copy": [
-            "extensions/default/bramble-move-file/images/*.svg"
-        ]
-    },
-    {
-        "path": "extensions/default/brackets-show-whitespace",
-        "less": {
-            "dist/extensions/default/brackets-show-whitespace/styles/main.css": [
-                "src/extensions/default/brackets-show-whitespace/styles/main.css"
-            ]
-        }
-    },
-    {
         "path": "extensions/extra/brackets-fonts-viewer",
         "less":{
             "dist/extensions/extra/brackets-fonts-viewer/styles/main.css": [
@@ -209,14 +179,6 @@
             "extensions/extra/PDFView/htmlContent/viewer.html",
             "extensions/extra/PDFView/bramble-pdfjs.js"
         ]
-    },
-    {
-        "path": "extensions/extra/brackets-fonts-viewer",
-        "less":{
-            "dist/extensions/extra/brackets-fonts-viewer/styles/main.css": [
-                "src/extensions/extra/brackets-fonts-viewer/styles/main.less"
-            ]
-        }
     }
 ]
 
