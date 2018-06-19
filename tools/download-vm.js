@@ -10,18 +10,8 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const isoUrl =
-    'https://github.com/humphd/next/releases/download/1.0/v86-linux.iso?raw=true';
-const biosUrl =
-    'https://github.com/humphd/next/releases/download/1.0/seabios.bin?raw=true';
-const vgaBiosUrl =
-    'https://github.com/humphd/next/releases/download/1.0/vgabios.bin?raw=true';
-
 // Put all binary files in `dist/terminal/bin` and we'll cache these on travis.
 const terminalDir = path.join(__dirname, '..', 'dist', 'terminal', 'bin');
-const isoDestPath = path.join(terminalDir, 'v86-linux.iso');
-const biosDestPath = path.join(terminalDir, 'seabios.bin');
-const vgaBiosDest = path.join(terminalDir, 'vgabios.bin');
 
 const download = (url, dest) => {
     return new Promise((resolve, reject) => {
@@ -48,11 +38,31 @@ const download = (url, dest) => {
 mkdirp(terminalDir, err => {
     if (err) throw err;
 
-    Promise.all([
-        download(isoUrl, isoDestPath),
-        download(biosUrl, biosDestPath),
-        download(vgaBiosUrl, vgaBiosDest),
-    ])
-        .then(() => console.log('Done.'))
-        .catch(err => console.error(err));
+    request.get(
+        {
+            url: 'https://api.github.com/repos/humphd/next/releases/latest',
+            json: true,
+            headers: {
+                'User-Agent': 'Request-Promise',
+            },
+        },
+        (err, resp, release) => {
+            if (err) throw err;
+            if (resp.statusCode !== 200)
+                throw `Unable to get latest release. ${resp.statusMessage}`;
+            Promise.all(
+                release.assets.map(el =>
+                    download(
+                        el.browser_download_url,
+                        path.join(
+                            terminalDir,
+                            path.basename(el.browser_download_url)
+                        )
+                    )
+                )
+            )
+                .then(() => console.log('Done'))
+                .catch(err => console.error(err));
+        }
+    );
 });
