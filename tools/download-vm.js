@@ -10,15 +10,16 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const isoUrl = 'https://copy.sh/v86/images/linux3.iso';
+const isoUrl =
+    'https://github.com/humphd/next/releases/download/1.0/v86-linux.iso?raw=true';
 const biosUrl =
-    'https://github.com/copy/v86/blob/master/bios/seabios.bin?raw=true';
+    'https://github.com/humphd/next/releases/download/1.0/seabios.bin?raw=true';
 const vgaBiosUrl =
-    'https://github.com/copy/v86/blob/master/bios/vgabios.bin?raw=true';
+    'https://github.com/humphd/next/releases/download/1.0/vgabios.bin?raw=true';
 
 // Put all binary files in `dist/terminal/bin` and we'll cache these on travis.
 const terminalDir = path.join(__dirname, '..', 'dist', 'terminal', 'bin');
-const isoDestPath = path.join(terminalDir, 'linux3.iso');
+const isoDestPath = path.join(terminalDir, 'v86-linux.iso');
 const biosDestPath = path.join(terminalDir, 'seabios.bin');
 const vgaBiosDest = path.join(terminalDir, 'vgabios.bin');
 

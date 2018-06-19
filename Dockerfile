@@ -16,23 +16,23 @@ RUN echo 'root:${ROOT_PASSWORD}' | chpasswd; \
     # Install all Buildroot deps
     sed -i 's|deb http://us.archive.ubuntu.com/ubuntu/|deb mirror://mirrors.ubuntu.com/mirrors.txt|g' /etc/apt/sources.list; \
     dpkg --add-architecture i386; \
+    rm -rf /var/lib/apt/lists/*; \
     apt-get -q update;
 
 # Install all Buildroot deps and prepare buildroot
 WORKDIR /root
 RUN apt-get -q -y install \
-        bc \
-        build-essential \
-        bzr \
-        cpio \
-        cvs \
-        git \
-        unzip \
-        wget \
-        libc6:i386 \
-        libncurses5-dev \
-        libssl-dev \
-    && rm -rf /var/lib/apt/lists/*; \
+    bc \
+    build-essential \
+    bzr \
+    cpio \
+    cvs \
+    git \
+    unzip \
+    wget \
+    libc6:i386 \
+    libncurses5-dev \
+    libssl-dev; \
     wget -c http://buildroot.org/downloads/buildroot-${BUILD_ROOT_RELEASE}.tar.gz; \
     tar axf buildroot-${BUILD_ROOT_RELEASE}.tar.gz;
 
