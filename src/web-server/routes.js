@@ -1,7 +1,7 @@
-import { format404 } from './html-formatter';
+import htmlFormatter from './html-formatter';
+import jsonFormatter from './json-formatter';
 
 const wwwRegex = /\/www(\/.*)/;
-
 export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
@@ -13,29 +13,24 @@ export default (workbox, webServer) => {
     workbox.routing.registerRoute(
         wwwRegex,
         async ({ url }) => {
+            const formatter =
+                url.searchParams.get('json') === 'true'
+                    ? jsonFormatter
+                    : htmlFormatter;
             const path = url.pathname.match(wwwRegex)[1];
-            let body;
-            let type;
-            let status;
+
+            let res;
             try {
-                const result = await webServer.serve(path);
-                body = result.body;
-                type = result.type;
-                status = 200;
+                res = await webServer.serve(path, formatter);
             } catch (err) {
-                body = format404(path);
-                type = 'text/html';
-                // TODO: should probably do a better job here on mapping to err
-                status = 404;
+                res = formatter.format404(path);
             }
-
-            const init = {
-                status,
+            const config = {
+                status: res.status,
                 statusText: 'OK',
-                headers: { 'Content-Type': type },
+                headers: { 'Content-Type': res.type },
             };
-
-            return new Response(body, init);
+            return new Response(res.body, config);
         },
         'GET'
     );
