@@ -12,8 +12,9 @@
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
-        "build-vm": "node tools/download-vm.js",
-        "prebuild-terminal": "npm run build-vm",
+        "predownload-vm": "npm run build-server",
+        "download-vm": "node tools/download-vm.js",
+        "prebuild-terminal": "npm run download-vm",
         "build-terminal":
             "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",

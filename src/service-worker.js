@@ -2,6 +2,7 @@ import DatabaseServer from './db';
 import WebServer from './web-server';
 import docs from './docs';
 import editor from './editor/src/routes.js';
+import terminal from './terminal';
 
 /* global workbox */
 importScripts(
@@ -27,3 +28,6 @@ webServer.init(workbox);
 // Create DatabaseServer and associated /data/* routes
 const dbServer = new DatabaseServer();
 dbServer.init(workbox);
+
+// Setup caching for terminal and vm binary resources
+terminal.init(workbox);
