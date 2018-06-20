@@ -2,11 +2,9 @@ import fs from '../lib/fs';
 const sh = new fs.Shell();
 import WebTorrent from 'webtorrent';
 
-var client = new WebTorrent();
 const files = [];
 
 document.getElementById('btnSeed').addEventListener('click', startSeeding);
-console.log('inside of export.js!');
 
 function processPath(path, next) {
     if (path.endsWith('/')) {
@@ -24,6 +22,8 @@ function processPath(path, next) {
 }
 
 function startSeeding() {
+    document.getElementById('btnSeed').disabled = true;
+    let client = new WebTorrent();
     sh.find('/', { exec: processPath }, err => {
         if (err) {
             console.error(err);
@@ -32,7 +32,7 @@ function startSeeding() {
             return;
         }
         try {
-            client.seed(files, function(torrent) {
+            client.seed(files, { name: '/' }, function(torrent) {
                 document.getElementById('magnetURI_p').innerHTML =
                     'Magnet URI:';
                 document.getElementById('magnetURI').innerHTML =
