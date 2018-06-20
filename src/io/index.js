@@ -4,7 +4,7 @@ import formatFS from '../lib/format-fs';
 import pth from '../lib/path';
 import buffer from '../lib/buffer';
 import { getMimeType } from '../lib/content-type';
-import { formatEntries, notAFile } from '../lib/html-formatter';
+import htmlFormatter from '../lib/html-formatter';
 import { fullyDecodeURI } from '../lib/utils';
 import registerRoutes from './routes';
 import * as ioFiles from './io-files';
@@ -152,7 +152,7 @@ export default class {
                         }
                         resolve({
                             type: 'text/html',
-                            body: formatEntries(path, entries),
+                            body: htmlFormatter.formatEntries(path, entries),
                         });
                     });
                 } else {
@@ -195,12 +195,12 @@ export default class {
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
                 if (err) {
-                    return reject(notAFile(path));
+                    return reject(htmlFormatter.notAFile(path));
                 }
                 // If this is a dir, show a dir listing
                 if (stats.isDirectory()) {
                     // Todo: Better error handling needed.
-                    reject(notAFile(path));
+                    reject(htmlFormatter.notAFile(path));
                 } else {
                     fs.readFile(path, (err, contents) => {
                         if (err) {

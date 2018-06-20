@@ -1,8 +1,6 @@
 import fs from '../lib/fs';
 const sh = new fs.Shell();
 
-import { getMimeType } from '../lib/content-type';
-import { formatDir } from '../lib/html-formatter';
 import registerRoute from './routes';
 
 export default class {

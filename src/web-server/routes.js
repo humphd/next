@@ -1,6 +1,5 @@
-import htmlFormatter from './html-formatter';
-import jsonFormatter from './json-formatter';
-import { format404 } from '../lib/html-formatter';
+import htmlFormatter from '../lib/html-formatter';
+import jsonFormatter from '../lib/json-formatter';
 import { fullyDecodeURI } from '../lib/utils';
 
 const wwwRegex = /\/www(\/.*)/;
@@ -19,7 +18,7 @@ export default (workbox, webServer) => {
                 url.searchParams.get('json') === 'true'
                     ? jsonFormatter
                     : htmlFormatter;
-            const path = url.pathname.match(wwwRegex)[1];
+            const path = fullyDecodeURI(url.pathname.match(wwwRegex)[1]);
 
             let res;
             try {

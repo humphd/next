@@ -13,6 +13,8 @@
         "build-editor": "cd src/editor && npm run build",
         "build-io": "parcel build src/io/io.html",
         "build-server": "parcel build src/index.html",
+        "postbuild-server":
+            "npm run build-io -- --public-url /io --out-dir dist/io",
         "predownload-vm": "npm run build-server",
         "download-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run download-vm",
@@ -20,8 +22,7 @@
             "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "v86:setup": "docker build -t buildroot .",
-        "v86:bash":
-            "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
+        "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
         "v86:build": "node tools/build-v86"
     },
     "repository": {
@@ -39,6 +40,7 @@
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
         "v86": "humphd/v86#filer-9p-lastknowngood",
+        "strong-data-uri": "^1.0.6",
         "xterm": "^3.4.1"
     },
     "devDependencies": {

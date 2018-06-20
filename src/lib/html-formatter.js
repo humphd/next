@@ -1,4 +1,4 @@
-import { isMedia, isImage } from './content-type';
+import { isMedia, isImage, getMimeType } from './content-type';
 import iconImage from '../web-server/icons/image2.png';
 import iconFolder from '../web-server/icons/folder.png';
 import iconMovie from '../web-server/icons/movie.png';
@@ -134,46 +134,46 @@ export default {
             status: 200,
         };
     },
-};
 
-export const notAFile = url => {
-    return `<!DOCTYPE html>
-            <html><head>
-            <title>404 Not Found</title>
-            </head><body>
-            <h1>Not Found</h1>
-            <p>The requested URL ${url} does not link to a valid file.</p>
-            <hr></body></html>`;
-};
+    notAFile: url => {
+        return `<!DOCTYPE html>
+                <html><head>
+                <title>404 Not Found</title>
+                </head><body>
+                <h1>Not Found</h1>
+                <p>The requested URL ${url} does not link to a valid file.</p>
+                <hr></body></html>`;
+    },
 
-export const formatEntries = (dirPath, entries) => {
-    var len = entries.length,
-        output = [];
-    for (var i = 0; i < len; i++) {
-        let size, filePath;
-        if (entries[i].type == 'DIRECTORY') {
-            size = entries[i].contents.length;
-            filePath = path.join(
-                '/io/in',
-                dirPath,
-                encodeURIComponent(entries[i].name)
-            );
-        } else {
-            size = entries[i].size;
-            filePath = path.join(
-                '/www',
-                dirPath,
-                encodeURIComponent(entries[i].name)
-            );
+    formatEntries: (dirPath, entries) => {
+        var len = entries.length,
+            output = [];
+        for (var i = 0; i < len; i++) {
+            let size, filePath;
+            if (entries[i].type == 'DIRECTORY') {
+                size = entries[i].contents.length;
+                filePath = path.join(
+                    '/io/in',
+                    dirPath,
+                    encodeURIComponent(entries[i].name)
+                );
+            } else {
+                size = entries[i].size;
+                filePath = path.join(
+                    '/www',
+                    dirPath,
+                    encodeURIComponent(entries[i].name)
+                );
+            }
+            var entry = {
+                name: entries[i].name,
+                type: entries[i].type,
+                size: size,
+                path: filePath,
+            };
+            output.push(JSON.stringify(entry));
         }
-        var entry = {
-            name: entries[i].name,
-            type: entries[i].type,
-            size: size,
-            path: filePath,
-        };
-        output.push(JSON.stringify(entry));
-    }
 
-    return output;
+        return output;
+    },
 };
