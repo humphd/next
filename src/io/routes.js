@@ -1,4 +1,6 @@
 import { fullyDecodeURI } from '../lib/utils';
+import { format404 } from '../lib/html-formatter';
+import zip from './archive';
 
 const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
@@ -9,6 +11,7 @@ const ioOutRegex = /\/io\/out(\/.*)/;
 const ioImportRegex = /\/io\/import/;
 const ioFromTextRegex = /\/io\/from\/text(\/.*)/;
 const ioFromDataURIRegex = /\/io\/from\/dataurl(\/.*)/;
+const ioArchiveRegex = /\/io\/archive(\/?.*)$/;
 
 // Handles the response status
 function handleResponseStatus(status, statusText, type) {
@@ -54,7 +57,7 @@ export default (workbox, ioServer) => {
                 await ioServer.createPath(path);
                 return fetch('/io/io.html');
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -79,7 +82,7 @@ export default (workbox, ioServer) => {
                 await ioServer.deletePath(path);
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -100,7 +103,7 @@ export default (workbox, ioServer) => {
                     };
                 });
             } catch (err) {
-                return constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'POST'
@@ -114,7 +117,7 @@ export default (workbox, ioServer) => {
                 const result = await ioServer.createFileFromEncodedText(path);
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -132,7 +135,7 @@ export default (workbox, ioServer) => {
                 );
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -173,7 +176,7 @@ export default (workbox, ioServer) => {
                     return { body: body, type: 'text/html' };
                 });
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -187,7 +190,42 @@ export default (workbox, ioServer) => {
                 await ioServer.clearFileSystem(path);
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
+            }
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioArchiveRegex,
+        async ({ url }) => {
+            // Get the portion of the path after /io/archive/*
+            let path = url.pathname.match(ioArchiveRegex)[1];
+            // Deal with any URL encoding in path
+            path = decodeURIComponent(path);
+            // Make sure we have something rooted in `/` (e.g., "" -> "/")
+            path = path.replace(/^\/?/, '/');
+
+            try {
+                const blob = await zip(path);
+                const init = {
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {
+                        'Content-Type': 'application/zip',
+                        'Content-Disposition':
+                            'attachment; filename="archive.zip"',
+                    },
+                };
+
+                return new Response(blob, init);
+            } catch (err) {
+                // Deal with the common case of a path not existing, and 404
+                if (err.code === 'ENOENT') {
+                    return constructInternalError(format404(path));
+                }
+                // Otherwise, give back a 500 with the error.
+                return constructInternalError(err.message);
             }
         },
         'GET'
