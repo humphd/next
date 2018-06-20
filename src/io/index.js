@@ -1,6 +1,5 @@
 import fs from '../lib/fs';
 const sh = new fs.Shell();
-import formatFS from '../lib/format-fs';
 import pth from '../lib/path';
 import buffer from '../lib/buffer';
 import { getMimeType } from '../lib/content-type';
@@ -76,7 +75,7 @@ export default class {
             const fileInfo = await this.getFileInfo(path);
 
             let daraUri = strongDataUri.encode(
-                buffer(fileInfo.body.contents),
+                new buffer(fileInfo.body.contents),
                 fileInfo.type
             );
 
@@ -104,18 +103,6 @@ export default class {
     async deletePath(path) {
         return new Promise((resolve, reject) => {
             sh.rm(path, { recursive: true }, err => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        });
-    }
-
-    // Format filesystem
-    async clearFileSystem() {
-        return new Promise((resolve, reject) => {
-            formatFS(err => {
                 if (err) {
                     return reject(err);
                 }

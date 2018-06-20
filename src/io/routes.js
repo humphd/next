@@ -1,4 +1,5 @@
 import { fullyDecodeURI } from '../lib/utils';
+import formatFS from '../lib/format-fs';
 
 const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
@@ -182,9 +183,8 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioResetRegex,
         async ({ url }) => {
-            const path = fullyDecodeURI(url.pathname.match(ioResetRegex)[1]);
             try {
-                await ioServer.clearFileSystem(path);
+                await formatFS();
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
                 constructInternalError(err);

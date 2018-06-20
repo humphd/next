@@ -2,6 +2,10 @@
 import Filer from '../../node_modules/filer/dist/filer';
 
 // This function resets the current filesystem
-export default callback => {
-    new Filer.FileSystem({ flags: ['FORMAT'] }, callback);
-};
+export default () =>
+    new Promise((resolve, reject) => {
+        new Filer.FileSystem({ flags: ['FORMAT'] }, err => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
