@@ -125,6 +125,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.htmlReady(function () {
+        // XXX: skip all this for now, we don't need it.
+        return;
+
         ExtensionUtils.loadStyleSheet(module, "../stylesheets/consoleTheme.less");
 
         // Localization & Creation of HTMl Elements
