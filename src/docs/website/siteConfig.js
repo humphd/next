@@ -12,13 +12,18 @@ const siteConfig = {
     title: 'Next',
     tagline: 'An experiment to unbunble the web',
     url: 'https://humphd.github.io',
-    baseUrl: '/next/',
+    //baseUrl: '/next/',
+    baseUrl: '/',
     projectName: 'Next',
     organizationName: 'humphd',
 
     headerLinks: [
         { doc: 'Introduction', label: 'Docs' },
         { doc: 'Community', label: 'API' },
+        { page: 'share', label: 'Share' },
+        { page: 'terminal', label: 'Terminal' },
+        { page: 'www', label: 'Files' },
+
         { page: 'help', label: 'Help' },
         { blog: true, label: 'Blog' },
     ],
