@@ -61,18 +61,11 @@ export default {
     /**
      * Send an Apache-style 404
      */
-    format404: url => {
-        return {
-            body: `<!DOCTYPE html>
-                <html><head>
-                <title>404 Not Found</title>
-                </head><body>
-                <h1>Not Found</h1>
-                <p>The requested URL ${url} was not found on this server.</p>
-                <hr>${footerClose}`,
-            type: 'text/html',
+    format404: () => {
+        return new Response(null, {
             status: 404,
-        };
+            statusText: 'OK',
+        });
     },
 
     /**
@@ -89,7 +82,7 @@ export default {
                         <th><b>Size</b></th><th><b>Description</b></th></tr>
                         <tr><th colspan="5"><hr></th></tr>
                         <tr><td valign="top"><img src="${iconBack}" alt="[DIR]"></td>
-                        <td><a href="/www${parent}">Parent Directory</a></td><td>&nbsp;</td>
+                        <td><a href="/#/www${parent}">Parent Directory</a></td><td>&nbsp;</td>
                         <td align="right">  - </td><td>&nbsp;</td></tr>`;
 
         const footer = `<tr><th colspan="5"><hr></th></tr></table>${footerClose}`;
@@ -97,7 +90,7 @@ export default {
         const rows = entries
             .map(entry => {
                 const ext = path.extname(entry.name);
-                const href = '/www' + path.join(dirPath, entry.name);
+                const href = '/#/www' + path.join(dirPath, entry.name);
                 let icon;
                 let alt;
 
@@ -128,18 +121,18 @@ export default {
             })
             .join('\n');
 
-        return {
-            type: 'text/html',
+        return new Response(header + rows + footer, {
             status: 200,
-            body: header + rows + footer,
-        };
+            statusText: 'OK',
+            headers: { 'Content-Type': 'text/html' },
+        });
     },
 
     formatFile: ({ path, content }) => {
-        return {
-            body: content,
-            type: getMimeType(path),
+        return new Response(content, {
             status: 200,
-        };
+            statusText: 'OK',
+            headers: { 'Content-Type': getMimeType(path) },
+        });
     },
 };

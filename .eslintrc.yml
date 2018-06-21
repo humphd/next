@@ -8,9 +8,13 @@ env:
 extends: 
   - 'eslint:recommended'
   - 'plugin:prettier/recommended'
+  - 'plugin:react/recommended'
 parserOptions:
   sourceType: module
   ecmaVersion: 2017
+  ecmaFeatures:
+    jsx : true
+
 globals:
   page: true
   browser: true

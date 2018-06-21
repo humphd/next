@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<title>Unbundled</title>
 
-<ul>
-    <li>
-        <a href="/www/">/www</a> - browse files</li>
-    <li>
-        <a href="/terminal/">/terminal</a> - boot Linux VM</li>
-    <li>
-        <a href="/editor/">/editor</a> - edit files</li>
-    <li>
-        <a href="./db/index.html">/data</a> - REST API into indexed.db</li>
-    <li>
-        <a href="./db/db-mutation.html">/data/{upload,download,reset}</a> - Reset, upload and download database.</li>
-</ul>
+<head>
+    <title>Unbundled</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+</head>
 
-<script src="sw.js"></script>
+<body>
+    <div id="container"></div>
+    <div style="display: none">
+        <li>
+            <a href="/terminal/">/terminal</a> - boot Linux VM
+        </li>
+        <li>
+            <a href="/editor/">/editor</a> - edit files
+        </li>
+        <li>
+            <a href="./db/index.html">/data</a> - REST API into indexed.db
+        </li>
+        <li>
+            <a href="./db/db-mutation.html">
+                /data/{'{upload,download,reset}'}
+            </a>
+            - Reset, upload and download database.
+        </li>
+    </div>
+    <script src="./sw.js"></script>
+    <script src="./index.js"></script>
+</body>

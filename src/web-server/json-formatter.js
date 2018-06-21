@@ -1,25 +1,28 @@
 export default {
     format404: url => {
-        return {
-            body: `The requested URL ${url} was not found on this server.`,
-            type: 'application/json',
-            status: 404,
-        };
+        return new Response(
+            `The requested URL ${url} was not found on this server.`,
+            {
+                status: 404,
+                statusText: 'OK',
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
     },
 
     formatDir: (dirPath, entries) => {
-        return {
-            body: JSON.stringify(entries),
-            type: 'application/json',
+        return new Response(JSON.stringify(entries), {
             status: 200,
-        };
+            statusText: 'OK',
+            headers: { 'Content-Type': 'application/json' },
+        });
     },
 
     formatFile: ({ stats }) => {
-        return {
-            type: 'application/json',
-            body: JSON.stringify(stats),
+        return new Response(JSON.stringify(stats), {
             status: 200,
-        };
+            statusText: 'OK',
+            headers: { 'Content-Type': 'application/json' },
+        });
     },
 };

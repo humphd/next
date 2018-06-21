@@ -1,7 +1,7 @@
 import htmlFormatter from './html-formatter';
 import jsonFormatter from './json-formatter';
 
-const wwwRegex = /\/www(\/.*)/;
+const wwwRegex = /^\/www(\/.*)/;
 export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
@@ -11,12 +11,15 @@ export default (workbox, webServer) => {
 
     // @ts-ignore
     workbox.routing.registerRoute(
-        wwwRegex,
+        context => wwwRegex.test(context.url.pathname),
         async ({ url }) => {
+            console.log('inside');
             const formatter =
                 url.searchParams.get('json') === 'true'
                     ? jsonFormatter
                     : htmlFormatter;
+            console.log(formatter);
+            console.log(url.pathname.match(wwwRegex));
             const path = url.pathname.match(wwwRegex)[1];
 
             let res;
@@ -25,12 +28,8 @@ export default (workbox, webServer) => {
             } catch (err) {
                 res = formatter.format404(path);
             }
-            const config = {
-                status: res.status,
-                statusText: 'OK',
-                headers: { 'Content-Type': res.type },
-            };
-            return new Response(res.body, config);
+            console.log(res);
+            return res;
         },
         'GET'
     );
