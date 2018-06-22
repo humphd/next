@@ -73,7 +73,7 @@ addEventListener('DOMContentLoaded', () => {
 
                 let file = document.createElement('li', { class: 'files' });
                 file.innerHTML = `
-                    <a href="${path}" title="${path}" class="files" target="blank">
+                    <a href="${path}" title="${path}" class="files">
                     ${icon}<span class="name">${name}</span> <span class="details">${fileSize}</span></a>
                 `;
 
