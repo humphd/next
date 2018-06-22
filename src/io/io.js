@@ -13,7 +13,7 @@ addEventListener('DOMContentLoaded', () => {
     let nothingfound = document.getElementById('nothingfound');
     let dropArea;
 
-    const render = entries => {
+    const render = (pathDir, entries) => {
         let scannedFolders = [],
             scannedFiles = [];
 
@@ -35,9 +35,9 @@ addEventListener('DOMContentLoaded', () => {
 
         if (scannedFolders.length) {
             scannedFolders.forEach(f => {
-                let itemsLength = f.size;
+                let itemsLength = f.contents.length;
                 let name = f.name;
-                let path = encodeURI(f.path);
+                let path = Path.join(`/io/in${pathDir}`, name);
                 let icon = '<span class="icon folder"></span>';
 
                 if (itemsLength) {
@@ -66,7 +66,7 @@ addEventListener('DOMContentLoaded', () => {
             scannedFiles.forEach(f => {
                 let fileSize = formatSize(f.size);
                 let name = f.name;
-                let path = encodeURI(f.path);
+                let path = Path.join(`/www${pathDir}`, name);
                 let fileType = Path.extname(name).substr(1);
                 let icon = '<span class="icon file"></span>';
                 icon = `<span class="icon file f-${fileType}">.${fileType}</span>`;
@@ -263,25 +263,12 @@ addEventListener('DOMContentLoaded', () => {
 
     dropArea.addEventListener('drop', handleDrop, false);
 
-    fetch(`/io/getentries${path}`, {
+    fetch(`/www${path}?json=true`, {
         method: 'GET',
     })
-        .then(res => {
-            return res.text();
-        })
-        .then(data => {
-            let entries = [];
-            if (data != '') {
-                entries = data.split('},').map(entry => {
-                    if (entry.substr(-1) != '}') entry += '}';
-                    return JSON.parse(entry);
-                });
-            }
-            render(entries);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+        .then(res => res.json())
+        .then(data => render(path, data))
+        .catch(err => console.error(err));
 
     document
         .getElementById('fileElem')

@@ -18,7 +18,7 @@ export default class {
 
                 // If this is a dir, show a dir listing
                 if (stats.isDirectory()) {
-                    sh.ls(path, (err, entries) => {
+                    sh.ls(path, { recursive: true }, (err, entries) => {
                         if (err) {
                             return reject(err);
                         }

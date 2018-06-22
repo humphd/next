@@ -3,7 +3,6 @@ import { format404 } from '../lib/html-formatter';
 import formatFS from '../lib/format-fs';
 import zip from './archive';
 
-const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
 const ioResetRegex = /\/io\/reset/;
 const ioRemoveRegex = /\/io\/remove(\/.+)/;
@@ -59,17 +58,6 @@ export default (workbox, ioServer) => {
             } catch (err) {
                 return constructInternalError(err.message);
             }
-        },
-        'GET'
-    );
-
-    workbox.routing.registerRoute(
-        ioEntriesRegex,
-        async ({ url }) => {
-            const path = fullyDecodeURI(url.pathname.match(ioEntriesRegex)[1]);
-            return await constructResponse(async () => {
-                return await ioServer.getEntries(path);
-            });
         },
         'GET'
     );
