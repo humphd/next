@@ -11,8 +11,8 @@
 const siteConfig = {
     title: 'Next',
     tagline: 'An experiment to unbunble the web',
-    url: 'https://humphd.github.io',
-    baseUrl: '/next/',
+    url: 'https://humphd.github.io/next',
+    baseUrl: '/',
     projectName: 'Next',
     organizationName: 'humphd',
 
