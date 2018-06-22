@@ -1,6 +1,6 @@
 import { fullyDecodeURI } from '../lib/utils';
-import formatFS from '../lib/format-fs';
 import { format404 } from '../lib/html-formatter';
+import formatFS from '../lib/format-fs';
 import zip from './archive';
 
 const ioEntriesRegex = /\/io\/getentries(\/.*)/;
@@ -35,9 +35,8 @@ const constructResponse = async func => {
 
         return new Response(body, init);
     } catch (err) {
-        console.error(err);
         body = err.message;
-        constructInternalError(body);
+        return constructInternalError(body);
     }
 };
 
@@ -96,7 +95,7 @@ export default (workbox, ioServer) => {
             try {
                 formData = await event.request.formData();
                 return await constructResponse(async () => {
-                    var files = JSON.parse(formData.get('file'));
+                    const files = JSON.parse(formData.get('file'));
                     const result = await ioServer.importFiles(files);
                     return {
                         body: JSON.stringify(result),
@@ -114,8 +113,12 @@ export default (workbox, ioServer) => {
         ioFromTextRegex,
         async ({ url }) => {
             const path = fullyDecodeURI(url.pathname.match(ioFromTextRegex)[1]);
+            const text = fullyDecodeURI(url.searchParams.get('text'));
             try {
-                const result = await ioServer.createFileFromEncodedText(path);
+                const result = await ioServer.createFileFromEncodedText(
+                    path,
+                    text
+                );
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
                 return constructInternalError(err.message);
@@ -130,9 +133,11 @@ export default (workbox, ioServer) => {
             const path = fullyDecodeURI(
                 url.pathname.match(ioFromDataURIRegex)[1]
             );
+            const dataUri = fullyDecodeURI(url.searchParams.get('dataUri'));
             try {
                 const result = await ioServer.createFileFromEncodedDataURI(
-                    path
+                    path,
+                    dataUri
                 );
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
@@ -145,7 +150,7 @@ export default (workbox, ioServer) => {
     workbox.routing.registerRoute(
         ioOutRegex,
         async ({ url }) => {
-            let path = fullyDecodeURI(url.pathname.match(ioOutRegex)[1]);
+            const path = fullyDecodeURI(url.pathname.match(ioOutRegex)[1]);
             return await constructResponse(async () => {
                 const result = await ioServer.getFile(path);
                 return { body: result.body, type: 'application/octet-stream' };
@@ -190,6 +195,41 @@ export default (workbox, ioServer) => {
                 await formatFS();
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
+                return constructInternalError(err.message);
+            }
+        },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioArchiveRegex,
+        async ({ url }) => {
+            // Get the portion of the path after /io/archive/*
+            let path = url.pathname.match(ioArchiveRegex)[1];
+            // Deal with any URL encoding in path
+            path = decodeURIComponent(path);
+            // Make sure we have something rooted in `/` (e.g., "" -> "/")
+            path = path.replace(/^\/?/, '/');
+
+            try {
+                const blob = await zip(path);
+                const init = {
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {
+                        'Content-Type': 'application/zip',
+                        'Content-Disposition':
+                            'attachment; filename="archive.zip"',
+                    },
+                };
+
+                return new Response(blob, init);
+            } catch (err) {
+                // Deal with the common case of a path not existing, and 404
+                if (err.code === 'ENOENT') {
+                    return constructInternalError(format404(path));
+                }
+                // Otherwise, give back a 500 with the error.
                 return constructInternalError(err.message);
             }
         },

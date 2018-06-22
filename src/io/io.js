@@ -146,7 +146,7 @@ addEventListener('DOMContentLoaded', () => {
         try {
             const result = await blobToBuffer(file);
             let buffer = new Int8Array(result);
-            return { name: file.name, buffer: buffer, path: path };
+            return { path: Path.join(path, file.name), buffer: buffer };
         } catch (e) {
             console.warn(e.message);
             return e;
@@ -181,14 +181,14 @@ addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     let res = data.every(res => {
-                        return res.success === true;
+                        return !(res.err in res);
                     });
 
                     if (res) {
                         location.reload();
                     } else {
                         const result = data
-                            .filter(res => res.success == false)
+                            .filter(res => res.err in res)
                             .map(res => res.err)
                             .join('\n');
 

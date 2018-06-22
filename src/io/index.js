@@ -6,7 +6,6 @@ import { getMimeType } from '../lib/content-type';
 import htmlFormatter from '../lib/html-formatter';
 import { fullyDecodeURI } from '../lib/utils';
 import registerRoutes from './routes';
-import * as ioFiles from './io-files';
 import strongDataUri from 'strong-data-uri';
 
 export default class {
@@ -15,58 +14,44 @@ export default class {
     }
 
     // Creates a file from an encoded text
-    async createFileFromEncodedText(path) {
-        try {
-            let text = Path.basename(path);
-            let paths = Path.join(path, '..');
-            let fileName = Path.basename(paths);
-            let directory = Path.dirname(paths);
-            let filePath = Path.join(directory, fileName);
-
-            await this.createPath(directory);
-
-            return new Promise((resolve, reject) => {
-                fs.writeFile(filePath, text, err => {
-                    if (err) {
-                        return reject({
-                            success: false,
-                            err: err,
+    async createFileFromEncodedText(path, text) {
+        const directory = Path.dirname(path);
+        return this.createPath(directory).then(
+            () =>
+                new Promise((resolve, reject) => {
+                    fs.writeFile(path, text, err => {
+                        if (err) {
+                            return reject({
+                                err: err,
+                            });
+                        }
+                        resolve({
+                            path: directory,
                         });
-                    }
-                    resolve({
-                        success: true,
-                        path: Path.dirname(paths),
                     });
-                });
-            });
-        } catch (err) {
-            throw err;
-        }
+                })
+        );
     }
 
     // Creates a file from an encoded data uri
-    async createFileFromEncodedDataURI(path) {
-        try {
-            let dataUriRegex = /data:([\w\/\+]+);(charset=[\w-]+|base64).*,(.+={0,2})/;
-            var index = path.match(dataUriRegex).index;
-            let dataURL = path.substring(index);
-            let paths = path.substring(0, index);
-            let fileName = Path.basename(paths);
-            let fileDirectory = Path.dirname(paths);
-            let filePath = Path.join(Path.dirname(paths), fileName);
-
-            await this.createPath(fileDirectory);
-
-            let buffer = strongDataUri.decode(dataURL);
-            let file = {
-                name: fileName,
-                path: filePath,
-                buffer: buffer,
-            };
-            return await ioFiles.importFile(file);
-        } catch (err) {
-            throw err;
-        }
+    createFileFromEncodedDataURI(path, dataUri) {
+        const directory = Path.dirname(path);
+        return this.createPath(directory).then(
+            () =>
+                new Promise((resolve, reject) => {
+                    const buffer = new Buffer(strongDataUri.decode(dataUri));
+                    fs.writeFile(path, buffer, err => {
+                        if (err) {
+                            return reject({
+                                err: err,
+                            });
+                        }
+                        resolve({
+                            path: directory,
+                        });
+                    });
+                })
+        );
     }
 
     // Generates a Data URI for the specified file
@@ -74,7 +59,7 @@ export default class {
         try {
             const fileInfo = await this.getFileInfo(path);
 
-            let daraUri = strongDataUri.encode(
+            const daraUri = strongDataUri.encode(
                 new Buffer(fileInfo.body.contents),
                 fileInfo.type
             );
@@ -92,9 +77,20 @@ export default class {
     async importFiles(files) {
         return Promise.all(
             files.map(async file => {
-                file.buffer = Object.values(file.buffer);
-                file.path = fullyDecodeURI(Path.join(file.path, file.name));
-                return await ioFiles.importFile(file);
+                file.buffer = new Buffer(Object.values(file.buffer));
+                file.path = fullyDecodeURI(file.path);
+                return await new Promise((resolve, reject) => {
+                    fs.writeFile(file.path, file.buffer, err => {
+                        if (err) {
+                            return reject({
+                                err: err,
+                            });
+                        }
+                        resolve({
+                            path: Path.dirname(file.path),
+                        });
+                    });
+                });
             })
         );
     }
@@ -182,12 +178,12 @@ export default class {
         return new Promise((resolve, reject) => {
             fs.stat(path, (err, stats) => {
                 if (err) {
-                    return reject(htmlFormatter.notAFile(path));
+                    return reject(htmlFormatter.format404(path));
                 }
                 // If this is a dir, show a dir listing
                 if (stats.isDirectory()) {
                     // Todo: Better error handling needed.
-                    reject(htmlFormatter.notAFile(path));
+                    reject(htmlFormatter.format404(path));
                 } else {
                     fs.readFile(path, (err, contents) => {
                         if (err) {
