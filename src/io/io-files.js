@@ -1,6 +1,6 @@
 import fs from '../lib/fs';
-import buffer from '../lib/buffer';
-import pth from '../lib/path';
+import Buffer from '../lib/buffer';
+import Path from '../lib/path';
 
 // Makes FileReader Api work with async/await
 // Get file as ArrayBuffer
@@ -39,7 +39,7 @@ export const fileToDataURI = async inputFile => {
 // Uploads a file into filesystem
 export const importFile = async file => {
     return new Promise((resolve, reject) => {
-        var buf = buffer(file.buffer);
+        var buf = Buffer(file.buffer);
         fs.writeFile(file.path, buf, err => {
             if (err) {
                 return reject({
@@ -49,7 +49,7 @@ export const importFile = async file => {
             }
             resolve({
                 success: true,
-                path: pth.dirname(file.path),
+                path: Path.dirname(file.path),
             });
         });
     });

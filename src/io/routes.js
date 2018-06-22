@@ -25,9 +25,9 @@ const constructResponse = async func => {
     try {
         const result = await func();
         body = result.body;
-        let status = 200;
-        let statusText = 'OK';
-        let type = result.type;
+        const status = 200;
+        const statusText = 'OK';
+        const type = result.type;
         const init = handleResponseStatus(status, statusText, type);
 
         return new Response(body, init);

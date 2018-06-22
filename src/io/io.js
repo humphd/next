@@ -1,7 +1,7 @@
 import iconFile from './icons/file.png';
 import strongDataUri from 'strong-data-uri';
 import { fullyDecodeURI } from '../lib/utils';
-import pth from '../lib/path';
+import Path from '../lib/path';
 import { formatSize } from '../lib/utils';
 import { blobToBuffer } from './io-files';
 
@@ -67,7 +67,7 @@ addEventListener('DOMContentLoaded', () => {
                 let fileSize = formatSize(f.size);
                 let name = f.name;
                 let path = encodeURI(f.path);
-                let fileType = pth.extname(name).substr(1);
+                let fileType = Path.extname(name).substr(1);
                 let icon = '<span class="icon file"></span>';
                 icon = `<span class="icon file f-${fileType}">.${fileType}</span>`;
 
@@ -92,9 +92,9 @@ addEventListener('DOMContentLoaded', () => {
         if (path == '/') {
             breadcrumbsUrls.push('/');
         } else {
-            breadcrumbsUrls = path.split(pth.sep);
+            breadcrumbsUrls = path.split(Path.sep);
             for (let i = 1; i < breadcrumbsUrls.length; i++) {
-                breadcrumbsUrls[i] = pth.join(
+                breadcrumbsUrls[i] = Path.join(
                     breadcrumbsUrls[i - 1],
                     breadcrumbsUrls[i]
                 );
@@ -104,7 +104,7 @@ addEventListener('DOMContentLoaded', () => {
         let urls = '';
 
         breadcrumbsUrls.forEach((link, i) => {
-            let linkTitle = fullyDecodeURI(pth.basename(link));
+            let linkTitle = fullyDecodeURI(Path.basename(link));
 
             if (i !== breadcrumbsUrls.length - 1) {
                 urls += `<a href="/io/in/${link}"><span class="folderName">${linkTitle}</span></a> <span class="arrow">→</span>`;

@@ -1,7 +1,7 @@
 import fs from '../lib/fs';
 const sh = new fs.Shell();
-import pth from '../lib/path';
-import buffer from '../lib/buffer';
+import Path from '../lib/path';
+import Buffer from '../lib/buffer';
 import { getMimeType } from '../lib/content-type';
 import htmlFormatter from '../lib/html-formatter';
 import { fullyDecodeURI } from '../lib/utils';
@@ -17,11 +17,11 @@ export default class {
     // Creates a file from an encoded text
     async createFileFromEncodedText(path) {
         try {
-            let text = pth.basename(path);
-            let paths = pth.join(path, '..');
-            let fileName = pth.basename(paths);
-            let directory = pth.dirname(paths);
-            let filePath = pth.join(directory, fileName);
+            let text = Path.basename(path);
+            let paths = Path.join(path, '..');
+            let fileName = Path.basename(paths);
+            let directory = Path.dirname(paths);
+            let filePath = Path.join(directory, fileName);
 
             await this.createPath(directory);
 
@@ -35,7 +35,7 @@ export default class {
                     }
                     resolve({
                         success: true,
-                        path: pth.dirname(paths),
+                        path: Path.dirname(paths),
                     });
                 });
             });
@@ -51,9 +51,9 @@ export default class {
             var index = path.match(dataUriRegex).index;
             let dataURL = path.substring(index);
             let paths = path.substring(0, index);
-            let fileName = pth.basename(paths);
-            let fileDirectory = pth.dirname(paths);
-            let filePath = pth.join(pth.dirname(paths), fileName);
+            let fileName = Path.basename(paths);
+            let fileDirectory = Path.dirname(paths);
+            let filePath = Path.join(Path.dirname(paths), fileName);
 
             await this.createPath(fileDirectory);
 
@@ -75,7 +75,7 @@ export default class {
             const fileInfo = await this.getFileInfo(path);
 
             let daraUri = strongDataUri.encode(
-                new buffer(fileInfo.body.contents),
+                new Buffer(fileInfo.body.contents),
                 fileInfo.type
             );
 
@@ -93,7 +93,7 @@ export default class {
         return Promise.all(
             files.map(async file => {
                 file.buffer = Object.values(file.buffer);
-                file.path = fullyDecodeURI(pth.join(file.path, file.name));
+                file.path = fullyDecodeURI(Path.join(file.path, file.name));
                 return await ioFiles.importFile(file);
             })
         );
