@@ -1,5 +1,7 @@
 import { fullyDecodeURI } from '../lib/utils';
 import formatFS from '../lib/format-fs';
+import { format404 } from '../lib/html-formatter';
+import zip from './archive';
 
 const ioEntriesRegex = /\/io\/getentries(\/.*)/;
 const ioInRegex = /\/io\/in(\/.*)/;
@@ -10,6 +12,7 @@ const ioOutRegex = /\/io\/out(\/.*)/;
 const ioImportRegex = /\/io\/import/;
 const ioFromTextRegex = /\/io\/from\/text(\/.*)/;
 const ioFromDataURIRegex = /\/io\/from\/dataurl(\/.*)/;
+const ioArchiveRegex = /\/io\/archive(\/?.*)$/;
 
 // Handles the response status
 function handleResponseStatus(status, statusText, type) {
@@ -55,7 +58,7 @@ export default (workbox, ioServer) => {
                 await ioServer.createPath(path);
                 return fetch('/io/io.html');
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -80,7 +83,7 @@ export default (workbox, ioServer) => {
                 await ioServer.deletePath(path);
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -101,7 +104,7 @@ export default (workbox, ioServer) => {
                     };
                 });
             } catch (err) {
-                return constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'POST'
@@ -115,7 +118,7 @@ export default (workbox, ioServer) => {
                 const result = await ioServer.createFileFromEncodedText(path);
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -133,7 +136,7 @@ export default (workbox, ioServer) => {
                 );
                 return Response.redirect(`${url.origin}/io/in${result.path}`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -174,7 +177,7 @@ export default (workbox, ioServer) => {
                     return { body: body, type: 'text/html' };
                 });
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'
@@ -187,7 +190,7 @@ export default (workbox, ioServer) => {
                 await formatFS();
                 return Response.redirect(`${url.origin}/io/in/`);
             } catch (err) {
-                constructInternalError(err);
+                return constructInternalError(err.message);
             }
         },
         'GET'

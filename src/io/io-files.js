@@ -39,7 +39,7 @@ export const fileToDataURI = async inputFile => {
 // Uploads a file into filesystem
 export const importFile = async file => {
     return new Promise((resolve, reject) => {
-        var buf = Buffer(file.buffer);
+        var buf = new Buffer(file.buffer);
         fs.writeFile(file.path, buf, err => {
             if (err) {
                 return reject({
