@@ -145,7 +145,7 @@ addEventListener('DOMContentLoaded', () => {
     const getBufferFile = async file => {
         try {
             const result = await blobToBuffer(file);
-            let buffer = new Int8Array(result);
+            let buffer = new Uint8Array(result);
             return { path: Path.join(path, file.name), buffer: buffer };
         } catch (e) {
             console.warn(e.message);

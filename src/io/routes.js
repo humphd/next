@@ -68,7 +68,7 @@ export default (workbox, ioServer) => {
             const path = fullyDecodeURI(url.pathname.match(ioRemoveRegex)[1]);
             try {
                 await ioServer.deletePath(path);
-                return Response.redirect(`${url.origin}/io/in/`);
+                return Response.redirect(`${url.origin}/io/in/`, 302);
             } catch (err) {
                 return constructInternalError(err.message);
             }
@@ -107,7 +107,10 @@ export default (workbox, ioServer) => {
                     path,
                     text
                 );
-                return Response.redirect(`${url.origin}/io/in${result.path}`);
+                return Response.redirect(
+                    `${url.origin}/io/in${result.path}`,
+                    302
+                );
             } catch (err) {
                 return constructInternalError(err.message);
             }
@@ -127,7 +130,10 @@ export default (workbox, ioServer) => {
                     path,
                     dataUri
                 );
-                return Response.redirect(`${url.origin}/io/in${result.path}`);
+                return Response.redirect(
+                    `${url.origin}/io/in${result.path}`,
+                    302
+                );
             } catch (err) {
                 return constructInternalError(err.message);
             }
@@ -137,12 +143,9 @@ export default (workbox, ioServer) => {
 
     workbox.routing.registerRoute(
         ioOutRegex,
-        async ({ url }) => {
+        ({ url }) => {
             const path = fullyDecodeURI(url.pathname.match(ioOutRegex)[1]);
-            return await constructResponse(async () => {
-                const result = await ioServer.getFile(path);
-                return { body: result.body, type: 'application/octet-stream' };
-            });
+            return Response.redirect(`/www${path}?download=true`, 302);
         },
         'GET'
     );
@@ -181,7 +184,7 @@ export default (workbox, ioServer) => {
         async ({ url }) => {
             try {
                 await formatFS();
-                return Response.redirect(`${url.origin}/io/in/`);
+                return Response.redirect(`${url.origin}/io/in/`, 302);
             } catch (err) {
                 return constructInternalError(err.message);
             }

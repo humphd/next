@@ -119,33 +119,6 @@ export default class {
         });
     }
 
-    // Retrieves a file
-    async getFile(path) {
-        // TODO: need to add promises to Filer
-        return new Promise((resolve, reject) => {
-            fs.stat(path, (err, stats) => {
-                if (err) {
-                    return reject(err);
-                }
-                // If this is a dir, show a dir listing
-                if (stats.isDirectory()) {
-                    // Todo: Better error handling needed.
-                    reject('Path does not link to a File.');
-                } else {
-                    fs.readFile(path, (err, contents) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        resolve({
-                            type: getMimeType(path),
-                            body: contents,
-                        });
-                    });
-                }
-            });
-        });
-    }
-
     // Gets file info
     async getFileInfo(path) {
         // TODO: need to add promises to Filer
