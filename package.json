@@ -19,6 +19,7 @@
             "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "check-eslint": "eslint .",
+        "travis": "npm run test",
         "v86:setup": "docker build -t buildroot .",
         "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
         "v86:build": "node tools/build-v86"
