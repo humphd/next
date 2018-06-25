@@ -12,12 +12,7 @@ sudo: false
 
 cache: 
   directories:
-    # cache the larger node_modules we use throughout the tree 
-    # - "node_modules"
-    # - "src/editor/node_modules"
-    # - "src/website/node_modules"
-    # cache the bios, linux binary images
-    - "dist/terminal/bin"
+    - $HOME/.npm
 
 script:
   - npm run travis
@@ -35,4 +30,3 @@ deploy:
   on:
     branch: master
     node: 'lts/*'
-
