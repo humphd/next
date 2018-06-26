@@ -1,3 +1,7 @@
+import fs from '../lib/fs';
+import Path from '../lib/path';
+import Buffer from '../lib/buffer';
+
 export const stateUrl = 'bin/vm-state.bin';
 export const vmStateCache = 'vm-state';
 
@@ -39,12 +43,17 @@ export const defaultEmulatorOptions = {
     cdrom: {
         url: 'bin/v86-linux.iso',
     },
+    // Pass our filesystem instance objects in to the Plan 9 Virtio code.
     filesystem: {
-        // XXX: I need this so v86 starts with a P9 filesystem
+        fs,
+        sh: new fs.Shell(),
+        Path,
+        Buffer,
     },
     // Mouse disabled, undo if you want to interact with the screen
     disable_mouse: true,
     // Keyboard disabled, undo if you want to type in screen
     disable_keyboard: true,
+    disable_speaker: true,
     autostart: true,
 };

@@ -1,13 +1,6 @@
 'use strict';
 
-// XXX: need to use built version, since Parcel throws at runtime otherwise
-import Filer from '../../node_modules/filer/dist/filer';
-// XXX: expose Filer as a global until I get v86 properly built
-window.Filer = Filer;
-
-// XXX: current v86 is exposed on global
-import 'v86';
-
+import { V86Starter } from 'v86';
 import { stateUrl, defaultEmulatorOptions } from './config';
 
 // What our shell prompt looks like, so we can wait on it.
@@ -74,7 +67,7 @@ const coldBoot = async term => {
         term.write('.');
     }, 500);
 
-    const emulator = new window.V86Starter(defaultEmulatorOptions);
+    const emulator = new V86Starter(defaultEmulatorOptions);
     await storeInitialStateOnBoot(emulator, term, timer);
 
     return emulator;
@@ -88,7 +81,7 @@ const warmBoot = term => {
         url: stateUrl,
     };
 
-    const emulator = new window.V86Starter(options);
+    const emulator = new V86Starter(options);
     startTerminal(emulator, term);
 
     return emulator;
