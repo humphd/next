@@ -19,7 +19,6 @@ const downloadAllTorrentFiles = torrent =>
         torrent.files.map(
             file =>
                 new Promise((resolve, reject) => {
-                    console.log('file: ', file);
                     const sh = new fs.Shell();
                     let filename = Path.join('/', file.path);
                     file.getBuffer((err, buffer) => {
