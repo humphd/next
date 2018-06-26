@@ -12,14 +12,14 @@
         "build-docs": "cd src/docs/website && npm run build",
         "build-editor": "cd src/editor && npm run build",
         "build-server": "parcel build src/index.html",
-        "build-share": "parcel build src/share/export.html --public-url /share --out-dir dist/share",
-        "postbuild-share": "parcel build src/share/import.html --public-url /share --out-dir dist/share",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
-        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal":
+            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "v86:setup": "docker build -t buildroot .",
-        "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
+        "v86:bash":
+            "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
         "v86:build": "node tools/build-v86"
     },
     "repository": {
@@ -35,6 +35,7 @@
     "dependencies": {
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
+        "magnet-uri": "^5.1.8",
         "mime-types": "^2.1.18",
         "v86": "humphd/v86#filer-9p-lastknowngood",
         "webtorrent": "^0.100.0"
