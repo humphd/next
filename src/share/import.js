@@ -72,6 +72,7 @@ function startDownload() {
             document.getElementById('isComplete').innerHTML =
                 'Error seeding file';
             console.error(err);
+            document.getElementById('btnDownload').disabled = false;
         });
 
         torrent.on('done', () => {
