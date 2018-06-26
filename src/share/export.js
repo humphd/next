@@ -1,29 +1,26 @@
 import fs from '../lib/fs';
-const sh = new fs.Shell();
 import WebTorrent from 'webtorrent';
 
-const files = [];
+window.onload = () => {
+    const files = [];
+    const client = new WebTorrent();
+    const sh = new fs.Shell();
 
-document.getElementById('btnSeed').addEventListener('click', startSeeding);
-
-function processPath(path, next) {
-    if (path.endsWith('/')) {
-        return next();
-    }
-    fs.readFile(path, function(err, data) {
-        if (err) {
-            console.error(err);
-            return next(err);
+    function processPath(path, next) {
+        if (path.endsWith('/')) {
+            return next();
         }
-        data.name = path;
-        files.push(data);
-        next();
-    });
-}
+        fs.readFile(path, (err, data) => {
+            if (err) {
+                console.error(err);
+                return next(err);
+            }
+            data.name = path;
+            files.push(data);
+            next();
+        });
+    }
 
-function startSeeding() {
-    document.getElementById('btnSeed').disabled = true;
-    let client = new WebTorrent();
     sh.find('/', { exec: processPath }, err => {
         if (err) {
             console.error(err);
@@ -31,18 +28,19 @@ function startSeeding() {
                 'Error seeding files';
             return;
         }
-        try {
-            client.seed(files, { name: '/' }, function(torrent) {
-                document.getElementById('magnetURI_p').innerHTML =
-                    'Magnet URI:';
-                document.getElementById('magnetURI').innerHTML =
-                    torrent.magnetURI;
-                console.log('magnetURI=', torrent.magnetURI);
-            });
-        } catch (err) {
-            document.getElementById('magnetURI_p').innerHTML = '';
+
+        client.seed(files, { name: '/' }, torrent => {
+            document.getElementById('magnetProgress').innerHTML =
+                'Magnet is seeding';
+            document.getElementById('magnetURI_p').innerHTML = 'Magnet URI:';
+            document.getElementById('magnetURI').innerHTML = torrent.magnetURI;
+        });
+
+        client.on('error', err => {
+            document.getElementById('magnetProgress').innerHTML =
+                'Error seeding file';
             document.getElementById('magnetURI').innerHTML = '';
             console.error(err);
-        }
+        });
     });
-}
+};
