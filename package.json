@@ -15,8 +15,7 @@
         "predownload-vm": "npm run build-server",
         "download-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run download-vm",
-        "build-terminal":
-            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "check-eslint": "eslint .",
         "travis": "npm run test",
@@ -39,7 +38,7 @@
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
-        "v86": "humphd/v86#filer-9p-lastknowngood",
+        "v86": "humphd/v86#0324c7c",
         "xterm": "^3.4.1"
     },
     "devDependencies": {
