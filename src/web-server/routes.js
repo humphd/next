@@ -1,5 +1,4 @@
-import htmlFormatter from './html-formatter';
-import jsonFormatter from './json-formatter';
+import rawFormatter from './raw-formatter';
 
 const wwwRegex = /^\/www(\/.*)/;
 export default (workbox, webServer) => {
@@ -13,13 +12,14 @@ export default (workbox, webServer) => {
     workbox.routing.registerRoute(
         context => wwwRegex.test(context.url.pathname),
         async ({ url }) => {
-            console.log('inside');
-            const formatter =
-                url.searchParams.get('json') === 'true'
-                    ? jsonFormatter
-                    : htmlFormatter;
-            console.log(formatter);
-            console.log(url.pathname.match(wwwRegex));
+            if (url.searchParams.get('raw') !== 'true') {
+                return Response.redirect(
+                    `${url.origin}?redirectTo=${encodeURIComponent(
+                        url.pathname
+                    )}`
+                );
+            }
+            const formatter = rawFormatter;
             const path = url.pathname.match(wwwRegex)[1];
 
             let res;
@@ -28,7 +28,6 @@ export default (workbox, webServer) => {
             } catch (err) {
                 res = formatter.format404(path);
             }
-            console.log(res);
             return res;
         },
         'GET'

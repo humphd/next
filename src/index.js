@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import page404 from './pages/404';
 import index from './pages/index';
 import WebServer from './pages/web-server';
-import Redirect from 'react-router/Redirect';
 
 class App extends Component {
     render() {
+        const currentUrl = new URL(window.location.href);
         return (
             <div>
                 <Switch>
@@ -17,14 +17,21 @@ class App extends Component {
                     <Route path="/error" component={page404} />
                     <Route path="*" render={() => <Redirect to="/" />} />
                 </Switch>
+                {currentUrl.searchParams.get('redirectTo') ? (
+                    <Redirect
+                        to={decodeURIComponent(
+                            currentUrl.searchParams.get('redirectTo')
+                        )}
+                    />
+                ) : null}
             </div>
         );
     }
 }
 
 ReactDOM.render(
-    <HashRouter>
+    <BrowserRouter>
         <App />
-    </HashRouter>,
+    </BrowserRouter>,
     document.getElementById('container')
 );

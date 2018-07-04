@@ -1,3 +1,5 @@
+import { getMimeType } from './content-type';
+
 export default {
     format404: url => {
         return new Response(
@@ -18,11 +20,11 @@ export default {
         });
     },
 
-    formatFile: ({ stats }) => {
-        return new Response(JSON.stringify(stats), {
+    formatFile: ({ content, path }) => {
+        return new Response(content, {
             status: 200,
             statusText: 'OK',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': getMimeType(path) },
         });
     },
 };
