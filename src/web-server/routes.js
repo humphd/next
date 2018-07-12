@@ -1,6 +1,10 @@
 import rawFormatter from './raw-formatter';
 
 const wwwRegex = /^\/www(\/.*)/;
+
+const isRaw = url =>
+    wwwRegex.test(url.pathname) && url.searchParams.get('raw') === 'true';
+
 export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
@@ -8,28 +12,28 @@ export default (workbox, webServer) => {
         workbox.strategies.staleWhileRevalidate()
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
-        context => wwwRegex.test(context.url.pathname),
+        context => isRaw(context.url),
         async ({ url }) => {
-            if (url.searchParams.get('raw') !== 'true') {
-                return Response.redirect(
-                    `${url.origin}?redirectTo=${encodeURIComponent(
-                        url.pathname
-                    )}`
-                );
-            }
-            const formatter = rawFormatter;
             const path = url.pathname.match(wwwRegex)[1];
 
             let res;
             try {
-                res = await webServer.serve(path, formatter);
+                res = await webServer.serve(path, rawFormatter);
             } catch (err) {
-                res = formatter.format404(path);
+                res = rawFormatter.format404(path);
             }
             return res;
         },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        context => !isRaw(context.url),
+        ({ url }) =>
+            Response.redirect(
+                `${url.origin}?redirectTo=${encodeURIComponent(url.pathname)}`
+            ),
         'GET'
     );
 };

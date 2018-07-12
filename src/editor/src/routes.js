@@ -32,7 +32,6 @@ const editRegex = /\/edit(\/.*)/;
 
 export default {
     init: workbox => {
-        // @ts-ignore
         workbox.routing.registerRoute(
             editRegex,
             async ({ url, event }) => {
