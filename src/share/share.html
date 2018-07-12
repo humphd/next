@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sharing</title>
+    <link rel="stylesheet" href="./share.css" />
+  </head>
+<body>
+
+  <main>
+    <h2>Start sharing</h2>
+    
+    <p>Press button to start seeding files</p>
+    
+    <input type="button" id="btnSeed" value="Start Seed">
+
+    <div id="magnetProgress"></div>
+
+    <p id="magnetURI_p"></p>
+    <div class="magnet" id="magnetURI"></div>
+
+    <br/>
+    <hr/>
+    <br/>
+    
+    <h2>Start downloading</h2>
+
+
+    <label>Download torrent from a magnet link</label>
+
+    <br/><br/>
+
+    <input class="magnetInput" id="torrentId" placeholder="magnet:" required="">
+    <button id="btnDownload">Download</button>
+
+    <div id="downloadInfo" hidden>
+
+      <p>Download speed: </p>
+      <div id="dSpeed"></div>
+      <br/>
+      <p>Download progress: </p>
+      <div id="dProgress"></div>
+      <br/>
+      <p>Number of peers: </p>
+      <div id="dPeers"></div>
+      <br/>
+
+
+
+ 
+    </div>
+
+    <br/>
+    <br/>
+
+    <div id="isComplete"></div>
+  </main>
+
+  <script src="./share.js"></script>
+
+</body>
+</html>
