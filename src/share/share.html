@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Sharing</title>
-    <link rel="stylesheet" href="./share.css" />
-  </head>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sharing</title>
+  <link rel="stylesheet" href="./share.css" />
+</head>
+
 <body>
 
   <main>
     <h2>Start sharing</h2>
-    
+
     <p>Press button to start seeding files</p>
-    
+
     <input type="button" id="btnSeed" value="Start Seed">
 
     <div id="magnetProgress"></div>
@@ -22,41 +24,54 @@
     <br/>
     <hr/>
     <br/>
-    
+
     <h2>Start downloading</h2>
 
 
     <label>Download torrent from a magnet link</label>
 
-    <br/><br/>
+    <br/>
+    <br/>
 
     <input class="magnetInput" id="torrentId" placeholder="magnet:" required="">
     <button id="btnDownload">Download</button>
 
-    <div id="downloadInfo" hidden>
+    <div id="downloadInfo" class="import-status">
 
-      <p>Download speed: </p>
-      <div id="dSpeed"></div>
-      <br/>
-      <p>Download progress: </p>
-      <div id="dProgress"></div>
-      <br/>
-      <p>Number of peers: </p>
-      <div id="dPeers"></div>
-      <br/>
+      <div class="wrap">
 
-
-
- 
+        <div class="left_col">
+          <p>Progress bar: </p>
+          <div id="progressBar"></div>
+          <br/>
+          <p>Download speed: </p>
+          <div id="downloadSpeed"></div>
+          <br/>
+          <p>Upload speed: </p>
+          <div id="uploadSpeed"></div>
+          <br/>
+          <p>Total: </p>
+          <div id="total"></div>
+          <br/>
+        </div>
+        <div class="right_col">
+          <p>Remaining: </p>
+          <div id="remaining"></div>
+          <br/>
+          <p>Download progress: </p>
+          <div id="downloaded"></div>
+          <br/>
+          <p>Number of peers: </p>
+          <div id="numPeers"></div>
+          <br/>
+          <div id="isComplete"></div>
+        </div>
+      </div>
     </div>
-
-    <br/>
-    <br/>
-
-    <div id="isComplete"></div>
   </main>
 
   <script src="./share.js"></script>
 
 </body>
+
 </html>
