@@ -1,7 +1,10 @@
-import htmlFormatter from './html-formatter';
-import jsonFormatter from './json-formatter';
+import rawFormatter from './raw-formatter';
 
-const wwwRegex = /\/www(\/.*)/;
+const wwwRegex = /^\/www(\/.*)/;
+
+const isRaw = url =>
+    wwwRegex.test(url.pathname) && url.searchParams.get('raw') === 'true';
+
 export default (workbox, webServer) => {
     // Cache service-worker icon files (PNG) in the root
     workbox.routing.registerRoute(
@@ -9,29 +12,28 @@ export default (workbox, webServer) => {
         workbox.strategies.staleWhileRevalidate()
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
-        wwwRegex,
+        context => isRaw(context.url),
         async ({ url }) => {
-            const formatter =
-                url.searchParams.get('json') === 'true'
-                    ? jsonFormatter
-                    : htmlFormatter;
             const path = url.pathname.match(wwwRegex)[1];
 
             let res;
             try {
-                res = await webServer.serve(path, formatter);
+                res = await webServer.serve(path, rawFormatter);
             } catch (err) {
-                res = formatter.format404(path);
+                res = rawFormatter.format404(path);
             }
-            const config = {
-                status: res.status,
-                statusText: 'OK',
-                headers: { 'Content-Type': res.type },
-            };
-            return new Response(res.body, config);
+            return res;
         },
+        'GET'
+    );
+
+    workbox.routing.registerRoute(
+        context => !isRaw(context.url),
+        ({ url }) =>
+            Response.redirect(
+                `${url.origin}?redirectTo=${encodeURIComponent(url.pathname)}`
+            ),
         'GET'
     );
 };

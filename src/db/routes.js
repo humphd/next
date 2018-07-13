@@ -64,7 +64,6 @@ export default (workbox, db) => {
         'POST'
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
         async ({ url }) => {
@@ -80,7 +79,6 @@ export default (workbox, db) => {
         'GET'
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
         async ({ url, event }) => {
@@ -104,7 +102,6 @@ export default (workbox, db) => {
         'POST'
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
         async ({ url, event }) => {
@@ -129,7 +126,6 @@ export default (workbox, db) => {
         'PUT'
     );
 
-    // @ts-ignore
     workbox.routing.registerRoute(
         apiRegex,
         async ({ url }) => {

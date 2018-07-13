@@ -6,18 +6,15 @@ const submitForm = () => {
     let url = `${window.location.hostname}`;
 
     let body =
-        // @ts-ignore
         methodElement.value === 'GET' || methodElement.value === 'DELETE'
             ? null
             : bodyElement.value;
-    // @ts-ignore
+
     url += urlElement.value;
 
-    // @ts-ignore
     console.log(methodElement.value);
 
     const req = new Request(encodeURI(url), {
-        // @ts-ignore
         method: methodElement.value,
         body: body,
     });
@@ -32,7 +29,7 @@ const submitForm = () => {
         .catch(err => {
             console.error(err);
         });
-    // @ts-ignore
+
     console.log(urlElement.value);
 };
 
@@ -48,7 +45,6 @@ window.addEventListener('load', () => {
 });
 
 function revealMethod(event) {
-    // @ts-ignore
     if (event.target.value == 'GET' || event.target.value == 'DELETE') {
         document.getElementById('bodyWrapper').hidden = true;
     } else {
