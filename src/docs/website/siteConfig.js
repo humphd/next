@@ -31,6 +31,11 @@ const siteConfig = {
     headerIcon: 'img/database.svg',
     footerIcon: 'img/database.svg',
     favicon: 'img/favicon/database.ico',
+    themeUrl: './static/css/share.css',
+    scripts: [
+        'https://raw.githubusercontent.com/mmBabol/next/merge-share/src/share/share.js',
+    ],
+    cleanUrl: 'true',
 
     colors: {
         primaryColor: '#E97E61',

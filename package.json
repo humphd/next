@@ -14,12 +14,10 @@
         "build-server": "parcel build src/index.html",
         "build-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run build-vm",
-        "build-terminal":
-            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "v86:setup": "docker build -t buildroot .",
-        "v86:bash":
-            "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
+        "v86:bash": "cross-env OVERRIDE_CONFIG_DIR=1 node tools/build-v86 -ti --entrypoint \"bash\"",
         "v86:build": "node tools/build-v86"
     },
     "repository": {
@@ -36,6 +34,7 @@
         "dexie": "^2.0.4",
         "filer": "humphd/filer#9p-filer",
         "mime-types": "^2.1.18",
+        "styled-components": "^3.3.3",
         "v86": "humphd/v86#filer-9p-lastknowngood",
         "xterm": "^3.4.1"
     },
@@ -43,6 +42,7 @@
         "babel-plugin-transform-runtime": "^6.23.0",
         "copy": "^0.3.2",
         "cross-env": "^5.2.0",
+        "css-loader": "^1.0.0",
         "eslint": "^4.19.1",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-prettier": "^2.6.0",
@@ -58,7 +58,8 @@
         "puppeteer": "^1.4.0",
         "request": "^2.87.0",
         "rimraf": "^2.6.2",
-        "serve": "^7.2.0"
+        "serve": "^7.2.0",
+        "style-loader": "^0.21.0"
     },
     "jest": {
         "testRegex": "./tests/.*\\.(test|spec)\\.(js|jsx)$",

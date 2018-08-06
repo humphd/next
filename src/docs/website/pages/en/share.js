@@ -7,6 +7,15 @@
 
 const React = require('react');
 
+//require('../../static/css/share.css');
+
+//import sankar from '../../static/css/share.css';
+
+//const share = require('./share.css');
+//import share from 'share';
+
+//import './share.css';
+
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
@@ -35,17 +44,70 @@ class Share extends React.Component {
             <div className="docMainWrapper wrapper">
                 <Container className="mainContainer documentContainer postContainer">
                     <div className="post">
-                        <header className="postHeader">
-                            <h2>Share</h2>
-                        </header>
-                        <p>
-                            This project is maintained by a dedicated group of
-                            people.
-                        </p>
-                        <GridBlock
+                        <main>
+                            <header className="postHeader">
+                                <h2>Start sharing</h2>
+                            </header>
+                            <p>Press button to start seeding files</p>
+                            <input
+                                type="button"
+                                id="btnSeed"
+                                value="Start Seed"
+                            />
+                            <div id="magnetProgress" />
+                            <p id="magnetURI_p" />
+                            <div class="magnet" ud="magnetURI" />
+                            <br />
+                            <hr />
+                            <br />
+                            <h2>Start Downloading</h2>
+                            <label>Download torrent from a magnet link</label>
+                            <br />
+                            <br />
+                            <input
+                                class="magnetInput"
+                                id="torrentId"
+                                placeholder="magnet:"
+                                required=""
+                            />
+                            <button id="downloadInfo">Download</button>
+
+                            <div id="downloadInfo" class="import-status">
+                                <div class="wrap">
+                                    <div class="left_col">
+                                        <p>Progress bar:</p>
+                                        <div id="progressBar" />
+                                        <br />
+                                        <p>Download speed:</p>
+                                        <div id="downloadSpeed" />
+                                        <br />
+                                        <p>Upload speed:</p>
+                                        <div id="uploadSpeed" />
+                                        <br />
+                                        <p>Total:</p>
+                                        <div id="total" />
+                                        <br />
+                                    </div>
+                                    <div class="right_col">
+                                        <p>Remining:</p>
+                                        <div id="remaining" />
+                                        <br />
+                                        <p>Download progress:</p>
+                                        <div id="downloaded" />
+                                        <br />
+                                        <p>Number of peers:</p>
+                                        <div id="numPeers" />
+                                        <br />
+                                        <div id="isComplete" />
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+
+                        {/* <GridBlock
                             contents={supportLinks}
                             layout="threeColumn"
-                        />
+                        /> */}
                     </div>
                 </Container>
             </div>
