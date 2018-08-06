@@ -1,7 +1,6 @@
 import DatabaseServer from './db';
 import WebServer from './web-server';
 import docs from './docs';
-import editor from './editor/src/routes.js';
 import terminal from './terminal';
 
 /* global workbox */

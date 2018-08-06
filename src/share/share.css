@@ -1,0 +1,40 @@
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+}
+
+.magnet {
+    width: 400px;
+    font-size: 12px;
+}
+
+.magnetInput {
+    min-width: 200px;
+    max-width: 400px;
+}
+
+.import-status {
+    height: 350px;
+    border: 1px solid #777;
+    border-radius: 10px;
+    max-width: 600px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 15px;
+}
+
+.wrap {
+    width: 600px;
+    margin: 0 auto;
+}
+.left_col {
+    float: left;
+    width: 300px;
+}
+.right_col {
+    float: right;
+    width: 300px;
+}
