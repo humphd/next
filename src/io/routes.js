@@ -4,6 +4,7 @@ import formatFS from '../lib/format-fs';
 import zip from './archive';
 
 const ioInRegex = /\/io\/in(\/.*)/;
+const ioRenameRegex = /\/io\/rename/;
 const ioResetRegex = /\/io\/reset/;
 const ioRemoveRegex = /\/io\/remove(\/.+)/;
 const ioToRegex = /\/io\/to\/dataurl(\/.*)/;
@@ -60,6 +61,28 @@ export default (workbox, ioServer) => {
             }
         },
         'GET'
+    );
+
+    workbox.routing.registerRoute(
+        ioRenameRegex,
+        async ({ event }) => {
+            let formData;
+            try {
+                formData = await event.request.formData();
+                return await constructResponse(async () => {
+                    const oldPath = fullyDecodeURI(formData.get('oldPath'));
+                    const newPath = fullyDecodeURI(formData.get('newPath'));
+                    const result = await ioServer.renamePath(oldPath, newPath);
+                    return {
+                        body: JSON.stringify(result),
+                        type: 'application/json',
+                    };
+                });
+            } catch (err) {
+                return constructInternalError(err.message);
+            }
+        },
+        'POST'
     );
 
     workbox.routing.registerRoute(

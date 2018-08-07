@@ -1,33 +1,96 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <title>IO - File Manager</title>
-    <link href="./io.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../node_modules/uikit/dist/css/uikit.min.css">
+    <link rel="stylesheet" href="./io.css">
+    <script src="./io.js"></script>
 </head>
 
 <body>
-    <div id="filemanager">
-        <div id="breadcrumbs"></div>
-        <ul id="data"></ul>
-        <div id="nothingfound">
-            <div class="nofiles"></div>
-            <span>No files here.</span>
+    <div class="uk-container-X-large uk-container-center">
+        <div class="uk-box-shadow-medium uk-padding" style="padding: 30px" uk-grid>
+            <div class="uk-width-3-4">
+                <h3>The Unbundled IO File Manager</h3>
+            </div>
+            <div class="uk-width-1-4">
+                <ul class="uk-iconnav">
+                    <li class="icon-list-padding hide" id="rename-li">
+                        <a href="#" id="rename-file" title="Rename File">
+                            <img src="icons/rename.svg" class="icon-list-icon">
+                        </a>
+                    </li>
+                    <li class="icon-list-padding hide" id="delete-li">
+                        <a href="#" id="delete-files" title="Delete Files">
+                            <img src="icons/trash.svg" class="icon-list-icon">
+                            <span class="uk-badge icon-badge" id="delete-files-badge"></span>
+                        </a>
+                    </li>
+                    <li class="icon-list-padding hide" id="download-li">
+                        <a href="#" id="download-files" title="Download Files">
+                            <img src="icons/download.svg" class="icon-list-icon">
+                            <span class="uk-badge icon-badge hide" id="download-files-badge"></span>
+                        </a>
+                    </li>
+                    <li class="icon-list-padding">
+                        <a href="#" id="upload-files" title="Upload Files">
+                            <img src="icons/upload.svg" class="icon-list-icon">
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        </br>
+        <div class="uk-margin-left uk-margin-right" style="font-size: 150%">
+            <form class="my-form" method="post" action="/io/import" enctype="multipart/form-data">
+                <div class="uk-margin-top" uk-grid>
+                    <div class="uk-width-1-6">
+                        <ul class="uk-list uk-list-divider">
+                            <li>
+                                <a class="uk-link-text" href="/io/in/" id="root-folder" title="Back to Root">
+                                    <img src="icons/folder.svg" style="width: 1.5em;">
+                                    <span style="vertical-align: middle;"> My Files </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="uk-link-text" href="#" id="new-folder" title="Add New Folder">
+                                    <img src="icons/folder-2.svg" style="width: 1.5em;">
+                                    <span style="vertical-align: middle;"> New Folder </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="uk-link-text" href="#" id="new-file" title="Upload Files">
+                                    <img src="icons/file-1.svg" style="width: 1.5em;">
+                                    <span style="vertical-align: middle;"> New File </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="uk-width-5-6">
+                        <div class="uk-width-1-1">
+                            <span id="breadcrumbs" class="uk-margin-left uk-margin-right"></span>
+                        </div>
+                        <div id="drop-area" uk-height-viewport="min-height: 300" class="uk-margin-left uk-margin-right uk-margin-top">
+                            <div class="uk-width-1-1 uk-margin-left uk-margin-right uk-margin-top">
+                                Files
+                            </div>
+                            <div class="uk-width-1-1 uk-margin-left uk-margin-right uk-margin-top">
+                                <div class="uk-child-width-1-3@s" id="data" uk-grid></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" class="hide" id="fileElem" multiple>
+                    <button type="button" class="button submit" style="display: none;" id="submit-btn">Import</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div id="drop-area">
-        <form class="my-form" method="post" action="/io/import" enctype="multipart/form-data">
-            <p>Upload multiple files with the file dialog or by dragging and dropping files onto the dashed region</p>
-            <input type="file" id="fileElem" multiple>
-            <br>
-            <label class="button" for="fileElem">Select some files</label>
-            <div id="gallery"></div>
-            <br>
-            <button type="button" class="button submit" id="submit-btn">Import</button>
-        </form>
+
+    <div style="display: none;">Icons made by
+        <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from
+        <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+        <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
-    <script src="./io.js"></script>
 </body>
 
 </html>

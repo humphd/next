@@ -1,17 +1,17 @@
-import iconFile from './icons/file.png';
-import strongDataUri from 'strong-data-uri';
+import iconFile from './icons/file.svg';
+import iconFileSelected from './icons/file-selected.svg';
+import iconFolder from './icons/folder.svg';
 import { fullyDecodeURI } from '../lib/utils';
 import Path from '../lib/path';
 import { formatSize } from '../lib/utils';
 import { blobToBuffer } from './io-files';
+import UIkit from 'uikit';
 
 addEventListener('DOMContentLoaded', () => {
     const ioInRegex = /\/io\/in(\/.*)/;
     const url = new URL(window.location.href);
     const path = url.pathname.match(ioInRegex)[1];
     let fileList = document.getElementById('data');
-    let nothingfound = document.getElementById('nothingfound');
-    let dropArea;
 
     const render = (pathDir, entries) => {
         let scannedFolders = [],
@@ -27,22 +27,11 @@ addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        if (!scannedFolders.length && !scannedFiles.length) {
-            nothingfound.style.display = 'block';
-        } else {
-            nothingfound.style.display = 'none';
-        }
-
         if (scannedFolders.length) {
             scannedFolders.forEach(f => {
                 let itemsLength = f.contents.length;
                 let name = f.name;
                 let path = Path.join(`/io/in${pathDir}`, name);
-                let icon = '<span class="icon folder"></span>';
-
-                if (itemsLength) {
-                    icon = '<span class="icon folder full"></span>';
-                }
 
                 if (itemsLength == 1) {
                     itemsLength += ' item';
@@ -52,13 +41,25 @@ addEventListener('DOMContentLoaded', () => {
                     itemsLength = 'Empty';
                 }
 
-                let folder = document.createElement('li', { class: 'folders' });
-                folder.innerHTML = `
-                    <a href="${path}" title="${path}" class="folders">
-                    ${icon}<span class="name">${name}</span> <span class="details">${itemsLength}</span></a>
+                let folder = `
+                    <div class="uk-card uk-card-hover uk-card-default uk-card-body card-radius">
+                        <div uk-grid>
+                            <div class="uk-width-1-4">
+                                <img src="${iconFolder}">
+                                <div class="hide navigateTo">${path}</div>
+                            </div>
+                            <div class="uk-width-3-4">
+                                <div class="uk-width-1-1 uk-text-truncate item-name">${name}</div>
+                                <div class="uk-width-1-1">${itemsLength}</div>
+                            </div>
+                        </div>
+                    </div>
                 `;
 
-                fileList.appendChild(folder);
+                let div = document.createElement('div');
+                div.innerHTML = folder;
+
+                fileList.appendChild(div);
             });
         }
 
@@ -68,21 +69,45 @@ addEventListener('DOMContentLoaded', () => {
                 let name = f.name;
                 let path = Path.join(`/www${pathDir}`, name);
                 let fileType = Path.extname(name).substr(1);
-                let icon = '<span class="icon file"></span>';
-                icon = `<span class="icon file f-${fileType}">.${fileType}</span>`;
 
-                let file = document.createElement('li', { class: 'files' });
-                file.innerHTML = `
-                    <a href="${path}" title="${path}" class="files">
-                    ${icon}<span class="name">${name}</span> <span class="details">${fileSize}</span></a>
+                let file = `
+                    <div class="uk-card uk-card-hover uk-card-default uk-card-body card-radius">
+                        <div uk-grid>
+                            <div class="uk-width-1-4">
+                                <img src="${iconFile}">
+                                <div class="hide navigateTo">${path}</div>
+                            </div>
+                            <div class="uk-width-3-4">
+                                <div class="uk-width-1-1 uk-text-truncate item-name">${name}</div>
+                                <div class="uk-width-1-1">${fileSize}</div>
+                            </div>
+                        </div>
+                    </div>
                 `;
 
-                fileList.appendChild(file);
+                let div = document.createElement('div');
+                div.innerHTML = file;
+
+                fileList.appendChild(div);
             });
         }
 
+        var classname = document.querySelectorAll('.uk-card');
+
+        Array.from(classname).forEach(function(element) {
+            element.addEventListener('click', select, false);
+            element.addEventListener(
+                'dblclick',
+                event => {
+                    let element = event.target.closest('.uk-card');
+                    let navigateTo = element.querySelector('.navigateTo');
+                    location.href = navigateTo.innerHTML;
+                },
+                false
+            );
+        });
+
         generateBreadcrumbs();
-        fileList.style.display = 'inline-block';
     };
 
     // Splits a file path and turns it into clickable breadcrumbs
@@ -100,27 +125,188 @@ addEventListener('DOMContentLoaded', () => {
                 );
             }
         }
-
         let urls = '';
-
         breadcrumbsUrls.forEach((link, i) => {
             let linkTitle = fullyDecodeURI(Path.basename(link));
-
             if (i !== breadcrumbsUrls.length - 1) {
-                urls += `<a href="/io/in/${link}"><span class="folderName">${linkTitle}</span></a> <span class="arrow">→</span>`;
+                urls += `<a href="/io/in/${link}"><span class="folderName">${linkTitle}</span></a> <span class="arrow"> > </span>`;
             } else {
                 urls += `<span class="folderName">${linkTitle}</span>`;
             }
         });
-
         breadcrumbs.innerHTML = urls;
     };
+
+    const refreshFolder = () => {
+        location.reload();
+    };
+
+    const clearSelected = () => {
+        var selectedElements = document.querySelectorAll('.uk-card-primary');
+        Array.from(selectedElements).forEach(function(element) {
+            element.classList.remove('uk-card-primary');
+            element.classList.add('uk-card-default');
+
+            let icon = element.childNodes[1].childNodes[1].childNodes[1];
+            icon.src = iconFile;
+        });
+
+        let renameFileLi = document.getElementById('rename-li');
+        let deleteFilesLi = document.getElementById('delete-li');
+        let deleteFiles = document.getElementById('delete-files-badge');
+        let downloadBadge = document.getElementById('download-files-badge');
+
+        renameFileLi.classList.add('hide');
+        deleteFilesLi.classList.add('hide');
+        deleteFiles.innerHTML = '';
+        deleteFiles.classList.add('hide');
+        downloadBadge.innerHTML = '';
+        downloadBadge.classList.add('hide');
+    };
+
+    UIkit.util.on('#delete-files', 'click', function(e) {
+        e.preventDefault();
+        e.target.blur();
+        var selectedElements = document.querySelectorAll('.uk-card-primary');
+        UIkit.modal
+            .confirm(
+                `Are you sure you want to delete ${
+                    selectedElements.length
+                } file(s)?`
+            )
+            .then(
+                () => {
+                    selectedElements.forEach(async entry => {
+                        var item = entry.querySelector('.item-name');
+                        var url = Path.join(
+                            '/',
+                            'io',
+                            'remove',
+                            path,
+                            item.innerHTML
+                        );
+                        await fetch(url, {
+                            method: 'GET',
+                        })
+                            .then(() => {
+                                entry.parentNode.removeChild(entry);
+                            })
+                            .catch(err => console.error(err));
+                    });
+
+                    refreshFolder();
+                },
+                () => {
+                    console.log('Rejected.');
+                }
+            );
+    });
+
+    UIkit.util.on('#download-files', 'click', function(e) {
+        e.preventDefault();
+        e.target.blur();
+        var selectedElements = document.querySelectorAll('.uk-card-primary');
+        UIkit.modal
+            .confirm(
+                `Are you sure you want to download ${
+                    selectedElements.length
+                } file(s)?`
+            )
+            .then(
+                () => {
+                    selectedElements.forEach(async entry => {
+                        let navigateTo = entry.querySelector('.navigateTo');
+
+                        let item = entry.querySelector('.item-name');
+                        let url = Path.join(
+                            '/',
+                            'io',
+                            navigateTo ? 'archive' : 'out',
+                            path,
+                            item.innerHTML
+                        );
+
+                        await fetch(url, {
+                            method: 'GET',
+                        })
+                            .then(response => response.blob())
+                            .then(blob => {
+                                var url = window.URL.createObjectURL(blob);
+                                var a = document.createElement('a');
+                                a.href = url;
+                                a.download = item.innerHTML;
+                                a.click();
+                            });
+                    });
+
+                    clearSelected();
+                },
+                () => {
+                    console.log('Rejected.');
+                }
+            );
+    });
+
+    UIkit.util.on('#new-folder', 'click', function(e) {
+        e.preventDefault();
+        e.target.blur();
+        UIkit.modal.prompt('New Folder Name:', '').then(async name => {
+            await fetch(`/io/in${path}/${name}`, {
+                method: 'GET',
+            })
+                .then(() => {
+                    refreshFolder();
+                })
+                .catch(err => console.error(err));
+        });
+    });
+
+    UIkit.util.on('#rename-li', 'click', function(e) {
+        e.preventDefault();
+        e.target.blur();
+        UIkit.modal.prompt('New File/Folder Name:', '').then(async name => {
+            let selectedElement = document.querySelector('.uk-card-primary');
+            let item = selectedElement.querySelector('.item-name');
+            let formData = new FormData();
+            let ext = Path.extname(item.innerHTML);
+            formData.append('oldPath', Path.join(path, item.innerHTML));
+            formData.append('newPath', Path.join(path, name + ext));
+
+            await fetch('/io/rename/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(() => {
+                    refreshFolder();
+                })
+                .catch(err => console.error(err));
+        });
+    });
+
+    let newFile = document.getElementById('new-file');
+    newFile.addEventListener(
+        'click',
+        () => {
+            document.getElementById('fileElem').click();
+        },
+        false
+    );
+
+    let uploadFiles = document.getElementById('upload-files');
+    uploadFiles.addEventListener(
+        'click',
+        () => {
+            document.getElementById('fileElem').click();
+        },
+        false
+    );
 
     const preventDefaults = e => {
         e.preventDefault();
         e.stopPropagation();
     };
 
+    let dropArea;
     const highlight = e => {
         dropArea.classList.add('highlight');
     };
@@ -132,14 +318,12 @@ addEventListener('DOMContentLoaded', () => {
     const handleDrop = e => {
         let dt = e.dataTransfer;
         let files = dt.files;
-        clearPreview();
-        previewFiles(files);
+        importFiles(files);
     };
 
     const handleSelect = e => {
         let files = e.target.files;
-        clearPreview();
-        previewFiles(files);
+        importFiles(files);
     };
 
     const getBufferFile = async file => {
@@ -153,8 +337,7 @@ addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const getBufferFiles = async () => {
-        let files = document.getElementById('fileElem').files;
+    const getBufferFiles = async files => {
         files = [...files];
         return await Promise.all(
             files.map(async file => {
@@ -163,12 +346,12 @@ addEventListener('DOMContentLoaded', () => {
         );
     };
 
-    const importFiles = async () => {
+    const importFiles = async files => {
         try {
             let url = document
                 .getElementsByTagName('form')[0]
                 .getAttribute('action');
-            let bufferFiles = await getBufferFiles();
+            let bufferFiles = await getBufferFiles(files);
             let formData = new FormData();
             formData.append('file', JSON.stringify(bufferFiles));
 
@@ -206,48 +389,6 @@ addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const clearPreview = () => {
-        document.getElementById('gallery').innerHTML = '';
-    };
-
-    const previewFiles = files => {
-        files = [...files];
-        files.forEach(previewFile);
-    };
-
-    const previewFile = file => {
-        let reader = new FileReader();
-
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            let div = document.createElement('div');
-            div.style.maxWidth = '120px';
-
-            let p = document.createElement('p');
-            p.innerHTML = file.name;
-            p.style.textAlign = 'center';
-            p.style.maxWidth = '110px';
-
-            let img = document.createElement('img');
-            img.style.maxWidth = '110px';
-            img.style.maxHeight = '110px';
-
-            const dataUri = reader.result;
-            let buffer = strongDataUri.decode(dataUri);
-            let mimeType = buffer.mimetype; // text/plain
-
-            if (mimeType.includes('image')) {
-                img.src = reader.result;
-            } else {
-                img.src = iconFile;
-            }
-
-            div.appendChild(img);
-            div.appendChild(p);
-            document.getElementById('gallery').appendChild(div);
-        };
-    };
-
     dropArea = document.getElementById('drop-area');
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -263,13 +404,6 @@ addEventListener('DOMContentLoaded', () => {
 
     dropArea.addEventListener('drop', handleDrop, false);
 
-    fetch(`/www${path}?json=true`, {
-        method: 'GET',
-    })
-        .then(res => res.json())
-        .then(data => render(path, data))
-        .catch(err => console.error(err));
-
     document
         .getElementById('fileElem')
         .addEventListener('change', handleSelect, false);
@@ -277,4 +411,57 @@ addEventListener('DOMContentLoaded', () => {
     document
         .getElementById('submit-btn')
         .addEventListener('click', importFiles, false);
+
+    fetch(`/www${path}?json=true`, {
+        method: 'GET',
+    })
+        .then(res => res.json())
+        .then(data => {
+            render(path, data);
+        })
+        .catch(err => console.error(err));
 });
+
+const select = event => {
+    let element = event.target.closest('.uk-card');
+    let icon = element.childNodes[1].childNodes[1].childNodes[1];
+    if (element.classList.contains('uk-card-default')) {
+        element.classList.add('uk-card-primary');
+        element.classList.remove('uk-card-default');
+        icon.src = iconFileSelected;
+    } else {
+        element.classList.remove('uk-card-primary');
+        element.classList.add('uk-card-default');
+        icon.src = iconFile;
+    }
+
+    let renameFileLi = document.getElementById('rename-li');
+    let deleteFilesLi = document.getElementById('delete-li');
+    let downloadFilesLi = document.getElementById('download-li');
+    let deleteFiles = document.getElementById('delete-files-badge');
+    let downloadBadge = document.getElementById('download-files-badge');
+
+    let selectedFiles = document.querySelectorAll('.uk-card-primary');
+
+    if (selectedFiles.length > 0) {
+        renameFileLi.classList.add('hide');
+        deleteFilesLi.classList.remove('hide');
+        downloadFilesLi.classList.remove('hide');
+        deleteFiles.innerHTML = `${selectedFiles.length}`;
+        deleteFiles.classList.remove('hide');
+        downloadBadge.innerHTML = `${selectedFiles.length}`;
+        downloadBadge.classList.remove('hide');
+    } else {
+        renameFileLi.classList.add('hide');
+        deleteFilesLi.classList.add('hide');
+        downloadFilesLi.classList.add('hide');
+        deleteFiles.innerHTML = '';
+        deleteFiles.classList.add('hide');
+        downloadBadge.innerHTML = '';
+        downloadBadge.classList.add('hide');
+    }
+
+    if (selectedFiles.length == 1) {
+        renameFileLi.classList.remove('hide');
+    }
+};

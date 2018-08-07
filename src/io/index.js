@@ -119,6 +119,18 @@ export default class {
         });
     }
 
+    // Creates a given Path /A
+    async renamePath(oldPath, path) {
+        return new Promise((resolve, reject) => {
+            fs.rename(oldPath, path, err => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+        });
+    }
+
     // Gets file info
     async getFileInfo(path) {
         // TODO: need to add promises to Filer
