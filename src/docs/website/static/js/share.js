@@ -50,7 +50,6 @@ const downloadAllTorrentFiles = torrent =>
     );
 
 function startDownload() {
-    alert('Hello sankar 2');
     document.getElementById('btnDownload').disabled = true;
 
     let magnetURI = document.getElementById('torrentId').value;
