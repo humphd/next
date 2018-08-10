@@ -12,7 +12,6 @@ const siteConfig = {
     title: 'Next',
     tagline: 'An experiment to unbunble the web',
     url: 'https://humphd.github.io',
-    //baseUrl: '/next/',
     baseUrl: '/',
     projectName: 'Next',
     organizationName: 'humphd',
@@ -32,9 +31,7 @@ const siteConfig = {
     footerIcon: 'img/database.svg',
     favicon: 'img/favicon/database.ico',
     themeUrl: './static/css/share.css',
-    scripts: [
-        'https://raw.githubusercontent.com/mmBabol/next/merge-share/src/share/share.js',
-    ],
+    scripts: ['./static/js/share.js'],
     cleanUrl: 'true',
 
     colors: {
