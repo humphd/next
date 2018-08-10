@@ -7,15 +7,6 @@
 
 const React = require('react');
 
-//require('../../static/css/share.css');
-
-//import sankar from '../../static/css/share.css';
-
-//const share = require('./share.css');
-//import share from 'share';
-
-//import './share.css';
-
 const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
@@ -25,20 +16,6 @@ const siteConfig = require(process.cwd() + '/siteConfig.js');
 class Share extends React.Component {
     render() {
         let language = this.props.language || '';
-        const supportLinks = [
-            {
-                content: 'Download files from your peers',
-                title: 'Import',
-                image: siteConfig.baseUrl + '/img/import.svg',
-                imageLink: 'www.google.ca',
-            },
-            {
-                content: 'Seed your files<br/><img src="/img/export.svg">',
-                title: 'Export',
-                image: siteConfig.baseUrl + '/img/export.svg',
-                imageLink: siteConfig.baseUrl + 'docs/introduction.html',
-            },
-        ];
 
         return (
             <div className="docMainWrapper wrapper">
@@ -103,11 +80,6 @@ class Share extends React.Component {
                                 </div>
                             </div>
                         </main>
-
-                        {/* <GridBlock
-                            contents={supportLinks}
-                            layout="threeColumn"
-                        /> */}
                     </div>
                 </Container>
             </div>

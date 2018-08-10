@@ -4,8 +4,6 @@ import Path from '../lib/path';
 import WebTorrent from 'webtorrent';
 import magnet from 'magnet-uri';
 
-alert('Hello sankar');
-
 // Look for a magnetURI inside of the window URL, if exists, place into the field
 let magnetParsed = window.location.search.substring(1);
 if (magnetParsed != '') {
