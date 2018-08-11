@@ -1,0 +1,51 @@
+[class^='flaticon-']:before,
+[class*=' flaticon-']:before,
+[class^='flaticon-']:after,
+[class*=' flaticon-']:after {
+    font-size: 75%;
+}
+
+html {
+    color: lightslategrey;
+}
+
+.icon-badge {
+    position: absolute;
+    margin-top: -10px;
+    margin-left: 20px;
+}
+
+.hide {
+    display: none;
+}
+
+.select {
+    background-color: aqua;
+    color: white;
+}
+
+.card-radius {
+    border-radius: 5px;
+}
+
+.icon-list-padding {
+    padding-left: 30px !important;
+}
+
+.icon-list-icon {
+    width: 2em;
+}
+
+/* Drop Zone */
+
+#drop-area.highlight {
+    background-color: rgba(58, 73, 73, 0.432);
+}
+
+.my-form {
+    margin-bottom: 10px;
+}
+
+#fileElem {
+    display: none;
+}

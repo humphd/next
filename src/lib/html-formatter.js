@@ -1,12 +1,12 @@
 import { isMedia, isImage, getMimeType } from './content-type';
-import iconImage from './icons/image2.png';
-import iconFolder from './icons/folder.png';
-import iconMovie from './icons/movie.png';
-import iconText from './icons/text.png';
-import iconUnknown from './icons/unknown.png';
-import iconBack from './icons/back.png';
-import iconBlank from './icons/blank.png';
-import path from '../lib/path';
+import iconImage from '../web-server/icons/image2.png';
+import iconFolder from '../web-server/icons/folder.png';
+import iconMovie from '../web-server/icons/movie.png';
+import iconText from '../web-server/icons/text.png';
+import iconUnknown from '../web-server/icons/unknown.png';
+import iconBack from '../web-server/icons/back.png';
+import iconBlank from '../web-server/icons/blank.png';
+import Path from './path';
 
 const months = [
     'Jan',
@@ -79,7 +79,7 @@ export default {
      * Send an Apache-style directory listing
      */
     formatDir: (dirPath, entries) => {
-        const parent = path.dirname(dirPath);
+        const parent = Path.dirname(dirPath);
 
         const header = `<!DOCTYPE html>
                         <html><head><title>Index of ${dirPath}</title></head>
@@ -96,8 +96,8 @@ export default {
 
         const rows = entries
             .map(entry => {
-                const ext = path.extname(entry.name);
-                const href = '/www' + path.join(dirPath, entry.name);
+                const ext = Path.extname(entry.name);
+                const href = '/www' + Path.join(dirPath, entry.name);
                 let icon;
                 let alt;
 
@@ -141,5 +141,37 @@ export default {
             type: getMimeType(path),
             status: 200,
         };
+    },
+
+    formatEntries: (dirPath, entries) => {
+        var len = entries.length,
+            output = [];
+        for (var i = 0; i < len; i++) {
+            let size, filePath;
+            if (entries[i].type == 'DIRECTORY') {
+                size = entries[i].contents.length;
+                filePath = Path.join(
+                    '/io/in',
+                    dirPath,
+                    encodeURIComponent(entries[i].name)
+                );
+            } else {
+                size = entries[i].size;
+                filePath = Path.join(
+                    '/www',
+                    dirPath,
+                    encodeURIComponent(entries[i].name)
+                );
+            }
+            var entry = {
+                name: entries[i].name,
+                type: entries[i].type,
+                size: size,
+                path: filePath,
+            };
+            output.push(JSON.stringify(entry));
+        }
+
+        return output;
     },
 };
