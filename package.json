@@ -15,8 +15,7 @@
         "predownload-vm": "npm run build-server",
         "download-vm": "node tools/download-vm.js",
         "prebuild-terminal": "npm run download-vm",
-        "build-terminal":
-            "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
+        "build-terminal": "parcel build src/terminal/index.html --public-url /terminal --out-dir dist/terminal",
         "eslint": "eslint --fix .",
         "check-eslint": "eslint .",
         "travis": "npm run test",
