@@ -43,7 +43,7 @@ mkdirp(terminalDir, err => {
             url: 'https://api.github.com/repos/humphd/next/releases/latest',
             json: true,
             headers: {
-                'User-Agent': 'Request-Promise',
+                'User-Agent': 'Awesome-Octocat-App',
             },
         },
         (err, resp, release) => {
