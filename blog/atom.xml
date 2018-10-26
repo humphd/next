@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://humphd.github.io/next/blog</id>
+    <title>Next Blog</title>
+    <updated>2018-05-09T06:00:00Z</updated>
+    <generator>Feed for Node.js</generator>
+    <link rel="alternate" href="https://humphd.github.io/next/blog"/>
+    <subtitle>The best place to stay up-to-date with the latest Next news and events.</subtitle>
+    <logo>https://humphd.github.io/next/img/database.svg</logo>
+    <rights>Copyright © 2018 David Humphrey &lt;david.humphrey@senecacollege.ca&gt;</rights>
+    <entry>
+        <title type="html"><![CDATA[Start of project]]></title>
+        <id>https://humphd.github.io/next/blog/2018/05/09/new-version-1.0.0.html</id>
+        <link href="https://humphd.github.io/next/blog/2018/05/09/new-version-1.0.0.html">
+        </link>
+        <updated>2018-05-09T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Project started off as an idea for our DPS911 Open Source Projects class</p>
+]]></summary>
+        <author>
+            <name>Mat Babol</name>
+            <uri>https://github.com/mmbabol</uri>
+        </author>
+    </entry>
+</feed>

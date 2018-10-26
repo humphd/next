@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Next Blog</title>
+        <link>https://humphd.github.io/next/blog</link>
+        <description>The best place to stay up-to-date with the latest Next news and events.</description>
+        <lastBuildDate>Wed, 09 May 2018 06:00:00 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>Next Blog</title>
+            <url>https://humphd.github.io/next/img/database.svg</url>
+            <link>https://humphd.github.io/next/blog</link>
+        </image>
+        <copyright>Copyright © 2018 David Humphrey &lt;david.humphrey@senecacollege.ca&gt;</copyright>
+        <item>
+            <title><![CDATA[Start of project]]></title>
+            <link>https://humphd.github.io/next/blog/2018/05/09/new-version-1.0.0.html</link>
+            <guid>https://humphd.github.io/next/blog/2018/05/09/new-version-1.0.0.html</guid>
+            <pubDate>Wed, 09 May 2018 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>Project started off as an idea for our DPS911 Open Source Projects class</p>
+]]></description>
+        </item>
+    </channel>
+</rss>
