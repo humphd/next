@@ -12,8 +12,23 @@ function makeRequest(url, config, page) {
         config
     );
 }
-
+function makeRequestAllInternalError(url, config, page) {
+    return page.evaluate(
+        (url, req) =>
+            fetch(url, req)
+                .then(res => { 
+                    if(res.status == 500) 
+                        return { ok: false };
+                    else
+                        return res.json();
+                    })
+                .catch(err => err),
+        encodeURI(url),
+        config
+    );
+}
 module.exports.makeRequest = makeRequest;
+module.exports.makeRequestAllInternalError = makeRequestAllInternalError;
 
 module.exports.populateTable = async function(url, requests, page) {
     for (let req of requests) {
